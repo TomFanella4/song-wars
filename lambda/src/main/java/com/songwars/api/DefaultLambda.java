@@ -19,22 +19,8 @@ public class DefaultLambda implements RequestHandler<Map<String, Object>, Map<St
 	
 	@Override
 	public Map<String, Object> handleRequest(Map<String, Object> input, Context context) {
+				
 		
-		this.context = context;
-		this.logger = context.getLogger();
-		
-		System.out.println(input.toString());
-		logger.log(input.toString());
-
-		Map<String, Object> response = new HashMap<String, Object>();
-		response.put("value", "ok");
-		
-		if (((String) ((Map<String, Object>) ((Map<String, Object>) input.get("params")).get("querystring")).get("error")).equals("yes"))
-			throw new RuntimeException("[PageNotFound]");
-		else
-			return response;
-		
-		/*
 		// Response JSON:
 		Map<String, Object> response = new HashMap<String, Object>();
 		// Database Connection:
@@ -53,7 +39,7 @@ public class DefaultLambda implements RequestHandler<Map<String, Object>, Map<St
 			logger.log("SQLState: " + ex.getSQLState());
 			logger.log("VendorError: " + ex.getErrorCode());
 
-			//return generate500(ex.getMessage());
+			throw new RuntimeException("[InternalServerError] - SQL error occured.");
 			
 		} finally {
 			context.getLogger().log("Closing the connection.");
@@ -61,12 +47,12 @@ public class DefaultLambda implements RequestHandler<Map<String, Object>, Map<St
 				try {
 					con.close();
 				} catch (SQLException ignore) {
-					//return generate500("SQL error.");
+					throw new RuntimeException("[InternalServerError] - SQL error occured and is having trouble closing connection.");
 				}
 		}
 		
 		return response;
-		*/
+		
 	}
 
 }
