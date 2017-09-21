@@ -1,1 +1,3 @@
-// Actions go here
+import { TOGGLE_SIDEBAR } from './actionTypes';
+
+export const toggleSidebar = () => ({ type: TOGGLE_SIDEBAR })
