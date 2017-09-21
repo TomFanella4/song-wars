@@ -94,7 +94,6 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			statement.addBatch(query);
 			statement.executeBatch();
 		
-		
 			
 		} catch (SQLException ex) {
 			// handle any errors
@@ -116,11 +115,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		
 		
 		
-		
-		
-		
-		
-		
+		// TODO: Return expected information.
 		
 		return response;
 		
