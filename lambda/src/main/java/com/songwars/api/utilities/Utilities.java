@@ -67,6 +67,11 @@ public class Utilities {
     			con.setRequestProperty(key, headers.get(key));
     		}
     	
+    	if (method.equalsIgnoreCase("get") || method.equalsIgnoreCase("delete"))
+    		con.setDoInput(false);
+    	else
+    		con.setDoInput(true);
+    	
     	// Insert Body
     	if (body != null) {
     		con.setDoOutput(true);
@@ -75,11 +80,6 @@ public class Utilities {
     	} else {
     		con.setDoOutput(false);
     	}
-    	
-    	if (method.equalsIgnoreCase("get") || method.equalsIgnoreCase("delete"))
-    		con.setDoInput(false);
-    	else
-    		con.setDoInput(true);
     	
     	return con;
     	

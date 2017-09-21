@@ -75,15 +75,6 @@ public class Validate {
 		
 		// TODO: More validation required for this element?
 		
-		// Request Access and Refresh Tokens:
-		String url = "https://accounts.spotify.com/api/token";
-		Map<String, Object> headers = new HashMap<String, Object>();
-			headers.put("Authorization", "Basic " + Base64.encodeAsString(((String) "52c0782611f74c95b5bd557ebfc62fcf" + ":" + "d0ced3f32e6e4d6b8dff5aa18026a613").getBytes()));
-		Map<String, Object> body = new HashMap<String, Object>();
-			body.put("grant_type", "authorization_code");
-			body.put("code", "");
-			body.put("redirect_uri", "");
-		
 		return cookie;
 	}
 	
