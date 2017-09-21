@@ -3,16 +3,20 @@ package com.songwars.api.utilities;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.util.Md5Utils;
 import com.google.gson.Gson;
 
 public class Utilities {
@@ -84,5 +88,44 @@ public class Utilities {
     	return con;
     	
     }
+    
+    
+    
+    /**
+	 * generateCookie - generates a unique number by multiplying the bytes of the argument 
+	 * String with the current time in nanoseconds of the machine.
+	 * 
+	 * @param arg - input string to salt the hash. Could be the username, etc.
+	 * @return - a pseudo-random integer.
+	 */
+	public static int generateCookie(String arg) {
+    	BigInteger nameint = new BigInteger(arg.getBytes());
+        BigInteger timeint = new BigInteger(Long.toString(System.nanoTime()));
+        return nameint.multiply(timeint).intValue();
+    }
+	
+	
+	
+	/**
+	 * Checks users table in database to see if the cookie already exists.
+	 * 
+	 * @param cookie
+	 * @param con - connection to database, already openned.
+	 * @return - true if cookie is unique, false otherwise.
+	 * @throws SQLException
+	 */
+	public static boolean isUniqueCookie(int cookie, Connection con) throws SQLException {
+		
+		String query = "SELECT cookie FROM users WHERE cookie=" + cookie + " LIMIT 1";
+		Statement statement = con.createStatement();
+		ResultSet result = statement.executeQuery(query);
+		statement.close();
+		
+		if (result.next())
+			return false;
+		else
+			return true;
+		
+	}
 	
 }

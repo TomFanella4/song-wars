@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -34,6 +35,10 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		Map<String, Object> params;
 		Map<String, Object> querystring;
 		Map<String, Object> response = new HashMap<String, Object>();
+		Connection con = null;
+		// Conditions:
+		boolean sameCookie = false;
+		boolean userExists = false;
 		// Required request fields:
 		String name = null;
 		String email = null;
@@ -44,8 +49,6 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		/*
 		 * 1. Check request body (validate) for proper format of fields:
 		 */
-		
-		
 	
 		// Find Path:
 		params = Validate.field(input, "params");
@@ -58,6 +61,8 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		//name = Validate.string(querystring, "name");
 		authorization_code = Validate.string(querystring, "code");
 		//scopes = Validate.string(querystring, "scopes");
+		
+		
 		
 		// Request Access and Refresh Tokens:		
 		String url = "https://accounts.spotify.com/api/token";
@@ -94,51 +99,92 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 				request.disconnect();
 		}
 		
-		
-		// Check/Retrieve user's account info:
-		if (cookie doesn't match???) 
-		{
-			url = "https://api.spotify.com/v1/me";
-			headers = new HashMap<String, String>();
-				headers.put("Authorization", "Bearer " + access_token);
-			request = null;
-			String name = null, email = null;
-			try {
-				request = Utilities.makeHttpsRequest(url, "POST", headers, body);
-				
-				if (request.getResponseCode() == 200) {
-					
-					Map<String, Object> response_body = (Map<String, Object>) new Gson().fromJson(new InputStreamReader(request.getInputStream()), HashMap.class);
-					
-					for (String key : response_body.keySet())
-						logger.log(key + " : " + response_body.get(key));
-					
-					
-					
-				} else {
-					throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode());
-				}
-				
-			} catch (IOException ioe) {
-				throw new RuntimeException("[InternalServerError] " + ioe.getStackTrace());
-			} finally {
-				if (request != null)
-					request.disconnect();
-			}
-		}
-		
-		
-		// Database Connection:
-		Connection con = Utilities.getRemoteConnection(context);
-		
-		// Does user have profile yet?
+			
+		// Check for cookie first!
+		con = Utilities.getRemoteConnection(context);
 		try {
-			String query = "INSERT INTO users (cookie, email, name, authorization_code, access_token, refresh_token, expiration) VALUES (" + cookie + ", " + email + ", " + name + ", " + authorization_code + ", " + access_token + ", " + refresh_token + ", " + expiration + ")";
+			String query = "SELECT * FROM users WHERE cookie='" + cookie + "' LIMIT 1";
 			Statement statement = con.createStatement();
-			statement.addBatch(query);
-			statement.executeBatch();
+			ResultSet result = statement.executeQuery(query);
 			statement.close();
-
+			if (result.next()) {
+				sameCookie = true;
+				userExists = true;
+			} else {
+				sameCookie = false;
+			}
+			
+			// Check/Retrieve user's account info:
+			if (!userExists) 
+			{
+				url = "https://api.spotify.com/v1/me";
+				headers = new HashMap<String, String>();
+					headers.put("Authorization", "Bearer " + access_token);
+				request = null;
+				try {
+					request = Utilities.makeHttpsRequest(url, "POST", headers, body);
+					
+					if (request.getResponseCode() == 200) {
+						
+						Map<String, Object> response_body = (Map<String, Object>) new Gson().fromJson(new InputStreamReader(request.getInputStream()), HashMap.class);
+						
+						for (String key : response_body.keySet())
+							logger.log(key + " : " + response_body.get(key));
+						
+						email = (String) response_body.get("email");
+						name = (String) response_body.get("display_name");
+						
+					} else {
+						throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode());
+					}
+					
+				} catch (IOException ioe) {
+					throw new RuntimeException("[InternalServerError] " + ioe.getStackTrace());
+				} finally {
+					if (request != null)
+						request.disconnect();
+				}
+			}
+			
+			// Does user have profile yet?
+			query = "SELECT * FROM users WHERE email='" + email + "' LIMIT 1";
+			statement = con.createStatement();
+			result = statement.executeQuery(query);
+			statement.close();
+			if (result.next()) {
+				userExists = true;
+			} else {
+				userExists = false;
+			}
+			
+			
+			// Insert new user if user does not exist
+			if (!userExists ) {
+				query = "INSERT INTO users (cookie, email, name, authorization_code, access_token, refresh_token, expiration) VALUES (" + cookie + ", " + email + ", " + name + ", " + authorization_code + ", " + access_token + ", " + refresh_token + ", " + expiration + ")";
+				statement = con.createStatement();
+				statement.addBatch(query);
+				statement.executeBatch();
+				statement.close();	
+			} else {
+				
+				// Generate new unique cookie
+				int newCookie, i = 0;
+				do {
+					newCookie = Utilities.generateCookie(name);
+					i++;
+					if (i > 3)
+						throw new RuntimeException("[InternalServerError] Cookie Generation is having problems. No unique cookie generated in 3 attemps!");
+				} while (Utilities.isUniqueCookie(newCookie, con));
+				response.put("cookie", newCookie);
+				
+				// Update user access information
+				query = "UPDATE users SET cookie=" + newCookie + ", authorization_code='" + authorization_code + "', access_token='" + access_token + "', refresh_token='" + refresh_token + "', expiration='" + expiration + "' WHERE email='" + email + "'";
+				statement = con.createStatement();
+				statement.addBatch(query);
+				statement.executeBatch();
+				statement.close();
+			}
+				
 		} catch (SQLException ex) {
 			// handle any errors
 			logger.log("SQLException: " + ex.getMessage());
@@ -156,6 +202,8 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 					throw new RuntimeException("[InternalServerError] - SQL error occured and is having trouble closing connection.");
 				}
 		} 
+		
+		
 		
 		// Add new cookie and authorization_code...
 		return response;
