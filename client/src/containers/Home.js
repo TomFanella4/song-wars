@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Header } from 'semantic-ui-react';
 import querystring from 'querystring';
 
-// import Bracket from './Bracket';
+import Bracket from './Bracket';
 
 class App extends Component {
 
@@ -48,7 +48,7 @@ class App extends Component {
             Login with Spotify
           </Button>
         }
-        {/* <Bracket /> */}
+        <Bracket />
       </div>
     );
   }
