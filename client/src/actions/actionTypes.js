@@ -1,1 +1,2 @@
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
+export const SET_PLAYER_URI = 'SET_PLAYER_URI';
