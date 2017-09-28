@@ -3,9 +3,10 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Sidebar, Segment } from 'semantic-ui-react'
 
+import '../styles/Root.css';
 import TopMenu from './TopMenu';
 import SidebarMenu from '../components/SidebarMenu';
-import App from './App';
+import Home from './Home';
 import Search from './Search'
 
 const Root = ({ store }) => (
@@ -18,8 +19,8 @@ const Root = ({ store }) => (
         <Sidebar.Pushable>
           <SidebarMenu />
           <Sidebar.Pusher>
-            <Segment basic>
-              <Route exact path='/' component={App}/>
+            <Segment basic style={{overflowX: 'auto'}}>
+              <Route exact path='/' component={Home}/>
               <Route path='/search' component={Search}/>
             </Segment>
           </Sidebar.Pusher>
