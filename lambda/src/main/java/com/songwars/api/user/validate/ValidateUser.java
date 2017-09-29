@@ -1,10 +1,8 @@
 package com.songwars.api.user.validate;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -31,15 +29,14 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 	@Override
 	public Map<String, Object> handleRequest(Map<String, Object> input, Context context) {
 		
+		this.context = context;
+		this.logger = context.getLogger();
 		
 		Map<String, Object> json;
 		Map<String, Object> params;
 		Map<String, Object> querystring;
 		Map<String, Object> response = new HashMap<String, Object>();
 		Connection con = null;
-		// Conditions:
-		boolean sameCookie = false;
-		boolean userExists = false;
 		// Required request fields:
 		String id = null;
 		String name = null;
@@ -51,6 +48,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		 */
 	
 		// Find Path:
+		//json = Validate.field(input, "json_body");
 		params = Validate.field(input, "params");
 		querystring = Validate.field(params, "querystring");
 		
@@ -126,7 +124,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		try {
 				
 			// Insert new user or update credentials if user_id already exists
-			String query = "INSERT INTO users (id, email, name, authorization_code, access_token, refresh_token, expiration) VALUES ('" + id + "', '" + email + "', '" + name + "', '" + authorization_code + "', '" + access_token + "', '" + refresh_token + "', " + expiration + ") ON DUPLICATE KEY UPDATE authorization_code='" + authorization_code + "', access_token='" + access_token + "', refresh_token='" + refresh_token + "', expiration=" + expiration;
+			String query = "INSERT INTO users (id, email, name, authorization_code, access_token, refresh_token, expiration) VALUES ('" + id + "', '" + email + "', '" + name + "', '" + authorization_code + "', '" + access_token + "', '" + refresh_token + "', '" + expiration + "') ON DUPLICATE KEY UPDATE authorization_code='" + authorization_code + "', access_token='" + access_token + "', refresh_token='" + refresh_token + "', expiration='" + expiration + "'";
 			Statement statement = con.createStatement();
 			statement.addBatch(query);
 			statement.executeBatch();
@@ -148,7 +146,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 				} catch (SQLException ignore) {
 					throw new RuntimeException("[InternalServerError] - SQL error occured and is having trouble closing connection.");
 				}
-		} 
+		}
 		
 		
 		response.put("name", name);

@@ -1,9 +1,7 @@
 package com.songwars.api.utilities;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import com.amazonaws.util.Base64;
 
 public class Validate {
 
