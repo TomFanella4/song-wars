@@ -7786,3 +7786,42 @@ Caused by: java.lang.ClassNotFoundException: org.eclipse.jface.text.Region
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-29 18:38:39.857
 !MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-29 19:05:40.287
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-29 19:05:40.306
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-29 19:06:28.858
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-29 19:06:28.883
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-29 19:07:03.761
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-29 19:07:03.774
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-09-29 19:07:13.231
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda4878038366469369661.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-09-29 19:07:13.756
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda4878038366469369661.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-09-29 19:07:17.096
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_ValidateUser updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-09-29 19:07:17.128
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-09-29 19:07:17.128
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_ValidateUser
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-29 19:07:17.240
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-09-29 19:07:17.258
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!

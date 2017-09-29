@@ -109,7 +109,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 				name = (String) response_body.get("display_name");
 				
 			} else {
-				throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode() + ", " + url + ", " + headers + ", " + body);
+				throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode() + ". Error body: " + ", " + IOUtils.toString(request.getErrorStream()));
 			}
 			
 		} catch (IOException ioe) {
