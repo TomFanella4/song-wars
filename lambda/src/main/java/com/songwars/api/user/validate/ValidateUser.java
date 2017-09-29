@@ -18,6 +18,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.util.Base64;
+import com.amazonaws.util.IOUtils;
 import com.google.gson.Gson;
 import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
@@ -40,12 +41,11 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		boolean sameCookie = false;
 		boolean userExists = false;
 		// Required request fields:
+		String id = null;
 		String name = null;
 		String email = null;
-		String cookie = "";
-		String authorization_code = "";
-		String scopes = "";
-				
+		String authorization_code = null;
+
 		/*
 		 * 1. Check request body (validate) for proper format of fields:
 		 */
@@ -55,19 +55,14 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		querystring = Validate.field(params, "querystring");
 		
 		// Validate required fields:
-		Validate.error(querystring);
-		// May be able to feed these values into redirect_uri???
-		//cookie = Validate.cookie(querystring); 
-		//name = Validate.string(querystring, "name");
 		authorization_code = Validate.string(querystring, "code");
-		//scopes = Validate.string(querystring, "scopes");
 		
 		
 		
-		// Request Access and Refresh Tokens:		
+		// Request Access and Refresh Tokens:
 		String url = "https://accounts.spotify.com/api/token";
 		Map<String, String> headers = new HashMap<String, String>();
-			headers.put("Authorization", "Basic " + Base64.encodeAsString(("52c0782611f74c95b5bd557ebfc62fcf" + ":" + "d0ced3f32e6e4d6b8dff5aa18026a613").getBytes()));
+			headers.put("Authorization", "Basic " + Base64.encodeAsString((System.getenv("API_ID") + ":" + System.getenv("API_SECRET")).getBytes()));
 		Map<String, Object> body = new HashMap<String, Object>();
 			body.put("grant_type", "authorization_code");
 			body.put("code", authorization_code);
@@ -81,109 +76,61 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 				
 				Map<String, Object> response_body = (Map<String, Object>) new Gson().fromJson(new InputStreamReader(request.getInputStream()), HashMap.class);
 				
-				for (String key : response_body.keySet())
-					logger.log(key + " : " + response_body.get(key));
-				
 				access_token = (String) response_body.get("access_token");
-				expiration = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Timestamp(System.currentTimeMillis() + ((Integer) response_body.get("expires_in")).intValue() * 1000));
+				expiration = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Timestamp(System.currentTimeMillis() + ((Double) response_body.get("expires_in")).intValue() * 1000));
 				refresh_token = (String) response_body.get("refresh_token");
 				
 			} else {
-				throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode());
+				throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode() + ". Error body: " + ", " + IOUtils.toString(request.getErrorStream()));
 			}
 			
 		} catch (IOException ioe) {
-			throw new RuntimeException("[InternalServerError] " + ioe.getStackTrace());
+			throw new RuntimeException("[InternalServerError] " + ioe.getMessage() + ", trace: " + ioe.getStackTrace());
+		} finally {
+			if (request != null)
+				request.disconnect();
+			request = null;
+		}
+		
+		
+		// Retrieve user information from Spotify.
+		url = "https://api.spotify.com/v1/me";
+		headers = new HashMap<String, String>();
+			headers.put("Authorization", "Bearer " + access_token);
+		body = null;
+		request = null;
+		try {
+			request = Utilities.makeHttpsRequest(url, "GET", headers, body);
+			
+			if (request.getResponseCode() == 200) {
+				
+				Map<String, Object> response_body = (Map<String, Object>) new Gson().fromJson(new InputStreamReader(request.getInputStream()), HashMap.class);
+				
+				id = (String) response_body.get("id");
+				email = (String) response_body.get("email");
+				name = (String) response_body.get("display_name");
+				
+			} else {
+				throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode() + ", " + url + ", " + headers + ", " + body);
+			}
+			
+		} catch (IOException ioe) {
+			throw new RuntimeException("[InternalServerError] " + ioe.getMessage() + ", " + ioe.getStackTrace());
 		} finally {
 			if (request != null)
 				request.disconnect();
 		}
 		
 			
-		// Check for cookie first!
 		con = Utilities.getRemoteConnection(context);
 		try {
-			String query = "SELECT * FROM users WHERE cookie='" + cookie + "' LIMIT 1";
+				
+			// Insert new user or update credentials if user_id already exists
+			String query = "INSERT INTO users (id, email, name, authorization_code, access_token, refresh_token, expiration) VALUES ('" + id + "', '" + email + "', '" + name + "', '" + authorization_code + "', '" + access_token + "', '" + refresh_token + "', " + expiration + ") ON DUPLICATE KEY UPDATE authorization_code='" + authorization_code + "', access_token='" + access_token + "', refresh_token='" + refresh_token + "', expiration=" + expiration;
 			Statement statement = con.createStatement();
-			ResultSet result = statement.executeQuery(query);
+			statement.addBatch(query);
+			statement.executeBatch();
 			statement.close();
-			if (result.next()) {
-				sameCookie = true;
-				userExists = true;
-			} else {
-				sameCookie = false;
-			}
-			
-			// Check/Retrieve user's account info:
-			if (!userExists) 
-			{
-				url = "https://api.spotify.com/v1/me";
-				headers = new HashMap<String, String>();
-					headers.put("Authorization", "Bearer " + access_token);
-				request = null;
-				try {
-					request = Utilities.makeHttpsRequest(url, "POST", headers, body);
-					
-					if (request.getResponseCode() == 200) {
-						
-						Map<String, Object> response_body = (Map<String, Object>) new Gson().fromJson(new InputStreamReader(request.getInputStream()), HashMap.class);
-						
-						for (String key : response_body.keySet())
-							logger.log(key + " : " + response_body.get(key));
-						
-						email = (String) response_body.get("email");
-						name = (String) response_body.get("display_name");
-						
-					} else {
-						throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode());
-					}
-					
-				} catch (IOException ioe) {
-					throw new RuntimeException("[InternalServerError] " + ioe.getStackTrace());
-				} finally {
-					if (request != null)
-						request.disconnect();
-				}
-			}
-			
-			// Does user have profile yet?
-			query = "SELECT * FROM users WHERE email='" + email + "' LIMIT 1";
-			statement = con.createStatement();
-			result = statement.executeQuery(query);
-			statement.close();
-			if (result.next()) {
-				userExists = true;
-			} else {
-				userExists = false;
-			}
-			
-			
-			// Insert new user if user does not exist
-			if (!userExists ) {
-				query = "INSERT INTO users (cookie, email, name, authorization_code, access_token, refresh_token, expiration) VALUES (" + cookie + ", " + email + ", " + name + ", " + authorization_code + ", " + access_token + ", " + refresh_token + ", " + expiration + ")";
-				statement = con.createStatement();
-				statement.addBatch(query);
-				statement.executeBatch();
-				statement.close();	
-			} else {
-				
-				// Generate new unique cookie
-				int newCookie, i = 0;
-				do {
-					newCookie = Utilities.generateCookie(name);
-					i++;
-					if (i > 3)
-						throw new RuntimeException("[InternalServerError] Cookie Generation is having problems. No unique cookie generated in 3 attemps!");
-				} while (Utilities.isUniqueCookie(newCookie, con));
-				response.put("cookie", newCookie);
-				
-				// Update user access information
-				query = "UPDATE users SET cookie=" + newCookie + ", authorization_code='" + authorization_code + "', access_token='" + access_token + "', refresh_token='" + refresh_token + "', expiration='" + expiration + "' WHERE email='" + email + "'";
-				statement = con.createStatement();
-				statement.addBatch(query);
-				statement.executeBatch();
-				statement.close();
-			}
 				
 		} catch (SQLException ex) {
 			// handle any errors
@@ -204,8 +151,8 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		} 
 		
 		
-		
-		// Add new cookie and authorization_code...
+		response.put("name", name);
+		response.put("access_token", access_token);
 		return response;
 		
 	}

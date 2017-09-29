@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -51,6 +52,7 @@ public class Utilities {
     /**
      * makeHttpsRequest:
      * Makes a https request of any method. Allows inserting a JSON body.
+     * If no Content-Type is specified in header then "x-www-urlencoded" is assumed
      * 
      * @param url_w_queryparams - url + any query parameters
      * @param method - http method in ALL CAPS.
@@ -64,23 +66,46 @@ public class Utilities {
     	HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
     	con.setRequestMethod(method);
     	con.setFollowRedirects(false);
+    	con.setUseCaches(false);
     	
     	// Insert headers
-    	if (headers != null)
+    	if (headers != null) {
     		for (String key : headers.keySet()) {
     			con.setRequestProperty(key, headers.get(key));
     		}
-    	
-    	if (method.equalsIgnoreCase("get") || method.equalsIgnoreCase("delete"))
-    		con.setDoInput(false);
-    	else
-    		con.setDoInput(true);
+    		if (body != null && !headers.containsKey("Content-Type"))
+        		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+    	}
+    	else if (body != null)
+    		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
     	
     	// Insert Body
     	if (body != null) {
-    		con.setDoOutput(true);
-    		BufferedOutputStream out = new BufferedOutputStream(con.getOutputStream());
-    		out.write(new Gson().toJson(body).toString().getBytes());
+    		if (con.getRequestProperty("Content-Type").equals("application/x-www-form-urlencoded")) {
+	    		StringBuilder result = new StringBuilder();
+	    		boolean first = true;
+	    		/*for (String key : body.keySet()) {
+	    			if (first)
+	    				first = false;
+	    			else
+	    				result.append("&");
+	    			result.append(URLEncoder.encode(key, "UTF-8"));
+	    			result.append("=");
+	    			result.append(URLEncoder.encode((String) body.get(key), "UTF-8"));
+	    		}*/
+	    		result.append("grant_type=authorization_code&redirect_uri=https%3A%2F%2Fzhryq6uuab.execute-api.us-west-2.amazonaws.com%2FAlpha%2Fuser%2Fvalidate&code=" + URLEncoder.encode((String) body.get("code"), "UTF-8"));
+
+    			//throw new RuntimeException("[InternalServerError] " + con.getHeaderField("Authorization") + ", " + result + ", " + con.getHeaderFields());
+	    		con.setDoOutput(true);
+	    		BufferedOutputStream out = new BufferedOutputStream(con.getOutputStream());
+	    		out.write(result.toString().getBytes("UTF-8"));
+	    		out.flush();
+	    		out.close();
+    		} else {
+	    		con.setDoOutput(true);
+	    		BufferedOutputStream out = new BufferedOutputStream(con.getOutputStream());
+    			out.write(new Gson().toJson(body).toString().getBytes());
+    		}
     	} else {
     		con.setDoOutput(false);
     	}

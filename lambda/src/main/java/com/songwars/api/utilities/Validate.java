@@ -63,21 +63,6 @@ public class Validate {
 		return email;
 	}
 	
-	public static String cookie(Map<String, Object> json) {
-		String cookie;
-
-		if (!json.containsKey("cookie")
-				|| !(json.get("cookie") instanceof String)
-				|| !((cookie = (String) json.get("cookie")) != null)) {
-		
-			throw new RuntimeException("[BadRequest] Cookie key does not exist in request.");
-		}
-		
-		// TODO: More validation required for this element?
-		
-		return cookie;
-	}
-	
 	
 	
 }
