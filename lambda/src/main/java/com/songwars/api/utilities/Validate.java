@@ -61,6 +61,21 @@ public class Validate {
 		return email;
 	}
 	
+	public static int songPopularity(Map<String, Object> json) {
+		Integer popularity;
+		
+		if (!json.containsKey("popularity")
+				|| !(json.get("popularity") instanceof String)
+				|| !((popularity = (Integer) json.get("popularity")) != null)) {
+		
+			throw new RuntimeException("[BadRequest] Popularity key does not exist for song in request.");
+		}
+		if (popularity.intValue() > 100 || popularity.intValue() < 0)
+			throw new RuntimeException("[BadRequest] Song Popularity must be between 0 and 100 inclusive.");
+		
+		return popularity.intValue();
+	}
+	
 	
 	
 }

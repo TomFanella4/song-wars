@@ -13,6 +13,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.songwars.api.utilities.Utilities;
+import com.songwars.api.utilities.Validate;
 
 public class RecommendSong implements RequestHandler<Map<String, Object>, Map<String, Object>> {
 
@@ -34,11 +35,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		Map<String, Object> artists;
 		Map<String, Object> album;
 		// Local Input Variables:
-		int user_cookie = -1;
-		String user_authorization_code = null;
-		String user_access_token = null;
-		String user_refresh_token = null;
-		String user_expiration = null;
+		String access_token = null;
 		String song_id = null;
 		String song_name = null;
 		String song_preview_url = null;
@@ -47,46 +44,33 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		String album_name = null;
 		
 		// Find Path:
-		//params = Validate.field(input, "params");
-		//querystring = Validate.field(params, "querystring");
 		
-		json = Validate.field(input, "json_body");
+		json = Validate.field(input, "json-body");
 		song = Validate.field(json, "song");
 		album = Validate.field(song, "album");
 		artists = Validate.field(song, "artists");
 		
 		// Perform Validation of Input:
-		user_cookie = Validate.cookie(json); // TODO: Check what Validate.cookie returns so if the user has none, send them to login again!
-		user_authorization_code = Validate.string(json);
-		user_access_token = Validate.string(json);
-		user_refresh_token = Validate.string(json);
-		user_expiration = Validate.string(json);
-		song_id = Validate.string(song);
-		song_name = Validate.string(song);
-		song_preview_url = Validate.string(song);
+		access_token = Validate.string(json, "access_token");
+		song_id = Validate.string(song, "song_id");
+		song_name = Validate.string(song, "name");
+		song_preview_url = Validate.string(song, "preview_url");
 		song_popularity = Validate.songPopularity(song);
-		artists_name = Validate.string(artists);
-		album_name = Validate.string(album);
+		artists_name = Validate.string(artists, "artists_name");
+		album_name = Validate.string(album, "album_name");
 		
 		
 		// Check for authorized user:
 		Connection con = Utilities.getRemoteConnection(context);
 		try {
 			
-			String query = "SELECT * FROM users WHERE cookie=" + user_cookie;
+			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
 			Statement statement = con.createStatement();
 			ResultSet result = statement.executeQuery(query);
 			statement.close();
 
 			if (!result.next())
-				throw new RuntimeException("[Forbidden] Cookie was not valid. Send user to login again.");
-			
-			
-
-			// Refresh tokens if necessary:
-			// TODO: I think that refresh tokens can be requested specifically on client side. 
-			//		API call to specific Lambda function will refresh tokens and return them.
-		
+				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
 		
 			// Recommend song:
 			query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES ('" + song_id + "', '" + song_name + "', '" + song_preview_url + "', '" + song_popularity + "', '" + artists_name + "', '" + album_name + "', 1) ON DUPLICATE KEY UPDATE count=count+1"; // TODO: Test this MYSQL syntax in workbench first!
@@ -113,10 +97,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 				}
 		}
 		
-		
-		
-		// TODO: Return expected information.
-		
+		response.put("status", "success");
 		return response;
 		
 	}
