@@ -1,8 +1,15 @@
+import { TOGGLE_SIDEBAR } from '../actions/actionTypes';
 
-function rootReducer(state = {name: 'Temp'}, action) {
+const initialState = {
+  sidebarIsVisible: true
+};
+
+function rootReducer(state = initialState, action) {
   switch (action.type) {
-      default:
-          return state;
+    case TOGGLE_SIDEBAR:
+      return { ...state, sidebarIsVisible: !state.sidebarIsVisible }
+    default:
+      return state;
   }
 }
 
