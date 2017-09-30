@@ -4,7 +4,24 @@ import '../styles/App.css';
 class App extends Component {
   render() {
     return (
-      <h1>Song Wars!</h1>
+      <div>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+        <h1>Song Wars!</h1>
+      </div>
     );
   }
 }

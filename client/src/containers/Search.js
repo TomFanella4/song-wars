@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { Input } from 'semantic-ui-react';
 
 class Search extends Component {
   render() {
     return (
-      <input type='text' placeholder='search...' />
+      <Input size='massive' icon='search' placeholder='Search...' />
     )
   }
 }
