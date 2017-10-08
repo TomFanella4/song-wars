@@ -23,7 +23,8 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 	@Override
 	public Map<String, Object> handleRequest(Map<String, Object> input, Context context) {
 				
-		
+		this.context = context;
+		this.logger = context.getLogger();
 		// Function Logic Status:
 		boolean user_exists = false;
 		// JSON:
@@ -45,7 +46,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		
 		// Find Path:
 		
-		json = Validate.field(input, "json-body");
+		json = Validate.field(input, "body_json");
 		song = Validate.field(json, "song");
 		album = Validate.field(song, "album");
 		artists = Validate.field(song, "artists");
@@ -71,13 +72,14 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 
 			if (!result.next())
 				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
-		
+			result.close();
+			
 			// Recommend song:
-			query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES ('" + song_id + "', '" + song_name + "', '" + song_preview_url + "', '" + song_popularity + "', '" + artists_name + "', '" + album_name + "', 1) ON DUPLICATE KEY UPDATE count=count+1"; // TODO: Test this MYSQL syntax in workbench first!
+			query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES ('" + song_id + "', '" + song_name + "', '" + song_preview_url + "', " + song_popularity + ", '" + artists_name + "', '" + album_name + "', 1) ON DUPLICATE KEY UPDATE count=count+1"; // TODO: Test this MYSQL syntax in workbench first!
 			statement = con.createStatement();
 			statement.addBatch(query);
 			statement.executeBatch();
-		
+			statement.close();
 			
 		} catch (SQLException ex) {
 			// handle any errors
@@ -85,7 +87,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			logger.log("SQLState: " + ex.getSQLState());
 			logger.log("VendorError: " + ex.getErrorCode());
 
-			throw new RuntimeException("[InternalServerError] - SQL error occured.");
+			throw new RuntimeException("[InternalServerError] - " + ioe.getMessage() + ", trace: " + ioe.getStackTrace()");
 			
 		} finally {
 			context.getLogger().log("Closing the connection.");

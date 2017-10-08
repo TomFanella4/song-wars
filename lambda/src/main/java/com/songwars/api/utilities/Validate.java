@@ -65,7 +65,7 @@ public class Validate {
 		Integer popularity;
 		
 		if (!json.containsKey("popularity")
-				|| !(json.get("popularity") instanceof String)
+				|| !(json.get("popularity") instanceof Integer)
 				|| !((popularity = (Integer) json.get("popularity")) != null)) {
 		
 			throw new RuntimeException("[BadRequest] Popularity key does not exist for song in request.");
