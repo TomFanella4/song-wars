@@ -353,3 +353,9 @@ org.eclipse.recommenders.utils.Logs$LogTraceException
 
 !ENTRY com.amazonaws.eclipse.lambda 1 0 2017-10-08 16:14:58.515
 !MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda1386598420084789082.zip
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-08 16:16:12.577
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-08 16:16:12.644
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!

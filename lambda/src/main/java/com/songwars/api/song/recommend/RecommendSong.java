@@ -87,7 +87,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			logger.log("SQLState: " + ex.getSQLState());
 			logger.log("VendorError: " + ex.getErrorCode());
 
-			throw new RuntimeException("[InternalServerError] - " + ioe.getMessage() + ", trace: " + ioe.getStackTrace()");
+			throw new RuntimeException("[InternalServerError] - " + ex.getMessage() + ", trace: " + ex.getStackTrace());
 			
 		} finally {
 			context.getLogger().log("Closing the connection.");
