@@ -68,11 +68,11 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
 			Statement statement = con.createStatement();
 			ResultSet result = statement.executeQuery(query);
-			statement.close();
 
 			if (!result.next())
 				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
 			result.close();
+			statement.close();
 			
 			// Recommend song:
 			query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES ('" + song_id + "', '" + song_name + "', '" + song_preview_url + "', " + song_popularity + ", '" + artists_name + "', '" + album_name + "', 1) ON DUPLICATE KEY UPDATE count=count+1"; // TODO: Test this MYSQL syntax in workbench first!
