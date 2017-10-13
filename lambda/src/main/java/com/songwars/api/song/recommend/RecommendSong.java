@@ -36,6 +36,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		Map<String, Object> artists;
 		Map<String, Object> album;
 		// Local Input Variables:
+		String user_id = null;
 		String access_token = null;
 		String song_id = null;
 		String song_name = null;
@@ -52,6 +53,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		artists = Validate.field(song, "artists");
 		
 		// Perform Validation of Input:
+		user_id = Validate.string(json, "user_id");
 		access_token = Validate.string(json, "access_token");
 		song_id = Validate.string(song, "song_id");
 		song_name = Validate.string(song, "name");
@@ -72,6 +74,23 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			if (!result.next())
 				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
 			result.close();
+			statement.close();
+			
+			// Check if recommendation was already made:
+			query = "SELECT * FROM users_recommendations WHERE user_id='" + user_id + "' AND song_id='" + song_id + "'";
+			statement = con.createStatement();
+			result = statement.executeQuery(query);
+			
+			if (result.next())
+				throw new RuntimeException("[BadRequest] Song has already been recommended by this user.");
+			result.close();
+			statement.close();
+			
+			// Recommend song:
+			query = "INSERT INTO users_recommendations (user_id, song_id) VALUES ('" + user_id + "', '" + song_id + "')";
+			statement = con.createStatement();
+			statement.addBatch(query);
+			statement.executeBatch();
 			statement.close();
 			
 			// Recommend song:
