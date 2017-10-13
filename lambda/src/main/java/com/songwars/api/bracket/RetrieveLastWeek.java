@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.validator.ValidateWith;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -22,15 +24,28 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 	public Map<String, Object> handleRequest(Map<String, Object> input, Context context) {
 				
 		Map<String, Object> response = new HashMap<String, Object>();
-
+		
+		//Retrieve access token...need to grab the Validate class
+		Map<String, Object> json = Validate.field(input, "body_json");
+		String access_token = Validate.string(json, "access_token");
+		
 		Connection con = Utilities.getRemoteConnection(context);
 		try {
 			
-			//Retrieve last week's bracket data
-			String query = "SELECT * FROM last_week_bracket";
-			
+			//validate user
+			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
 			Statement statement = con.createStatement();
 			ResultSet res = statement.executeQuery(query);
+
+			if (!res.next())
+				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
+			res.close();
+			statement.close();
+			
+			//Retrieve last week's bracket data
+			query = "SELECT * FROM last_week_bracket";
+			statement = con.createStatement();
+			res = statement.executeQuery(query);
 			//retrieve each row
 			while(res.next()) {
 				String name = res.getString("name");
