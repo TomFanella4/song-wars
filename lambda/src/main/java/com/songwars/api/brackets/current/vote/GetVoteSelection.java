@@ -1,6 +1,7 @@
 package com.songwars.api.brackets.current.vote;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -21,16 +22,33 @@ public class GetVoteSelection implements RequestHandler<Map<String, Object>, Map
 	public Map<String, Object> handleRequest(Map<String, Object> input, Context context) {
 				
 		
-		// Response JSON:
+		this.context = context;
+		this.logger = context.getLogger();
+		// Function Logic Status:
+		boolean user_exists = false;
+		// JSON:
 		Map<String, Object> response = new HashMap<String, Object>();
+		Map<String, Object> params;
+		Map<String, Object> querystring;
+		Map<String, Object> json;
+		// Local Input Variables:
+		String user_id = null;
+		String access_token = null;
+		String song_id1 = null;
+		String song_id2 = null;
+		
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
 		
 		try {
-			String query = "SELECT ... ???";
+			// Check for authorized user:
+			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
 			Statement statement = con.createStatement();
-			statement.addBatch(query);
-			statement.executeBatch();
+			ResultSet result = statement.executeQuery(query);
+
+			if (!result.next())
+				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
+			result.close();
 			statement.close();
 
 		} catch (SQLException ex) {

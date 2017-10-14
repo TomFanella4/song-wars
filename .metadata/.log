@@ -676,3 +676,36 @@ org.eclipse.recommenders.utils.Logs$LogTraceException
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-13 20:12:36.369
 !MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-10-13 20:16:25.696
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_ValidateUser updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-10-13 20:16:25.746
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-10-13 20:16:25.747
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_ValidateUser
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-13 20:16:25.965
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-13 20:16:26.000
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-13 20:19:58.810
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-13 20:19:58.838
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-13 20:37:55.378
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-13 20:37:55.395
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-13 20:38:13.233
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-10-13 20:38:13.278
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
