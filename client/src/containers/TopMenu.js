@@ -1,22 +1,68 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Menu, Segment } from 'semantic-ui-react';
-import { toggleSidebar } from '../actions'
+import { Menu, Segment, Button, Header, Icon } from 'semantic-ui-react';
+
+import { toggleSidebar, setUserProfile } from '../actions';
+import { deleteUserProfile } from '../common';
+import { authSpotify } from '../common/WebServices';
 
 class TopMenu extends Component {
+
+  logout () {
+    deleteUserProfile();
+    this.props.onLogoutButtonClick();
+  }
+
   render() {
     return (
-      <Menu as={Segment} inverted compact fluid basic color='green'>
-        <Menu.Item icon='content' onClick={this.props.onToggleSidebarClick} />
-        <Menu.Item header>Song Wars</Menu.Item>
+      <Menu as={Segment} inverted compact fluid basic borderless color='green'>
+        <Menu.Item icon={true} onClick={this.props.onToggleSidebarClick} >
+          <Icon name='content' color='black'/>
+        </Menu.Item>
+        <Menu.Item>
+          <Header content='Song Wars'/>
+        </Menu.Item>
+
+          {!this.props.userProfile.access_token ?
+            <Menu.Menu position='right'>
+              <Menu.Item>
+                <Button onClick={authSpotify} secondary>
+                  <Header as='h4' inverted>
+                    <Icon name='spotify' />
+                    <Header.Content>
+                      Log In With Spotify
+                    </Header.Content>
+                  </Header>
+                </Button>
+              </Menu.Item>
+            </Menu.Menu>
+          :
+            <Menu.Menu position='right'>
+              <Menu.Item>
+                <Header as='h4'>Welcome, {this.props.userProfile.name}</Header>
+              </Menu.Item>
+              <Menu.Item>
+                <Button onClick={this.logout.bind(this)} secondary>
+                  <Header as='h4' inverted>
+                      Log Out
+                  </Header>
+                </Button>
+              </Menu.Item>
+            </Menu.Menu>
+          }
       </Menu>
     )
   }
 }
 
-const mapDispatchToProps = dispatch => ({ onToggleSidebarClick: () => dispatch(toggleSidebar()) })
+const mapStateToProps = state => ({ userProfile: state.userProfile });
+
+const mapDispatchToProps = dispatch => ({
+  onToggleSidebarClick: () => dispatch(toggleSidebar()),
+  onLogoutButtonClick: () => dispatch(setUserProfile({}))
+});
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(TopMenu);

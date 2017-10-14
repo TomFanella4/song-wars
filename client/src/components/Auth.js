@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Segment, Dimmer, Loader } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
+import { setUserProfile } from '../actions';
+import { saveUserProfile } from '../common'
 import { authServer } from '../common/WebServices';
 
 class Auth extends Component {
@@ -14,10 +17,9 @@ class Auth extends Component {
       let code = uriSearch.substring(start);
 
       authServer(code)
-      .then(profile => {
-        localStorage.setItem('access_token', profile.access_token);
-        localStorage.setItem('name', profile.name);
-        localStorage.setItem('user_id', profile.user_id);
+      .then(userProfile => {
+        saveUserProfile(userProfile);
+        this.props.onUserAuthenticated(userProfile);
       })
       .catch(err => console.error(err))
       .then(() => {
@@ -43,4 +45,11 @@ class Auth extends Component {
   }
 };
 
-export default Auth;
+const mapDispatchToProps = dispatch => (
+  { onUserAuthenticated: userProfile => dispatch(setUserProfile(userProfile)) }
+);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Auth);
