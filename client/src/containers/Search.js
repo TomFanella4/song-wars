@@ -30,22 +30,14 @@ class Search extends Component {
     searchResults = searchResults.map((result) => (
       <Card key={result.id}>
         <Card.Content>
-          <Image src={result.album.images[2].url} floated='right' size='mini' />          
+          <Image src={result.album.images[2].url} floated='right' size='mini' />
           <Card.Header>
             {result.name}
           </Card.Header>
           <Card.Meta>
             {result.artists[0].name}
           </Card.Meta>
-          {/* <Button icon='play' onClick={() => this.props.onPlayButtonClick(result.uri)} /> */}
-          <Button animated onClick={() => this.props.onPlayButtonClick(result.uri)}>
-            <Button.Content visible>
-              <Icon name='play' />
-            </Button.Content>
-            <Button.Content hidden>
-              <Icon name='left arrow' />
-            </Button.Content>
-          </Button>
+          <Button icon='play' onClick={() => this.props.onPlayButtonClick(result.uri)} />
           <Button icon='thumbs up' />
         </Card.Content>
       </Card>
