@@ -55,14 +55,11 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				String artistName = res.getString("artists_name");
 				int votes = res.getInt("votes");
 				String bracketId = res.getString("bracket_id");
+				int round = res.getInt("round");
+				int position = res.getInt("position");
 				ArrayList<Object> data = new ArrayList<>();
-				data.add(name);
-				data.add(popularity);
-				data.add(previewUrl);
-				data.add(albumName);
-				data.add(artistName);
-				data.add(votes);
-				data.add(bracketId);
+					data.add(name); data.add(popularity); data.add(previewUrl); data.add(albumName); data.add(artistName);
+					data.add(votes); data.add(bracketId); data.add(round); data.add(position);
 				response.put(res.getString("id"), data);
 			}
 		} catch (SQLException ex) {
