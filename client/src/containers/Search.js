@@ -1,56 +1,25 @@
 import React, { Component } from 'react';
 import { Input, Card, Button, Icon, Image } from 'semantic-ui-react';
-import querystring from 'querystring';
 import { setPlayerURI } from '../actions';
 import { connect } from 'react-redux';
+import { searchSpotify } from '../common/WebServices'
 
 class Search extends Component {
   state = { searchResults: [], selectedURI: '' }
 
-  getHashParams() {
-    var hashParams = {};
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    while ( e = r.exec(q)) {
-       hashParams[e[1]] = decodeURIComponent(e[2]);
-    }
-    return hashParams;
-  }
-
   handleSearchChange(event, data) {
+    const searchQuery = data.value;
     
-    if (data.value === '') {
+    if (searchQuery === '') {
       this.setState({
         searchResults: []
       })
       return;
     }
 
-    let token = this.getHashParams().access_token;
-
-    var myHeaders = new Headers();
-    myHeaders.append('Authorization', 'Bearer ' + token);
-    
-    var myInit = { method: 'GET',
-                   headers: myHeaders,
-                   mode: 'cors',
-                   cache: 'default' };
-
-    let qs = querystring.stringify({
-      q: data.value,
-      type: 'track'
-    });
-
-    fetch(`https://api.spotify.com/v1/search?${qs}`, myInit)
-    .then(data => data.json())
-    .then((json) => {
-      if (json.tracks.items) {
-        this.setState({
-          searchResults: json.tracks.items
-        });
-      }
-    })
-    .catch(err => console.error(err))
+    searchSpotify(searchQuery)
+    .then(results => this.setState({ searchResults: results }))
+    .catch(err => console.log(err));
   }
 
   render() {
@@ -77,6 +46,7 @@ class Search extends Component {
               <Icon name='left arrow' />
             </Button.Content>
           </Button>
+          <Button icon='thumbs up' />
         </Card.Content>
       </Card>
     ));

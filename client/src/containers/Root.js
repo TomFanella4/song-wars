@@ -1,31 +1,17 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
-import { Sidebar, Segment } from 'semantic-ui-react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import '../styles/Root.css';
-import TopMenu from './TopMenu';
-import SidebarMenu from '../components/SidebarMenu';
-import Home from './Home';
-import Search from './Search'
+import App from './App';
+import Auth from '../components/Auth';
 
 const Root = ({ store }) => (
   <Provider store={store}>
     <BrowserRouter>
-      <div>
-        
-        <TopMenu />
-
-        <Sidebar.Pushable>
-          <SidebarMenu />
-          <Sidebar.Pusher>
-            <Segment basic style={{overflowX: 'auto'}}>
-              <Route exact path='/' component={Home}/>
-              <Route path='/search' component={Search}/>
-            </Segment>
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
-      </div>
+      <Switch>
+        <Route exact path='/auth' component={Auth} />
+        <Route path='/' component={App} />
+      </Switch>
     </BrowserRouter>
   </Provider>
 );
