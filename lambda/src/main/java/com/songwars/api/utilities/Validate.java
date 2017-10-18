@@ -29,6 +29,20 @@ public class Validate {
 			return string;
 	}
 	
+	static public String sqlstring(Map<String, Object> json, String fieldname) 
+	{
+		String string;
+		if (!json.containsKey(fieldname)
+				|| !(json.get(fieldname) instanceof String)
+				|| !((string = (String) json.get(fieldname)) != null)) {
+			throw new RuntimeException("[BadRequest] Could not access \'" + fieldname + "\' string of AWS transformed JSON.");
+		}
+		else {
+			
+			return string;
+		}
+	}
+	
 	public static void error(Map<String, Object> json) {
 		String error;
 		
