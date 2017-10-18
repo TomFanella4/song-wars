@@ -1,6 +1,7 @@
 package com.songwars.api.song.recommend;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -53,14 +54,14 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		artists = Validate.field(song, "artists");
 		
 		// Perform Validation of Input:
-		user_id = Validate.string(json, "user_id");
-		access_token = Validate.string(json, "access_token");
-		song_id = Validate.string(song, "song_id");
-		song_name = Validate.string(song, "name");
-		song_preview_url = Validate.string(song, "preview_url");
+		user_id = Validate.sqlstring(json, "user_id");
+		access_token = Validate.sqlstring(json, "access_token");
+		song_id = Validate.sqlstring(song, "song_id");
+		song_name = Validate.sqlstring(song, "name");
+		song_preview_url = Validate.sqlstring(song, "preview_url");
 		song_popularity = Validate.songPopularity(song);
-		artists_name = Validate.string(artists, "artists_name");
-		album_name = Validate.string(album, "album_name");
+		artists_name = Validate.sqlstring(artists, "artists_name");
+		album_name = Validate.sqlstring(album, "album_name");
 		
 		
 		// Check for authorized user:
@@ -94,11 +95,16 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			statement.close();
 			
 			// Recommend song:
-			query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES ('" + song_id + "', '" + song_name + "', '" + song_preview_url + "', " + song_popularity + ", '" + artists_name + "', '" + album_name + "', 1) ON DUPLICATE KEY UPDATE count=count+1"; // TODO: Test this MYSQL syntax in workbench first!
-			statement = con.createStatement();
-			statement.addBatch(query);
-			statement.executeBatch();
-			statement.close();
+			query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES (?, ?, ?, ?, ?, ?, 1) ON DUPLICATE KEY UPDATE count=count+1";
+			PreparedStatement pstatement = con.prepareStatement(query);
+			pstatement.setString(1, song_id);
+			pstatement.setString(2, song_name);
+			pstatement.setString(3, song_preview_url);
+			pstatement.setInt(4, song_popularity);
+			pstatement.setString(5, artists_name);
+			pstatement.setString(6, album_name);
+			pstatement.execute();
+			pstatement.close();
 			
 		} catch (SQLException ex) {
 			// handle any errors
