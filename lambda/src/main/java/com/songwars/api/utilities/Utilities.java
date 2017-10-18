@@ -1,5 +1,6 @@
 package com.songwars.api.utilities;
 
+import java.awt.Point;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -149,6 +150,29 @@ public class Utilities {
 		else
 			return true;
 		
+	}
+	
+	
+	/**
+	 * Returns the position in the bracket given the round of the position.
+	 * @param round - number from 1 to 4
+	 * @return - position from 1 to 8/round.
+	 */
+	public static int generateRandomPosition(int round) {
+		
+		return (int) Math.ceil(Math.random() * (8/round));
+				
+	}
+	/**
+	 * Returns the opponent's position to the given position.
+	 * @param position - number from 1 to 8/round
+	 * @return - number from 1 to 8/round
+	 */
+	public static int getOpponentsPosition(int position) {
+		if (position % 2 == 0)
+			return position - 1;
+		else
+			return position + 1;
 	}
 	
 }

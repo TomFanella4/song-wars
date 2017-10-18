@@ -68,6 +68,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		Connection con = Utilities.getRemoteConnection(context);
 		try {
 			
+			// Check for an authorized user:
 			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
 			Statement statement = con.createStatement();
 			ResultSet result = statement.executeQuery(query);
