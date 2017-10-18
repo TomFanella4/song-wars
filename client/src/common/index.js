@@ -17,3 +17,11 @@ export const deleteUserProfile = () => {
   localStorage.removeItem('name');
   localStorage.removeItem('user_id');
 }
+
+export const saveRecommendedSongs = songs => {
+  localStorage.setItem('recommended_songs', JSON.stringify(songs));
+}
+
+export const loadRecommendedSongs = () => (
+  JSON.parse(localStorage.getItem('recommended_songs'))
+)

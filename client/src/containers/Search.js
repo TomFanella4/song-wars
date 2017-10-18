@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { Input, Card, Button, Icon, Image } from 'semantic-ui-react';
-import { setPlayerURI } from '../actions';
+import { Input, Card, Button, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { searchSpotify } from '../common/WebServices'
+
+import { setPlayerURI, addRecommendedSong } from '../actions';
+import { saveRecommendedSongs } from '../common';
+import { searchSpotify, recommendSong } from '../common/WebServices';
 
 class Search extends Component {
   state = { searchResults: [], selectedURI: '' }
 
-  handleSearchChange(event, data) {
+  handleSearchChange (event, data) {
     const searchQuery = data.value;
     
     if (searchQuery === '') {
@@ -22,12 +24,24 @@ class Search extends Component {
     .catch(err => console.log(err));
   }
 
+  handleRecommendButtonClick (song) {
+    recommendSong(song)
+    .then(status => {
+      console.log(status);
+      if (status === 200 || !this.props.recommendedSongs[song.id]) {
+        this.props.addRecommendedSong(song.id);
+        saveRecommendedSongs(this.props.recommendedSongs);
+      }
+    })
+    .catch(err => console.error(err))
+  }
+
   render() {
-    console.log(this.props.location, window.location);
-    console.log(this.state.searchResults);
+    // console.log(this.props.location, window.location);
+    // console.log(this.state.searchResults);
     let searchResults = this.state.searchResults.slice();
     searchResults.splice(5);
-    searchResults = searchResults.map((result) => (
+    searchResults = searchResults.map(result => (
       <Card key={result.id}>
         <Card.Content>
           <Image src={result.album.images[2].url} floated='right' size='mini' />
@@ -35,10 +49,14 @@ class Search extends Component {
             {result.name}
           </Card.Header>
           <Card.Meta>
-            {result.artists[0].name}
+            {result.artists[0].name + ' ' + result.popularity}
           </Card.Meta>
           <Button icon='play' onClick={() => this.props.onPlayButtonClick(result.uri)} />
-          <Button icon='thumbs up' />
+          <Button
+            disabled={this.props.recommendedSongs[result.id]}
+            icon='thumbs up'
+            onClick={() => this.handleRecommendButtonClick(result)}
+          />
         </Card.Content>
       </Card>
     ));
@@ -54,9 +72,16 @@ class Search extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({ onPlayButtonClick: uri => dispatch(setPlayerURI(uri)) })
+const mapStateToProps = state => ({
+  recommendedSongs: state.recommendedSongs
+})
+
+const mapDispatchToProps = dispatch => ({
+  onPlayButtonClick: uri => dispatch(setPlayerURI(uri)),
+  addRecommendedSong: id => new Promise((resolve, reject) => dispatch(addRecommendedSong(id)))
+})
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Search);
