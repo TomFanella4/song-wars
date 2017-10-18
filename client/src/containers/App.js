@@ -1,9 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Sidebar, Segment } from 'semantic-ui-react'
+import { Sidebar, Segment, Container } from 'semantic-ui-react'
 
-import '../styles/Root.css';
+import '../styles/App.css';
 import TopMenu from './TopMenu';
+import Player from './Player';
 import SidebarMenu from '../components/SidebarMenu';
 import Home from './Home';
 import Search from './Search';
@@ -14,19 +15,24 @@ const App = () => (
     
     <TopMenu />
 
-    <Sidebar.Pushable>
-      <SidebarMenu />
-      <Sidebar.Pusher>
-        <Segment basic style={{overflowX: 'auto'}}>
-          <Switch>
-            <Route exact path='/' component={Home}/>
-            <Route path='/home' component={Home} />
-            <Route path='/search' component={Search}/>
-            <Route component={NoMatch} />
-          </Switch>
-        </Segment>
-      </Sidebar.Pusher>
-    </Sidebar.Pushable>
+    <Container id='sidebar' >
+      <Sidebar.Pushable>
+        <SidebarMenu />
+        <Sidebar.Pusher>
+          <Segment basic id='mainContent' >
+            <Switch>
+              <Route exact path='/' component={Home} />
+              <Route path='/home' component={Home} />
+              <Route path='/search' component={Search} />
+              <Route component={NoMatch} />
+            </Switch>
+          </Segment>
+        </Sidebar.Pusher>
+      </Sidebar.Pushable>
+    </Container>
+
+    <Player />
+
   </div>
 );
 

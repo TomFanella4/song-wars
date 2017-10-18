@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Menu, Segment, Button, Header, Icon } from 'semantic-ui-react';
+import { Menu, Button, Header, Icon } from 'semantic-ui-react';
 
 import { toggleSidebar, setUserProfile } from '../actions';
 import { deleteUserProfile } from '../common';
@@ -15,7 +15,7 @@ class TopMenu extends Component {
 
   render() {
     return (
-      <Menu as={Segment} inverted compact fluid basic borderless color='green'>
+      <Menu inverted borderless fixed='top' color='green'>
         <Menu.Item icon={true} onClick={this.props.onToggleSidebarClick} >
           <Icon name='content' color='black'/>
         </Menu.Item>
