@@ -7,6 +7,7 @@ import {
   TOGGLE_SIDEBAR,
   SET_PLAYER_URI,
   SET_USER_PROFILE,
+  ADD_LOADING_SONG,
   ADD_RECOMMENDED_SONG
 } from '../actions/actionTypes';
 
@@ -28,10 +29,28 @@ function rootReducer(state = initialState, action) {
     case SET_USER_PROFILE:
       return {...state, userProfile: action.userProfile };
 
+    case ADD_LOADING_SONG:
+      return {
+        ...state,
+        recommendedSongs: {
+          ...state.recommendedSongs,
+          [action.id] : {
+            loading: true
+          }
+        }
+      }
+
     case ADD_RECOMMENDED_SONG:
-      const newRecommendedSongs = {...state.recommendedSongs};
-      newRecommendedSongs[action.id] = true;
-      return {...state, recommendedSongs: newRecommendedSongs}
+      return {
+        ...state,
+        recommendedSongs: {
+          ...state.recommendedSongs,
+          [action.id] : {
+            loading: false,
+            recommended: true
+          }
+        }
+      }
 
     default:
       return state;

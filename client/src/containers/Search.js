@@ -2,14 +2,18 @@ import React, { Component } from 'react';
 import { Input, Card, Button, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
-import { setPlayerURI, addRecommendedSong } from '../actions';
+import {
+  setPlayerURI,
+  addRecommendedSong,
+  addLoadingSong
+} from '../actions';
 import { saveRecommendedSongs } from '../common';
 import { searchSpotify, recommendSong } from '../common/WebServices';
 
 class Search extends Component {
   state = { searchResults: [], selectedURI: '' }
 
-  handleSearchChange (event, data) {
+  handleSearchChange(event, data) {
     const searchQuery = data.value;
     
     if (searchQuery === '') {
@@ -24,14 +28,15 @@ class Search extends Component {
     .catch(err => console.log(err));
   }
 
-  handleRecommendButtonClick (song) {
+  handleRecommendButtonClick(song) {
+    this.props.addLoadingSong(song.id);
+
     recommendSong(song)
     .then(status => {
-      console.log(status);
-      if (status === 200 || !this.props.recommendedSongs[song.id]) {
-        this.props.addRecommendedSong(song.id);
-        saveRecommendedSongs(this.props.recommendedSongs);
-      }
+      if (status !== 200)
+        console.error('Song has already been recommended or another failure occured', status);
+      this.props.addRecommendedSong(song.id);
+      saveRecommendedSongs(this.props.recommendedSongs);
     })
     .catch(err => console.error(err))
   }
@@ -40,22 +45,33 @@ class Search extends Component {
     // console.log(this.props.location, window.location);
     // console.log(this.state.searchResults);
     let searchResults = this.state.searchResults.slice();
-    searchResults.splice(5);
+    // searchResults.splice(5);
     searchResults = searchResults.map(result => (
       <Card key={result.id}>
         <Card.Content>
-          <Image src={result.album.images[2].url} floated='right' size='mini' />
+          {
+            result.album.images[2] && 
+            <Image src={result.album.images[2].url} floated='right' size='mini' />
+          }
           <Card.Header>
             {result.name}
           </Card.Header>
           <Card.Meta>
             {result.artists[0].name + ' ' + result.popularity}
           </Card.Meta>
-          <Button icon='play' onClick={() => this.props.onPlayButtonClick(result.uri)} />
+
           <Button
-            disabled={this.props.recommendedSongs[result.id]}
+            icon='play'
+            color='green'
+            onClick={() => this.props.onPlayButtonClick(result.uri)}
+          />
+
+          <Button
             icon='thumbs up'
-            onClick={() => this.handleRecommendButtonClick(result)}
+            color='yellow'
+            disabled={this.props.recommendedSongs[result.id] ? true : false}
+            loading={this.props.recommendedSongs[result.id] && this.props.recommendedSongs[result.id].loading}
+            onClick={this.handleRecommendButtonClick.bind(this, result)}
           />
         </Card.Content>
       </Card>
@@ -63,8 +79,6 @@ class Search extends Component {
 
     return (
       <div>
-        {/* <iframe src={`https://open.spotify.com/embed?uri=${this.state.selectedURI}`} width="300" height="380" frameBorder="0" allowTransparency="true"></iframe> */}
-        {/* <br/> */}
         <Input size='massive' icon='search' placeholder='Search...' onChange={this.handleSearchChange.bind(this)} />
         {searchResults}
       </div>
@@ -78,7 +92,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onPlayButtonClick: uri => dispatch(setPlayerURI(uri)),
-  addRecommendedSong: id => new Promise((resolve, reject) => dispatch(addRecommendedSong(id)))
+  addLoadingSong: id => dispatch(addLoadingSong(id)),
+  addRecommendedSong: id => dispatch(addRecommendedSong(id))
 })
 
 export default connect(
