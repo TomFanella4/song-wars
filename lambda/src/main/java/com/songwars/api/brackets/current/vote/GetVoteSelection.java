@@ -5,9 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -39,6 +41,9 @@ public class GetVoteSelection implements RequestHandler<Map<String, Object>, Map
 		String user_id = null;
 		String access_token = null;
 		String bracket_id = null;
+		ArrayList<Integer> posRange = new ArrayList<Integer>();
+		ArrayList<Integer> votesCasted = new ArrayList<Integer>();
+		Set<Integer> votesToCast = null;
 		int round = 0;
 		int pos1 = 0;
 		int pos2 = 0;
@@ -54,10 +59,7 @@ public class GetVoteSelection implements RequestHandler<Map<String, Object>, Map
 		bracket_id = Validate.sqlstring(json, "bracket_id");
 		
 		// Get which round is supposed to be voted on today:
-		// TODO: HARD: How to randomize users' matchups, but efficiently find remaining matchups without duplicating...??? 
 		round = Rounds.getFromMillis(System.currentTimeMillis());
-		pos1 = Utilities.generateRandomPosition(round);
-		pos2 = Utilities.getOpponentsPosition(pos1);
 		
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
@@ -73,11 +75,58 @@ public class GetVoteSelection implements RequestHandler<Map<String, Object>, Map
 			result.close();
 			statement.close();
 			
-			if (result.next())
-				throw new RuntimeException("[BadRequest] Song has already been recommended by this user.");
+			// Get the positions of votes that have already been cast:
+			query = "SELECT * FROM users_last_week_bracket WHERE user_id=? AND bracket_id=? AND round=?";
+			PreparedStatement pstatement = con.prepareStatement(query);
+			pstatement.setString(1, user_id);
+			pstatement.setString(2, bracket_id);
+			pstatement.setInt(3, round);
+			result = pstatement.executeQuery();
+			
+			// Fill position values:
+			for (int i = 0; result.next(); i++)
+				votesCasted.add(result.getInt("position"));
 			result.close();
 			statement.close();
-
+			// Fill possible position values:
+			for (int i = 0; i+1 <= 8/round; i++)
+				posRange.add(i);
+			
+			// Get random positions of songs yet to be cast
+			votesToCast = new HashSet<Integer>(posRange);
+			votesToCast.removeAll(new HashSet<Integer>(votesCasted));
+			pos1 = Utilities.getRandomIn((Integer[]) votesToCast.toArray()) * 2;
+			pos2 = Utilities.getOpponentsPosition(pos1);
+			
+			
+			// Get song details for the chosen matchup position:
+			query = "SELECT * FROM last_week_bracket WHERE bracket_id=? AND round=? AND (position=? OR position=?)";
+			pstatement = con.prepareStatement(query);
+			pstatement.setString(1, bracket_id);
+			pstatement.setInt(2, round);
+			pstatement.setInt(3, pos1);
+			pstatement.setInt(4, pos2);
+			result = pstatement.executeQuery();
+			
+			// Overly complicated procedure for making sure position and song_id match right.
+			if (result.next())
+				if (result.getInt("position") == pos1) {
+					song_id1 = result.getString("id");
+					if (result.next())
+						song_id2 = result.getString("id");
+					else
+						throw new RuntimeException("[InternalServerError] - Position and round calculated returned only one song from bracket");
+				}
+				else {
+					song_id2 = result.getString("id");
+					if (result.next())
+						song_id1 = result.getString("id");
+					else
+						throw new RuntimeException("[InternalServerError] - Position and round calculated returned only one song from bracket");
+				}
+			else
+				throw new RuntimeException("[InternalServerError] - Position and round calculated returned no songs from bracket");
+			
 
 		} catch (SQLException ex) {
 			// handle any errors
@@ -97,6 +146,14 @@ public class GetVoteSelection implements RequestHandler<Map<String, Object>, Map
 				}
 		}
 		
+		response.put("user_id", user_id);
+		response.put("access_token", access_token);
+		response.put("bracket_id", bracket_id);
+		response.put("round", round);
+		response.put("position_1", pos1);
+		response.put("song_id_1", song_id1);
+		response.put("position_2", pos2);
+		response.put("song_id_2", song_id2);
 		return response;
 		
 	}

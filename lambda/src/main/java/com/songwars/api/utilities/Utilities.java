@@ -154,6 +154,8 @@ public class Utilities {
 	
 	
 	/**
+	 * @deprecated
+	 * 
 	 * Returns the position in the bracket given the round of the position.
 	 * @param round - number from 1 to 4
 	 * @return - position from 1 to 8/round.
@@ -162,6 +164,16 @@ public class Utilities {
 		
 		return (int) Math.ceil(Math.random() * (8/round));
 				
+	}
+	/**
+	 * Returns a random value from the list.
+	 * @param list of values
+	 * @return 1 value from list
+	 */
+	public static int getRandomIn(Integer[] list) {
+		
+		return list[(int) Math.ceil(Math.random() * list.length)].intValue();
+		
 	}
 	/**
 	 * Returns the opponent's position to the given position.
