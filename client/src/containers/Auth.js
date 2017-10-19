@@ -45,9 +45,9 @@ class Auth extends Component {
   }
 };
 
-const mapDispatchToProps = dispatch => (
-  { onUserAuthenticated: userProfile => dispatch(setUserProfile(userProfile)) }
-);
+const mapDispatchToProps = dispatch => ({
+  onUserAuthenticated: userProfile => dispatch(setUserProfile(userProfile))
+});
 
 export default connect(
   null,

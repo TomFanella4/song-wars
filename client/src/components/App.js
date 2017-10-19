@@ -3,12 +3,12 @@ import { Route, Switch } from 'react-router-dom';
 import { Sidebar, Segment, Container } from 'semantic-ui-react'
 
 import '../styles/App.css';
-import TopMenu from './TopMenu';
-import Player from './Player';
-import SidebarMenu from '../components/SidebarMenu';
+import TopMenu from '../containers/TopMenu';
+import Player from '../containers/Player';
+import SidebarMenu from '../containers/SidebarMenu';
 import Home from './Home';
 import Search from './Search';
-import NoMatch from '../components/NoMatch';
+import NoMatch from './NoMatch';
 
 const App = () => (
   <div>

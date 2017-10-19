@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import App from './App';
-import Auth from '../components/Auth';
+import Auth from '../containers/Auth';
 
 const Root = ({ store }) => (
   <Provider store={store}>

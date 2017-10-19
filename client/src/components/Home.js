@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Bracket from './Bracket';
+import Bracket from '../containers/Bracket';
 
 class App extends Component {
 

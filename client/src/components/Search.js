@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Input } from 'semantic-ui-react';
 
 import { searchSpotify } from '../common/WebServices';
-import SearchResult from './SearchResult';
+import SearchResult from '../containers/SearchResult';
 
 class Search extends Component {
   state = { searchResults: [], selectedURI: '' };
