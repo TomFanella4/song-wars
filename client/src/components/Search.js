@@ -41,7 +41,7 @@ class Search extends Component {
           onChange={this.handleSearchChange.bind(this)}
         />
         
-        {this.state.searchResults.map(
+        {this.state.searchResults.slice(0, 10).map(
           result => <SearchResult key={result.id} result={result} />
         )}
       </div>
