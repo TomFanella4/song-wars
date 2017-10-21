@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button, Image, Icon } from 'semantic-ui-react';
+import { Card, Button, Image, Icon, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 import {
@@ -26,7 +26,7 @@ class SearchResult extends Component {
   }
 
   render() {
-    const result = this.props.result;
+    const { result, index } = this.props;
     return (
       <Card>
         <Card.Content>
@@ -34,15 +34,20 @@ class SearchResult extends Component {
             result.album.images[2] && 
             <Image src={result.album.images[2].url} floated='right' size='mini' />
           }
+          {
+            result.popularity <= 50 &&
+            <Popup
+              trigger={<Icon size='large' name='diamond' color='red' style={{float: 'right'}} />}
+              content='Hidden Gem'
+              inverted
+            />
+          }
           <Card.Header>
-            {result.name + ' '}
-            {
-              result.popularity <= 50 &&
-              <Icon name='diamond' color='red' />
-            }
+            {index + '. ' + result.name + ' '}
+            
           </Card.Header>
           <Card.Meta>
-            {result.artists[0].name}
+            {result.artists[0].name + ' \u2022 ' + result.album.name}
           </Card.Meta>
         </Card.Content>
         <Card.Content>

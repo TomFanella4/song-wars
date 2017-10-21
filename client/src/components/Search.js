@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input } from 'semantic-ui-react';
+import { Input, Card, Segment } from 'semantic-ui-react';
 
 import { searchSpotify } from '../common/WebServices';
 import SearchResult from '../containers/SearchResult';
@@ -38,12 +38,17 @@ class Search extends Component {
           size='massive'
           icon='search'
           placeholder='Search...'
+          fluid
           onChange={this.handleSearchChange.bind(this)}
         />
         
-        {this.state.searchResults.slice(0, 10).map(
-          result => <SearchResult key={result.id} result={result} />
-        )}
+        <Segment basic>
+          <Card.Group itemsPerRow={2} stackable>
+            {this.state.searchResults.map(
+              (result, i) => <SearchResult key={result.id} result={result} index={i + 1} />
+            )}
+          </Card.Group>
+        </Segment>
       </div>
     )
   }
