@@ -1,3 +1,5 @@
+export const mobileWidth = 768;
+
 export const saveUserProfile = userProfile => {
   localStorage.setItem('access_token', userProfile.access_token);
   localStorage.setItem('name', userProfile.name);

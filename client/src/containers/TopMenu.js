@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Menu, Button, Header, Icon } from 'semantic-ui-react';
 
 import { toggleSidebar, setUserProfile } from '../actions';
-import { deleteUserProfile } from '../common';
+import { deleteUserProfile, mobileWidth } from '../common';
 import { authSpotify } from '../common/WebServices';
 
 class TopMenu extends Component {
@@ -38,9 +38,11 @@ class TopMenu extends Component {
             </Menu.Menu>
           :
             <Menu.Menu position='right'>
-              <Menu.Item>
-                <Header as='h4'>Welcome, {this.props.userProfile.name}</Header>
-              </Menu.Item>
+              {this.props.pageWidth >= mobileWidth &&
+                <Menu.Item>
+                  <Header as='h4'>Welcome, {this.props.userProfile.name}</Header>
+                </Menu.Item>
+              }
               <Menu.Item>
                 <Button onClick={this.logout.bind(this)} secondary>
                   <Header as='h4' inverted>
@@ -55,7 +57,10 @@ class TopMenu extends Component {
   }
 }
 
-const mapStateToProps = state => ({ userProfile: state.userProfile });
+const mapStateToProps = state => ({
+  userProfile: state.userProfile,
+  pageWidth: state.pageWidth
+});
 
 const mapDispatchToProps = dispatch => ({
   onToggleSidebarClick: () => dispatch(toggleSidebar()),
