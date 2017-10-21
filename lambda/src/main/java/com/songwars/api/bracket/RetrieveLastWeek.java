@@ -14,6 +14,8 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.songwars.api.utilities.Utilities;
+import com.songwars.api.utilities.Validate;
+
 
 public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map<String, Object>> {
 
@@ -26,26 +28,30 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 		Map<String, Object> response = new HashMap<String, Object>();
 		
 		//Retrieve access token...need to grab the Validate class
-		Map<String, Object> json = Validate.field(input, "body_json");
-		String access_token = Validate.string(json, "access_token");
+		
+//		Map<String, Object> json;
+//		String access_token = null;
+//		
+//		json  = Validate.field(input, "body_json");
+//		access_token = Validate.sqlstring(json, "access_token");
 		
 		Connection con = Utilities.getRemoteConnection(context);
 		try {
 			
-			//validate user
-			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
-			Statement statement = con.createStatement();
-			ResultSet res = statement.executeQuery(query);
-
-			if (!res.next())
-				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
-			res.close();
-			statement.close();
+//			//validate user
+//			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
+//			Statement statement = con.createStatement();
+//			ResultSet res = statement.executeQuery(query);
+//
+//			if (!res.next())
+//				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
+//			res.close();
+//			statement.close();
 			
 			//Retrieve last week's bracket data
-			query = "SELECT * FROM last_week_bracket";
-			statement = con.createStatement();
-			res = statement.executeQuery(query);
+			String query = "SELECT * FROM last_week_bracket";
+			Statement statement = con.createStatement();
+			ResultSet res = statement.executeQuery(query);
 			//retrieve each row
 			while(res.next()) {
 				String name = res.getString("name");
