@@ -39,6 +39,9 @@ public class RefreshAccessToken implements RequestHandler<Map<String, Object>, M
 		Map<String, Object> params = new HashMap<String, Object>();
 		Map<String, Object> querystring = new HashMap<String, Object>();
 		String authorization_code = null;
+		String id = null;
+		String name = null;
+		String email = null;
 		
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
@@ -48,6 +51,8 @@ public class RefreshAccessToken implements RequestHandler<Map<String, Object>, M
 		querystring = Validate.field(params, "querystring");
 		authorization_code = Validate.string(querystring, "code");
 		
+		
+		//Request a new access token
 		String url = "https://accounts.spotify.com/api/token";
 		Map<String, String> headers = new HashMap<String, String>();
 			headers.put("Authorization", "Basic " + Base64.encodeAsString((System.getenv("API_ID") + ":" + System.getenv("API_SECRET")).getBytes()));
@@ -82,19 +87,51 @@ public class RefreshAccessToken implements RequestHandler<Map<String, Object>, M
 		}
 		
 		
+
+		//Get user info from Spotify
+		url = "https://api.spotify.com/v1/me";
+		headers = new HashMap<String, String>();
+			headers.put("Authorization", "Bearer " + access_token);
+		body = null;
+		request = null;
+		try {
+			request = Utilities.makeHttpsRequest(url, "GET", headers, body);
+			
+			if (request.getResponseCode() == 200) {
+				
+				Map<String, Object> response_body = (Map<String, Object>) new Gson().fromJson(new InputStreamReader(request.getInputStream()), HashMap.class);
+				
+				id = (String) response_body.get("id");
+				email = (String) response_body.get("email");
+				name = (String) response_body.get("display_name");
+				
+			} else {
+				throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode() + ". Error body: " + ", " + IOUtils.toString(request.getErrorStream()));
+			}
+			
+		} catch (IOException ioe) {
+			throw new RuntimeException("[InternalServerError] " + ioe.getMessage() + ", " + ioe.getStackTrace());
+		} finally {
+			if (request != null)
+				request.disconnect();
+		}
 		
 		
 		
 		
 		
+		
+		con = Utilities.getRemoteConnection(context);
 		try {
 				
-			String query = "SELECT ... ???";
+			// Insert new user or update credentials if user_id already exists
+			String query = "UPDATE users SET access_token='" access_token
+//			String query = "INSERT INTO users (id, email, name, authorization_code, access_token, refresh_token, expiration) VALUES ('" + id + "', '" + email + "', '" + name + "', '" + authorization_code + "', '" + access_token + "', '" + refresh_token + "', '" + expiration + "') ON DUPLICATE KEY UPDATE authorization_code='" + authorization_code + "', access_token='" + access_token + "', refresh_token='" + refresh_token + "', expiration='" + expiration + "'";
 			Statement statement = con.createStatement();
 			statement.addBatch(query);
 			statement.executeBatch();
 			statement.close();
-
+				
 		} catch (SQLException ex) {
 			// handle any errors
 			logger.log("SQLException: " + ex.getMessage());
@@ -112,7 +149,8 @@ public class RefreshAccessToken implements RequestHandler<Map<String, Object>, M
 					throw new RuntimeException("[InternalServerError] - SQL error occured and is having trouble closing connection.");
 				}
 		}
-		
+		response.put("user_id", id);
+		response.put("access_token", access_token)
 		return response;
 		
 	}

@@ -151,6 +151,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		
 		response.put("name", name);
 		response.put("access_token", access_token);
+		response.put("user_id", id);
 		return response;
 		
 	}

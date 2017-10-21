@@ -29,6 +29,20 @@ public class Validate {
 			return string;
 	}
 	
+	static public String sqlstring(Map<String, Object> json, String fieldname) 
+	{
+		String string;
+		if (!json.containsKey(fieldname)
+				|| !(json.get(fieldname) instanceof String)
+				|| !((string = (String) json.get(fieldname)) != null)) {
+			throw new RuntimeException("[BadRequest] Could not access \'" + fieldname + "\' string of AWS transformed JSON.");
+		}
+		else {
+			
+			return string;
+		}
+	}
+	
 	public static void error(Map<String, Object> json) {
 		String error;
 		
@@ -59,6 +73,21 @@ public class Validate {
 		}
 		
 		return email;
+	}
+	
+	public static int songPopularity(Map<String, Object> json) {
+		Integer popularity;
+		
+		if (!json.containsKey("popularity")
+				|| !(json.get("popularity") instanceof Integer)
+				|| !((popularity = (Integer) json.get("popularity")) != null)) {
+		
+			throw new RuntimeException("[BadRequest] Popularity key does not exist for song in request.");
+		}
+		if (popularity.intValue() > 100 || popularity.intValue() < 0)
+			throw new RuntimeException("[BadRequest] Song Popularity must be between 0 and 100 inclusive.");
+		
+		return popularity.intValue();
 	}
 	
 	
