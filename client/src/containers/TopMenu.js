@@ -23,35 +23,34 @@ class TopMenu extends Component {
           <Header content='Song Wars'/>
         </Menu.Item>
 
-          {!this.props.userProfile.access_token ?
-            <Menu.Menu position='right'>
+        {!this.props.userProfile.access_token ?
+          <Menu.Menu position='right'>
+            <Menu.Item>
+              <Button
+                onClick={authSpotify}
+                icon='spotify'
+                content='Log In With Spotify'
+                secondary
+              />
+            </Menu.Item>
+          </Menu.Menu>
+        :
+          <Menu.Menu position='right'>
+            {this.props.pageWidth >= mobileWidth &&
               <Menu.Item>
-                <Button onClick={authSpotify} secondary>
-                  <Header as='h4' inverted>
-                    <Icon name='spotify' />
-                    <Header.Content>
-                      Log In With Spotify
-                    </Header.Content>
-                  </Header>
-                </Button>
+                <Header as='h4'>Welcome, {this.props.userProfile.name}</Header>
               </Menu.Item>
-            </Menu.Menu>
-          :
-            <Menu.Menu position='right'>
-              {this.props.pageWidth >= mobileWidth &&
-                <Menu.Item>
-                  <Header as='h4'>Welcome, {this.props.userProfile.name}</Header>
-                </Menu.Item>
-              }
-              <Menu.Item>
-                <Button onClick={this.logout.bind(this)} secondary>
-                  <Header as='h4' inverted>
-                      Log Out
-                  </Header>
-                </Button>
-              </Menu.Item>
-            </Menu.Menu>
-          }
+            }
+            <Menu.Item>
+              <Button
+                onClick={this.logout.bind(this)}
+                icon='log out'
+                content='Log Out'
+                secondary
+              />
+            </Menu.Item>
+          </Menu.Menu>
+        }
       </Menu>
     )
   }
