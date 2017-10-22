@@ -8,8 +8,10 @@ import { changePageWidth } from '../actions'
 import TopMenu from '../containers/TopMenu';
 import Player from '../containers/Player';
 import SidebarMenu from '../containers/SidebarMenu';
-import Home from './Home';
+import Bracket from './Bracket';
 import Search from './Search';
+import Statistics from './Statistics';
+import About from './About';
 import NoMatch from './NoMatch';
 
 class App extends Component {
@@ -43,9 +45,11 @@ class App extends Component {
             <Sidebar.Pusher>
               <Segment basic id='mainContent' style={mainStyle} >
                 <Switch>
-                  <Route exact path='/' component={Home} />
-                  <Route path='/home' component={Home} />
+                  <Route exact path='/' component={Bracket} />
+                  <Route path='/bracket' component={Bracket} />
                   <Route path='/search' component={Search} />
+                  <Route path='/statistics' component={Statistics} />
+                  <Route path='/about' component={About} />
                   <Route component={NoMatch} />
                 </Switch>
               </Segment>

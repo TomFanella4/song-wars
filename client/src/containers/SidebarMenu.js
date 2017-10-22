@@ -8,13 +8,27 @@ class SidebarMenu extends Component {
     return (
       <Sidebar as={Menu} animation='push' width='thin' visible={this.props.sidebarIsVisible} icon='labeled' vertical inverted>
         <Menu.Item>
-          <Link to='/home'>
-            <Icon name='home' size='large' />
+          <Link to='/bracket'>
+            <Icon name='trophy' size='large' />
+            Bracket
           </Link>
         </Menu.Item>
         <Menu.Item>
           <Link to='/search'>
             <Icon name='search' size='large' />
+            Search
+          </Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link to='/statistics'>
+            <Icon name='bar chart' size='large' />
+            Statistics
+          </Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link to='/about'>
+            <Icon name='info' size='large' />
+            About
           </Link>
         </Menu.Item>
       </Sidebar>
