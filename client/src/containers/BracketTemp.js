@@ -18,7 +18,7 @@ const bracketColumns = [
 //   return 'left'
 // }
 
-const Bracket = () => (
+const BracketTemp = () => (
 
   // <main id="tournament">
   //   {bracketColumns.map((bracketRows, i) => (
@@ -161,4 +161,4 @@ const Bracket = () => (
   </main>
 )
 
-export default Bracket;
+export default BracketTemp;
