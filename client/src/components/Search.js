@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Card, Segment } from 'semantic-ui-react';
+import { Input, Card, Segment, Header } from 'semantic-ui-react';
 
 import { searchSpotify } from '../common/WebServices';
 import SearchResult from '../containers/SearchResult';
@@ -30,6 +30,7 @@ class Search extends Component {
   }
 
   render() {
+    const { searchResults } = this.state;
     // console.log(this.state.searchResults);
     
     return (
@@ -43,11 +44,15 @@ class Search extends Component {
         />
         
         <Segment basic>
-          <Card.Group itemsPerRow={2} stackable>
-            {this.state.searchResults.map(
-              (result, i) => <SearchResult key={result.id} result={result} index={i + 1} />
-            )}
-          </Card.Group>
+          {searchResults.length ?
+            <Card.Group itemsPerRow={2} stackable>
+              {searchResults.map(
+                (result, i) => <SearchResult key={result.id} result={result} index={i + 1} />
+              )}
+            </Card.Group>
+          :
+            <Header as='h2' color='grey'>No Search Results</Header>
+          }
         </Segment>
       </div>
     )
