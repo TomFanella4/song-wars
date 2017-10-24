@@ -19,7 +19,7 @@ import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
 
 
-public class GetVoteSelection implements RequestHandler<Map<String, Object>, Map<String, Object>> {
+public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<String, Object>> {
 
 	private Context context;
 	private LambdaLogger logger;
