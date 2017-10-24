@@ -45,6 +45,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		Integer song_popularity = null;
 		String artists_name = null;
 		String album_name = null;
+		String album_image = null;
 		
 		// Find Path:
 		
@@ -56,12 +57,13 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		// Perform Validation of Input:
 		user_id = Validate.sqlstring(json, "user_id");
 		access_token = Validate.sqlstring(json, "access_token");
-		song_id = Validate.sqlstring(song, "song_id");
+		song_id = Validate.sqlstring(song, "id");
 		song_name = Validate.sqlstring(song, "name");
 		song_preview_url = Validate.sqlstring(song, "preview_url");
 		song_popularity = Validate.songPopularity(song);
-		artists_name = Validate.sqlstring(artists, "artists_name");
-		album_name = Validate.sqlstring(album, "album_name");
+		artists_name = Validate.sqlstring(artists, "name");
+		album_name = Validate.sqlstring(album, "name");
+		album_image = Validate.optsqlstring(album, "image_url");
 		
 		
 		// Check for authorized user:
@@ -96,7 +98,10 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			statement.close();
 			
 			// Recommend song:
-			query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES (?, ?, ?, ?, ?, ?, 1) ON DUPLICATE KEY UPDATE count=count+1";
+			if (album_image != null)
+				query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, album_image, count) VALUES (?, ?, ?, ?, ?, ?, ?, 1) ON DUPLICATE KEY UPDATE count=count+1";
+			else
+				query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES (?, ?, ?, ?, ?, ?, 1) ON DUPLICATE KEY UPDATE count=count+1";
 			PreparedStatement pstatement = con.prepareStatement(query);
 			pstatement.setString(1, song_id);
 			pstatement.setString(2, song_name);
@@ -104,6 +109,8 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			pstatement.setInt(4, song_popularity);
 			pstatement.setString(5, artists_name);
 			pstatement.setString(6, album_name);
+			if (album_image != null)
+				pstatement.setString(7, album_image);
 			pstatement.execute();
 			pstatement.close();
 			

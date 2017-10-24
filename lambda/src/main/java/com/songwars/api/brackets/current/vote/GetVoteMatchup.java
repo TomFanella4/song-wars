@@ -1,11 +1,13 @@
 package com.songwars.api.brackets.current.vote;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -43,7 +45,8 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 		String bracket_id = null;
 		ArrayList<Integer> posRange = new ArrayList<Integer>();
 		ArrayList<Integer> votesCasted = new ArrayList<Integer>();
-		Set<Integer> votesToCast = null;
+		ArrayList<Integer> votesToCast = null;
+		Set<Integer> votesToCastSet = null;
 		int round = 0;
 		int pos1 = 0;
 		int pos2 = 0;
@@ -85,28 +88,40 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			
 			// Fill position values:
 			for (int i = 0; result.next(); i++)
-				votesCasted.add(result.getInt("position"));
+				if (result.getInt("position") % 2 == 0)
+					votesCasted.add(result.getInt("position"));
 			result.close();
 			statement.close();
 			// Fill possible position values:
-			for (int i = 0; i+1 <= 8/round; i++)
+			for (int i = 0; i <= 8/round; i+=2)
 				posRange.add(i);
 			
 			// Get random positions of songs yet to be cast
-			votesToCast = new HashSet<Integer>(posRange);
-			votesToCast.removeAll(new HashSet<Integer>(votesCasted));
-			pos1 = Utilities.getRandomIn((Integer[]) votesToCast.toArray()) * 2;
-			pos2 = Utilities.getOpponentsPosition(pos1);
-			
+			votesToCastSet = new HashSet<Integer>(posRange);
+			votesToCastSet.removeAll(new HashSet<Integer>(votesCasted));
+			votesToCast = new ArrayList<Integer>(votesToCastSet);
+			Collections.shuffle(votesToCast);
+			oddVotesToCast = new ArrayList<Integer>();
+			for (Integer i : votesToCast)
+				oddVotesToCast.add(new Integer(i.intValue() - 1));
 			
 			// Get song details for the chosen matchup position:
-			query = "SELECT * FROM last_week_bracket WHERE bracket_id=? AND round=? AND (position=? OR position=?)";
+			query = "SELECT * FROM last_week_bracket WHERE bracket_id=? AND round=? AND position IN ?";
 			pstatement = con.prepareStatement(query);
 			pstatement.setString(1, bracket_id);
 			pstatement.setInt(2, round);
-			pstatement.setInt(3, pos1);
-			pstatement.setInt(4, pos2);
+			pstatement.setArray(3, con.createArrayOf("INT", votesToCast.toArray()));
 			result = pstatement.executeQuery();
+			
+
+			//pos1 = Utilities.randomize((Integer[]) votesToCast.toArray()) * 2;
+			ArrayList<HashMap<String, Object>> matchups = new ArrayList<HashMap<String,Object>>();
+			for (Integer i : votesToCast) {
+				
+			}
+				
+			pos2 = Utilities.getOpponentsPosition(pos1);
+			
 			
 			// Overly complicated procedure for making sure position and song_id match right.
 			if (result.next())
