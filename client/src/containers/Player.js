@@ -1,21 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Container, Loader } from 'semantic-ui-react'
 
 const Player = ({ playerURI, pageWidth }) => (
-  <iframe
-    title='player'
-    src={
+  <Container
+    fluid
+    style={{ position: 'fixed', bottom: 0, height: 80, backgroundColor: '#282828' }}
+  >
+    {
       playerURI ?
-        `https://open.spotify.com/embed?uri=${playerURI}`
+        <iframe
+          title='player'
+          src={`https://open.spotify.com/embed?uri=${playerURI}`}
+          width={pageWidth}
+          height="80"
+          frameBorder="0"
+          allowTransparency="true"
+          style={{position: 'fixed', bottom: 0}}
+        />
       :
-        'https://open.spotify.com/embed?uri=spotify:track:78WVLOP9pN0G3gRLFy1rAa'
+        <Loader active inverted />
     }
-    width={pageWidth}
-    height="80"
-    frameBorder="0"
-    allowTransparency="true"
-    style={{position: 'fixed', bottom: 0}}
-  />
+    </Container>
 );
 
 const mapStateToProps = state => ({

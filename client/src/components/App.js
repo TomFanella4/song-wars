@@ -4,7 +4,9 @@ import { Route, Switch } from 'react-router-dom';
 import { Sidebar, Segment, Container } from 'semantic-ui-react'
 
 import '../styles/App.css';
-import { changePageWidth } from '../actions'
+import { sidebarWidth, defaultSong } from '../common';
+import { getCurrentSong } from '../api'
+import { changePageWidth, setPlayerURI } from '../actions'
 import TopMenu from '../containers/TopMenu';
 import Player from '../containers/Player';
 import SidebarMenu from '../containers/SidebarMenu';
@@ -15,24 +17,35 @@ import About from './About';
 import NoMatch from './NoMatch';
 
 class App extends Component {
-  sidebarWidth = 150;
 
   componentDidMount() {
-    window.addEventListener("resize", () => this.props.changePageWidth(window.innerWidth));
+    const { userProfile, changePageWidth, onCurrentSongRetrieved } = this.props;
+
+    window.addEventListener("resize", () => changePageWidth(window.innerWidth));
+
+    if (userProfile.access_token) {
+      getCurrentSong()
+      .then(uri => onCurrentSongRetrieved(uri))
+      .catch(err => (
+        err.status === 204 ? onCurrentSongRetrieved(defaultSong) : console.error(err))
+      );
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener("resize", () => this.props.changePageWidth(window.innerWidth));
   }
 
-  render() {
+  getMainContentStyle() {
     const { pageWidth, sidebarIsVisible } = this.props;
-    const mainStyle = {
-      width: pageWidth
-    };
     
-    if (sidebarIsVisible)
-      mainStyle.width -= this.sidebarWidth
+    return {
+      width: sidebarIsVisible ? pageWidth - sidebarWidth : pageWidth
+    };
+  }
+
+  render() {
+    const mainStyle = this.getMainContentStyle();
 
     return (
       <div>
@@ -66,11 +79,13 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   pageWidth: state.pageWidth,
-  sidebarIsVisible: state.sidebarIsVisible
+  sidebarIsVisible: state.sidebarIsVisible,
+  userProfile: state.userProfile
 });
 
 const mapDispatchToProps = dispatch => ({
-  changePageWidth: width => dispatch(changePageWidth(width))
+  changePageWidth: width => dispatch(changePageWidth(width)),
+  onCurrentSongRetrieved: uri => dispatch(setPlayerURI(uri))  
 });
 
 export default connect(
