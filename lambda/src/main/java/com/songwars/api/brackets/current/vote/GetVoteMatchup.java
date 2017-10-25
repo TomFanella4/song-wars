@@ -16,6 +16,7 @@ import java.util.Set;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.songwars.api.utilities.Matchup;
 import com.songwars.api.utilities.Rounds;
 import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
@@ -46,12 +47,9 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 		ArrayList<Integer> posRange = new ArrayList<Integer>();
 		ArrayList<Integer> votesCasted = new ArrayList<Integer>();
 		ArrayList<Integer> votesToCast = null;
+		ArrayList<Matchup> matchups = new ArrayList<Matchup>();
 		Set<Integer> votesToCastSet = null;
 		int round = 0;
-		int pos1 = 0;
-		int pos2 = 0;
-		String song_id1 = null;
-		String song_id2 = null;
 		
 		// Find Path:
 		json = Validate.field(input, "body_json");
@@ -86,14 +84,15 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			pstatement.setInt(3, round);
 			result = pstatement.executeQuery();
 			
+			
 			// Fill position values:
 			for (int i = 0; result.next(); i++)
-				if (result.getInt("position") % 2 == 0)
-					votesCasted.add(result.getInt("position"));
+				votesCasted.add(result.getInt("position"));
+			
 			result.close();
 			statement.close();
 			// Fill possible position values:
-			for (int i = 0; i <= 8/round; i+=2)
+			for (int i = 1; i <= 8/round; i++)
 				posRange.add(i);
 			
 			// Get random positions of songs yet to be cast
@@ -101,11 +100,22 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			votesToCastSet.removeAll(new HashSet<Integer>(votesCasted));
 			votesToCast = new ArrayList<Integer>(votesToCastSet);
 			Collections.shuffle(votesToCast);
-			oddVotesToCast = new ArrayList<Integer>();
-			for (Integer i : votesToCast)
-				oddVotesToCast.add(new Integer(i.intValue() - 1));
 			
-			// Get song details for the chosen matchup position:
+			// Make paired list of songs (ie. matchups)
+			boolean exists = false;
+			for (Integer i : votesToCast) {
+				for (Matchup m : matchups) {
+					if (m.contains(i.intValue())) {
+						exists = true;
+						break;
+					}
+				}
+				if (exists == false)
+					matchups.add(new Matchup(round, i));
+				exists = false;
+			}
+						
+			// Get song details for the remaining matchup positions:
 			query = "SELECT * FROM last_week_bracket WHERE bracket_id=? AND round=? AND position IN ?";
 			pstatement = con.prepareStatement(query);
 			pstatement.setString(1, bracket_id);
@@ -113,35 +123,23 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			pstatement.setArray(3, con.createArrayOf("INT", votesToCast.toArray()));
 			result = pstatement.executeQuery();
 			
-
-			//pos1 = Utilities.randomize((Integer[]) votesToCast.toArray()) * 2;
-			ArrayList<HashMap<String, Object>> matchups = new ArrayList<HashMap<String,Object>>();
-			for (Integer i : votesToCast) {
-				
+			while (result.next()) {
+				int pos = result.getInt("position");
+				for (Matchup m : matchups) {
+					if (m.contains(pos)) {
+						m.setId(pos, result.getString("id"));
+						m.setName(pos, result.getString("name"));
+						m.setPopularity(pos, result.getInt("popularity"));
+						m.setPreview_Url(pos, result.getString("preview_url"));
+						m.setAlbum_name(pos, result.getString("album_name"));
+						m.setAlbum_image(pos, result.getString("album_image"));
+						m.setArtists_name(pos, result.getString("artists_name"));
+						m.setVotes(pos, result.getInt("votes"));
+						m.setBracket_Id(pos, result.getString("bracket_id"));
+						break;
+					}
+				}
 			}
-				
-			pos2 = Utilities.getOpponentsPosition(pos1);
-			
-			
-			// Overly complicated procedure for making sure position and song_id match right.
-			if (result.next())
-				if (result.getInt("position") == pos1) {
-					song_id1 = result.getString("id");
-					if (result.next())
-						song_id2 = result.getString("id");
-					else
-						throw new RuntimeException("[InternalServerError] - Position and round calculated returned only one song from bracket");
-				}
-				else {
-					song_id2 = result.getString("id");
-					if (result.next())
-						song_id1 = result.getString("id");
-					else
-						throw new RuntimeException("[InternalServerError] - Position and round calculated returned only one song from bracket");
-				}
-			else
-				throw new RuntimeException("[InternalServerError] - Position and round calculated returned no songs from bracket");
-			
 
 		} catch (SQLException ex) {
 			// handle any errors
@@ -165,10 +163,11 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 		response.put("access_token", access_token);
 		response.put("bracket_id", bracket_id);
 		response.put("round", round);
-		response.put("position_1", pos1);
-		response.put("song_id_1", song_id1);
-		response.put("position_2", pos2);
-		response.put("song_id_2", song_id2);
+		ArrayList<Map<String, Object>> matchups_maps = new ArrayList<Map<String, Object>>();
+		for (Matchup m : matchups)
+			matchups_maps.add(m.toMap());
+		response.put("matchups", matchups_maps);
+			
 		return response;
 		
 	}
