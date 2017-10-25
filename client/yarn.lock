@@ -3758,7 +3758,11 @@ jest@20.0.4:
   dependencies:
     jest-cli "^20.0.4"
 
-jquery@x.*:
+jquery-bracket@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/jquery-bracket/-/jquery-bracket-0.11.0.tgz#6aea1e138271d5c36776cab51224191995856fbe"
+
+jquery@^3.2.1, jquery@x.*:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Transition, Segment } from 'semantic-ui-react';
 
-import BracketTemp from '../containers/BracketTemp';
+import BracketUI from '../containers/BracketUI';
 import Vote from '../containers/Vote';
 
 class Bracket extends Component {
@@ -29,7 +29,7 @@ class Bracket extends Component {
             onHide={() => this.setState({ view: { ...this.state.view, vote: true } })}
           >
             <Transition.Group>
-              <BracketTemp />
+              <BracketUI />
             </Transition.Group>
           </Transition>
           <Transition
