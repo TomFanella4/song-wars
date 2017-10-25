@@ -19,17 +19,13 @@ import NoMatch from './NoMatch';
 class App extends Component {
 
   componentDidMount() {
-    const { userProfile, changePageWidth, onCurrentSongRetrieved } = this.props;
+    const { changePageWidth, onCurrentSongRetrieved } = this.props;
 
     window.addEventListener("resize", () => changePageWidth(window.innerWidth));
 
-    if (userProfile.access_token) {
-      getCurrentSong()
-      .then(uri => onCurrentSongRetrieved(uri))
-      .catch(err => (
-        err.status === 204 ? onCurrentSongRetrieved(defaultSong) : console.error(err))
-      );
-    }
+    getCurrentSong()
+    .then(uri => onCurrentSongRetrieved(uri))
+    .catch(err => onCurrentSongRetrieved(defaultSong))
   }
 
   componentWillUnmount() {
@@ -79,8 +75,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   pageWidth: state.pageWidth,
-  sidebarIsVisible: state.sidebarIsVisible,
-  userProfile: state.userProfile
+  sidebarIsVisible: state.sidebarIsVisible
 });
 
 const mapDispatchToProps = dispatch => ({
