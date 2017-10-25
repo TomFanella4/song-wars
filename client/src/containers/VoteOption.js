@@ -11,17 +11,19 @@ const VoteOption = ({ song, onPlayButtonClick }) => (
         song.album && 
         <Image src={song.album} floated='right' size='mini' />
       }
-      <Card.Header>
+      <Card.Header textAlign='left'>
         {song.name}
       </Card.Header>
-      <Card.Meta>
+      <Card.Meta textAlign='left'>
         {song.artist}
       </Card.Meta>
     </Card.Content>
     <Card.Content>
 
       <Button
+        content='Play'
         icon='play'
+        labelPosition='left'
         color='green'
         onClick={() => onPlayButtonClick(song.uri)}
       />

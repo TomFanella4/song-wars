@@ -22,7 +22,7 @@ class Bracket extends Component {
     return (
       <div>
         <Button content={vote ? 'Bracket' : 'Vote'} onClick={this.changeView.bind(this)} />
-        <Segment basic>
+        <Segment basic style={{ textAlign: '-webkit-center' }}>
           <Transition
             animation='scale'
             visible={bracket}

@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Loader } from 'semantic-ui-react'
 
 const Player = ({ playerURI, pageWidth }) => (
-  <Container
-    fluid
-    style={{ position: 'fixed', bottom: 0, height: 80, backgroundColor: '#282828' }}
-  >
+  <Container fluid id='player' >
     {
       playerURI ?
         <iframe

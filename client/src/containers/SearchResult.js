@@ -7,7 +7,7 @@ import {
   addRecommendedSong,
   addLoadingSong
 } from '../actions';
-import { saveRecommendedSongs } from '../common';
+import { saveRecommendedSongs, miniWidth } from '../common';
 import { recommendSong } from '../api';
 
 class SearchResult extends Component {
@@ -26,7 +26,7 @@ class SearchResult extends Component {
   }
 
   render() {
-    const { result, index } = this.props;
+    const { result, index, pageWidth } = this.props;
     return (
       <Card>
         <Card.Content>
@@ -50,18 +50,20 @@ class SearchResult extends Component {
             {result.artists[0].name + ' \u2022 ' + result.album.name}
           </Card.Meta>
         </Card.Content>
-        <Card.Content>
+        <Card.Content textAlign='center'>
 
           <Button
+            content={pageWidth >= miniWidth ? 'Play' : null}
             icon='play'
+            labelPosition={pageWidth >= miniWidth ? 'left' : null}
             color='green'
             onClick={() => this.props.onPlayButtonClick(result.uri)}
           />
 
           <Button
-            content='Recommend'
+            content={pageWidth >= miniWidth ? 'Recommend' : null}
             icon='thumbs up'
-            labelPosition='left'
+            labelPosition={pageWidth >= miniWidth ? 'left' : null}
             color='yellow'
             disabled={this.props.recommendedSongs[result.id] ? true : false}
             loading={this.props.recommendedSongs[result.id] && this.props.recommendedSongs[result.id].loading}
@@ -76,7 +78,8 @@ class SearchResult extends Component {
 };
 
 const mapStateToProps = state => ({
-  recommendedSongs: state.recommendedSongs
+  recommendedSongs: state.recommendedSongs,
+  pageWidth: state.pageWidth
 });
 
 const mapDispatchToProps = dispatch => ({

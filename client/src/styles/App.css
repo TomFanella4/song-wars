@@ -16,3 +16,15 @@
   top: 0px;
   bottom: 0px;
 }
+
+#player {
+  position: fixed;
+  bottom: 0;
+  height: 80px;
+  background-color: #282828;
+  margin: 0!important;
+}
+
+.jQBracket .label {
+  text-overflow: ellipsis;
+}
