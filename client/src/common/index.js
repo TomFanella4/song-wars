@@ -1,4 +1,9 @@
 export const mobileWidth = 768;
+export const clientID = '52c0782611f74c95b5bd557ebfc62fcf';
+export const redirectURI = 'http://localhost:3000/auth';
+export const serverURI = 'https://zhryq6uuab.execute-api.us-west-2.amazonaws.com/Alpha';
+export const scopes = 'user-read-currently-playing';
+export const expiredMessage = 'The access token expired';
 
 export const saveUserProfile = userProfile => {
   const { access_token, name, user_id } = userProfile;

@@ -4,7 +4,7 @@ import { Menu, Button, Header, Icon } from 'semantic-ui-react';
 
 import { toggleSidebar, setUserProfile } from '../actions';
 import { deleteUserProfile, mobileWidth } from '../common';
-import { authSpotify } from '../common/WebServices';
+import { authSpotify } from '../api';
 
 class TopMenu extends Component {
 

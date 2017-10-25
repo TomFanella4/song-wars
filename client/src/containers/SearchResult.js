@@ -8,7 +8,7 @@ import {
   addLoadingSong
 } from '../actions';
 import { saveRecommendedSongs } from '../common';
-import { recommendSong } from '../common/WebServices';
+import { recommendSong } from '../api';
 
 class SearchResult extends Component {
 

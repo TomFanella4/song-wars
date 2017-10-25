@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Input, Card, Segment, Header } from 'semantic-ui-react';
 
-import { searchSpotify } from '../common/WebServices';
+import { searchSpotify } from '../api';
 import SearchResult from '../containers/SearchResult';
 
 class Search extends Component {

@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import { setUserProfile } from '../actions';
 import { saveUserProfile } from '../common'
-import { authServer } from '../common/WebServices';
+import { authServer } from '../api';
 
 class Auth extends Component {
   state = { authenticated: false };
