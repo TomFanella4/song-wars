@@ -3,6 +3,7 @@ package com.songwars.api.user.refresh;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -17,7 +18,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.util.Base64;
 import com.amazonaws.util.IOUtils;
-import com.songwars.api.user.validate.Gson;
+import com.google.gson.Gson;
 import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
 
@@ -35,35 +36,53 @@ public class RefreshAccessToken implements RequestHandler<Map<String, Object>, M
 		
 		// Response JSON:
 		Map<String, Object> response = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<String, Object>();
+		String access_token = null;
+		String expiration = null;
+		String user_id = null;
+		String refresh_token = null;
 		
-		Map<String, Object> params = new HashMap<String, Object>();
-		Map<String, Object> querystring = new HashMap<String, Object>();
-		String authorization_code = null;
-		String id = null;
-		String name = null;
-		String email = null;
+		//Find Path and validate required fields, check request body
+		json = Validate.field(input, "body_json");
+		user_id = Validate.sqlstring(json, "user_id");
+		access_token = Validate.sqlstring(json, "access_token");
 		
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
 		
-		//Find Path and validate required fields
-		params = Validate.field(input, "params");
-		querystring = Validate.field(params, "querystring");
-		authorization_code = Validate.string(querystring, "code");
-		
+		try {
+			
+			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
+			Statement statement = con.createStatement();
+			ResultSet result = statement.executeQuery(query);
+
+			if (!result.next()) {
+				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
+			} else {
+				refresh_token = result.getString("refresh_token");
+			}
+			
+		} catch (SQLException ex) {
+			// handle any errors
+			logger.log("SQLException: " + ex.getMessage());
+			logger.log("SQLState: " + ex.getSQLState());
+			logger.log("VendorError: " + ex.getErrorCode());
+
+			throw new RuntimeException("[InternalServerError] - " + ex.getMessage() + ", trace: " + ex.getStackTrace());
+		}
 		
 		//Request a new access token
 		String url = "https://accounts.spotify.com/api/token";
 		Map<String, String> headers = new HashMap<String, String>();
 			headers.put("Authorization", "Basic " + Base64.encodeAsString((System.getenv("API_ID") + ":" + System.getenv("API_SECRET")).getBytes()));
 		Map<String, Object> body = new HashMap<String, Object>();
-			body.put("grant_type", "authorization_code");
-			body.put("code", authorization_code);
-			body.put("redirect_uri", System.getenv("REDIRECT_URL"));
+			body.put("grant_type", "refresh_token");
+			body.put("refresh_token", refresh_token);
 		HttpsURLConnection request = null;
-		String access_token = null, expiration = null, refresh_token = null;
 		
 		try {
+			
+			
 			request = Utilities.makeHttpsRequest(url, "POST", headers, body);
 			
 			if (request.getResponseCode() == 200) {
@@ -85,48 +104,12 @@ public class RefreshAccessToken implements RequestHandler<Map<String, Object>, M
 				request.disconnect();
 			request = null;
 		}
-		
-		
 
-		//Get user info from Spotify
-		url = "https://api.spotify.com/v1/me";
-		headers = new HashMap<String, String>();
-			headers.put("Authorization", "Bearer " + access_token);
-		body = null;
-		request = null;
-		try {
-			request = Utilities.makeHttpsRequest(url, "GET", headers, body);
-			
-			if (request.getResponseCode() == 200) {
-				
-				Map<String, Object> response_body = (Map<String, Object>) new Gson().fromJson(new InputStreamReader(request.getInputStream()), HashMap.class);
-				
-				id = (String) response_body.get("id");
-				email = (String) response_body.get("email");
-				name = (String) response_body.get("display_name");
-				
-			} else {
-				throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode() + ". Error body: " + ", " + IOUtils.toString(request.getErrorStream()));
-			}
-			
-		} catch (IOException ioe) {
-			throw new RuntimeException("[InternalServerError] " + ioe.getMessage() + ", " + ioe.getStackTrace());
-		} finally {
-			if (request != null)
-				request.disconnect();
-		}
-		
-		
-		
-		
-		
-		
 		con = Utilities.getRemoteConnection(context);
 		try {
 				
-			// Insert new user or update credentials if user_id already exists
-			String query = "UPDATE users SET access_token='" access_token
-//			String query = "INSERT INTO users (id, email, name, authorization_code, access_token, refresh_token, expiration) VALUES ('" + id + "', '" + email + "', '" + name + "', '" + authorization_code + "', '" + access_token + "', '" + refresh_token + "', '" + expiration + "') ON DUPLICATE KEY UPDATE authorization_code='" + authorization_code + "', access_token='" + access_token + "', refresh_token='" + refresh_token + "', expiration='" + expiration + "'";
+			// Update user tokens 
+			String query = "UPDATE users SET access_token='" + access_token + "', expiration='" + expiration + "' WHERE id='" + user_id + "'";
 			Statement statement = con.createStatement();
 			statement.addBatch(query);
 			statement.executeBatch();
@@ -149,8 +132,11 @@ public class RefreshAccessToken implements RequestHandler<Map<String, Object>, M
 					throw new RuntimeException("[InternalServerError] - SQL error occured and is having trouble closing connection.");
 				}
 		}
-		response.put("user_id", id);
-		response.put("access_token", access_token)
+		
+		//Insert user id and access token into the response
+		response.put("user_id", user_id);
+		response.put("access_token", access_token);
+		response.put("refesh_token", refresh_token);
 		return response;
 		
 	}
