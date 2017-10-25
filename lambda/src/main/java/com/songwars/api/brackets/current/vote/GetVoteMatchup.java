@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,13 +34,10 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 		
 		this.context = context;
 		this.logger = context.getLogger();
-		// Function Logic Status:
-		boolean user_exists = false;
 		// JSON:
 		Map<String, Object> response = new HashMap<String, Object>();
 		Map<String, Object> params;
 		Map<String, Object> querystring;
-		Map<String, Object> json;
 		// Local Input Variables:
 		String user_id = null;
 		String access_token = null;
@@ -52,12 +50,13 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 		int round = 0;
 		
 		// Find Path:
-		json = Validate.field(input, "body_json");
+		params = Validate.field(input, "params");
+		querystring = Validate.field(params, "querystring");
 		
 		// Perform Validation of Input:
-		user_id = Validate.sqlstring(json, "user_id");
-		access_token = Validate.sqlstring(json, "access_token");
-		bracket_id = Validate.sqlstring(json, "bracket_id");
+		user_id = Validate.sqlstring(querystring, "user_id");
+		access_token = Validate.sqlstring(querystring, "access_token");
+		bracket_id = Validate.sqlstring(querystring, "bracket_id");
 		
 		// Get which round is supposed to be voted on today:
 		round = Rounds.getFromMillis(System.currentTimeMillis());
@@ -84,15 +83,15 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			pstatement.setInt(3, round);
 			result = pstatement.executeQuery();
 			
-			
 			// Fill position values:
 			for (int i = 0; result.next(); i++)
 				votesCasted.add(result.getInt("position"));
 			
 			result.close();
 			statement.close();
+			
 			// Fill possible position values:
-			for (int i = 1; i <= 8/round; i++)
+			for (int i = 1; i <= 16/round; i++)
 				posRange.add(i);
 			
 			// Get random positions of songs yet to be cast
@@ -103,24 +102,30 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			
 			// Make paired list of songs (ie. matchups)
 			boolean exists = false;
-			for (Integer i : votesToCast) {
+			for (Integer v : votesToCast) {
 				for (Matchup m : matchups) {
-					if (m.contains(i.intValue())) {
+					if (m.contains(v.intValue())) {
 						exists = true;
 						break;
 					}
 				}
 				if (exists == false)
-					matchups.add(new Matchup(round, i));
+					matchups.add(new Matchup(round, v));
 				exists = false;
 			}
-						
+			
+			
 			// Get song details for the remaining matchup positions:
-			query = "SELECT * FROM last_week_bracket WHERE bracket_id=? AND round=? AND position IN ?";
+			query = "SELECT * FROM last_week_bracket WHERE bracket_id=? AND round=? AND position IN (";
+			for (Integer v : votesToCast)
+				query += "?, ";
+			query = query.substring(0, query.length() - 2) + ")";
 			pstatement = con.prepareStatement(query);
 			pstatement.setString(1, bracket_id);
 			pstatement.setInt(2, round);
-			pstatement.setArray(3, con.createArrayOf("INT", votesToCast.toArray()));
+			int i = 3;
+			for (Integer v : votesToCast)
+				pstatement.setInt(i++, v);
 			result = pstatement.executeQuery();
 			
 			while (result.next()) {
@@ -134,7 +139,6 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 						m.setAlbum_name(pos, result.getString("album_name"));
 						m.setAlbum_image(pos, result.getString("album_image"));
 						m.setArtists_name(pos, result.getString("artists_name"));
-						m.setVotes(pos, result.getInt("votes"));
 						m.setBracket_Id(pos, result.getString("bracket_id"));
 						break;
 					}
@@ -143,9 +147,11 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 
 		} catch (SQLException ex) {
 			// handle any errors
-			logger.log("SQLException: " + ex.getMessage());
-			logger.log("SQLState: " + ex.getSQLState());
-			logger.log("VendorError: " + ex.getErrorCode());
+			logger.log("SQLException: " + ex.getMessage() + "\n");
+			logger.log("SQLState: " + ex.getSQLState() + "\n");
+			logger.log("VendorError: " + ex.getErrorCode() + "\n");
+			logger.log("Trace: ");
+			ex.printStackTrace();
 
 			throw new RuntimeException("[InternalServerError] - SQL error occured.");
 			

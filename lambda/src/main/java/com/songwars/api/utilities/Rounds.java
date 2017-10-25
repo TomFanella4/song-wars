@@ -36,10 +36,19 @@ public class Rounds {
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(millis);
 		
-		round =  c.get(Calendar.DAY_OF_WEEK);
-		if (round < 1 || round > 4)
+		round = c.get(Calendar.DAY_OF_WEEK);
+		if (round == Calendar.SUNDAY || round == Calendar.MONDAY || round == Calendar.SATURDAY)
 			throw new RuntimeException("[VotingClosed] - Bracket not open today.");
-		return round;
+		else if (round == Calendar.TUESDAY)
+			return 1;
+		else if (round == Calendar.WEDNESDAY)
+			return 2;
+		else if (round == Calendar.THURSDAY)
+			return 3;
+		else if (round == Calendar.FRIDAY)
+			return 4;
+		else
+			throw new RuntimeException("[InternalServerError] - Unexpected value from Calendar.DAY_OF_WEEK.");
 	}
 
 }

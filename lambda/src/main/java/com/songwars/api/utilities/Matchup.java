@@ -16,7 +16,6 @@ public class Matchup {
 	private String album_name1;
 	private String album_image1;
 	private String artists_name1;
-	private int votes1;
 	private String bracket_id1;
 	
 	private String id2;
@@ -26,7 +25,6 @@ public class Matchup {
 	private String album_name2;
 	private String album_image2;
 	private String artists_name2;
-	private int votes2;
 	private String bracket_id2;
 	
 	public Matchup(int round, int pos1) {
@@ -37,9 +35,9 @@ public class Matchup {
 
 	public boolean contains(int pos) {
 		if (pos1 == pos || pos2 == pos)
-			return false;
-		else
 			return true;
+		else
+			return false;
 	}
 
 	public int getRound() {
@@ -68,7 +66,6 @@ public class Matchup {
 		song1.put("album_name", album_name1);
 		song1.put("album_image", album_image1);
 		song1.put("artists_name", artists_name1);
-		song1.put("votes", new Integer(votes1));
 		
 		song2.put("position", new Integer(pos2));
 		song2.put("id", id2);
@@ -78,7 +75,6 @@ public class Matchup {
 		song2.put("album_name", album_name2);
 		song2.put("album_image", album_image2);
 		song2.put("artists_name", artists_name2);
-		song2.put("votes", new Integer(votes2));
 		
 		matchup.put("song1", song1);
 		matchup.put("song2", song2);
@@ -137,13 +133,6 @@ public class Matchup {
 		else
 			artists_name2 = artists_name;
 	}
-	public void setVotes(int pos, int votes)
-	{
-		if (pos1 == pos)
-			votes1 = votes;
-		else
-			votes2 = votes;
-	}
 	public void setBracket_Id(int pos, String bracket_id)
 	{
 		if (pos1 == pos)
@@ -182,10 +171,6 @@ public class Matchup {
 		return artists_name1;
 	}
 
-	public int getVotes1() {
-		return votes1;
-	}
-
 	public String getBracket_id1() {
 		return bracket_id1;
 	}
@@ -216,10 +201,6 @@ public class Matchup {
 	
 	public String getArtists_name2() {
 		return artists_name2;
-	}
-
-	public int getVotes2() {
-		return votes2;
 	}
 
 	public String getBracket_id2() {
