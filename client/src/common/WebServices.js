@@ -1,14 +1,17 @@
-import { loadUserProfile } from '.';
+import { loadUserProfile, saveUserProfile } from '.';
 
 const clientID = '52c0782611f74c95b5bd557ebfc62fcf';
 const redirectURI = 'http://localhost:3000/auth';
 const serverURI = 'https://zhryq6uuab.execute-api.us-west-2.amazonaws.com/Alpha';
+const scopes = 'user-read-currently-playing';
+const expiredMessage = 'The access token expired';
 
 export const authSpotify = () => {
   let url = 'https://accounts.spotify.com/authorize';
   url += '?response_type=code';
   url += '&client_id=' + encodeURIComponent(clientID);
   url += '&redirect_uri=' + encodeURIComponent(redirectURI);
+  url += '&scope=' + encodeURIComponent(scopes);
   window.location = url;
 }
 
@@ -30,13 +33,48 @@ export const authServer = code => {
   });
 }
 
+export const refreshAuthServer = () => {
+  return new Promise((resolve, reject) => {
+    const { user_id, access_token } = loadUserProfile();
+    if (!access_token) {
+      reject('User not signed in');
+      return;
+    }
+
+    const uri = serverURI + '/user/validate/update';
+    const body = {
+      user_id,
+      access_token
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+
+    const myInit = {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: myHeaders
+    }
+    
+    fetch(uri, myInit)
+    .then(data => data.json())
+    .then(json => {
+      saveUserProfile(json);
+      resolve();
+    })
+    .catch(err => reject(err));
+  })
+}
+
 export const searchSpotify = query => {
   return new Promise((resolve, reject) => {
-    let access_token = loadUserProfile().access_token;
+    const { access_token } = loadUserProfile();
+
     if (!access_token) {
       reject('No access_token found');
       return;
     }
+
     let myHeaders = new Headers();
     myHeaders.append('Authorization', 'Bearer ' + access_token);
     
@@ -54,12 +92,23 @@ export const searchSpotify = query => {
     .then(json => {
       
       if (json.error) {
-        reject(json.error.message);
-        return;
+        if (json.error.message === expiredMessage) {
+
+          return refreshAuthServer()
+          .then(() => searchSpotify(query))
+          .then(items => resolve(items))
+          .catch(err => reject('Failed to refresh access token: ' + err))
+
+        } else {
+          reject(json.error.message);
+          return;
+        }
       }
 
       if (json.tracks.items) {
         resolve(json.tracks.items);
+      } else {
+        reject('Invalid search results');
       }
     })
     .catch(err => reject(err));
@@ -80,14 +129,15 @@ export const recommendSong = song => {
       access_token,
       song: {
         name: song.name,
-        song_id: song.id,
+        id: song.id,
         preview_url: song.uri,
         popularity: song.popularity,
         album: {
-          album_name: song.album.name
+          name: song.album.name,
+          image_url: song.album.images[2] ? song.album.images[2].url : null
         },
         artists: {
-          artists_name: song.artists[0].name
+          name: song.artists[0].name
         }
       }
     };
