@@ -5,7 +5,7 @@ import { searchSpotify } from '../api';
 import SearchResult from '../containers/SearchResult';
 
 class Search extends Component {
-  state = { searchResults: [], selectedURI: '' };
+  state = { searchResults: [], selectedURI: '', loading: false };
   timmer;
 
   handleSearchChange(event, data) {
@@ -24,19 +24,23 @@ class Search extends Component {
       return;
     }
 
+    this.setState({ loading: true });
+
     searchSpotify(searchQuery)
     .then(results => this.setState({ searchResults: results }))
-    .catch(err => console.log(err));
+    .catch(err => console.error(err))
+    .then(() => this.setState({ loading: false }))
   }
 
   render() {
-    const { searchResults } = this.state;
+    const { searchResults, loading } = this.state;
     // console.log(this.state.searchResults);
     
     return (
       <div>
         <Input
           size='massive'
+          loading={loading}
           icon='search'
           placeholder='Search...'
           fluid
