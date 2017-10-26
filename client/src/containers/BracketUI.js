@@ -4,7 +4,7 @@ import { Header, Button, Card, Loader } from 'semantic-ui-react';
 import $ from 'jquery';
 
 import { popularCutoff } from '../common';
-import { getCurrentBracket, getCurrentVotes } from '../api';
+import { getCurrentBracket, getCurrentVotes, authSpotify } from '../api';
 import { setBracketId, setVoteList } from '../actions';
 import VoteOption from './VoteOption';
 
@@ -106,7 +106,20 @@ class BracketUI extends Component {
                     color={winner.popularity < popularCutoff ? 'red' : 'green'}
                   />
                 :
-                  <Button content='Vote' color='green' size='huge' onClick={this.props.changeView} />
+                  this.props.userProfile.access_token ?
+                    <Button
+                      content='Vote'
+                      color='green'
+                      size='huge'
+                      onClick={this.props.changeView}
+                    />
+                  :
+                    <Button
+                      content='Login to Vote!'
+                      color='green'
+                      size='large'
+                      onClick={authSpotify}
+                    />
               }
             </span>
             <div style={{ marginLeft: 40 }}>
@@ -123,12 +136,16 @@ class BracketUI extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  userProfile: state.userProfile
+});
+
 const mapDispatchToProps = dispatch => ({
   setBracketId: id => dispatch(setBracketId(id)),
   setVoteList: list => dispatch(setVoteList(list))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(BracketUI);
