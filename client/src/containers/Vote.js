@@ -150,6 +150,14 @@ class Vote extends Component {
           <Divider />
 
           <Button
+            content='Bracket'
+            icon='left arrow'
+            labelPosition='left'
+            onClick={this.props.changeView}
+            floated='left'
+          />
+
+          <Button
             content='Skip'
             icon='right arrow'
             labelPosition='right'
@@ -158,7 +166,13 @@ class Vote extends Component {
           />
         </Segment>
       :
-        <Header as='h1' color='grey' content={'You\'ve voted on all the songs for today!'} />
+        <div>
+          <Header as='h1' color='grey' content={'You\'ve voted on all the songs for today!'} />
+          <Button
+            content='Bracket'
+            onClick={this.props.changeView}
+          />
+        </div>
     );
   }
 }

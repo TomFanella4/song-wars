@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Header, Button } from 'semantic-ui-react';
 import $ from 'jquery';
+import { getCurrentBracket } from '../api';
 
 window.jQuery = $;
 
@@ -13,6 +15,10 @@ class BracketUI extends Component {
   }
 
   componentDidMount() {
+    getCurrentBracket()
+    .then(bracket => console.log(bracket))
+    .catch(err => console.error(err))
+
     var data = {
       teams : [
         ["Piano Man",  "Feels" ],
@@ -48,9 +54,23 @@ class BracketUI extends Component {
   render() {
     return (
       <div style={{ display: 'flex' }}>
-        <span className="leftBracket" />
-        <span style={{ minWidth: 150 }} />
-        <span className="rightBracket" />
+        <div>
+          <Header as='h1' content='Hidden Gems' icon='diamond' color='red' />
+          <span className="leftBracket" />
+        </div>
+        <span style={{ width: 175, lineHeight: 8 }}>
+          <Header content='VS' style={{ fontSize: 75 }} />
+          {
+            false ?
+              <Header as='h1' content={'Winner:\nScarborough Fair'} color='red' />
+            :
+              <Button content='Vote' color='green' size='huge' onClick={this.props.changeView} />
+          }
+        </span>
+        <div style={{ marginLeft: 40 }}>
+          <Header as='h1' content='Popular' icon='star' color='green' />
+          <span className="rightBracket" />
+        </div>
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Transition, Segment } from 'semantic-ui-react';
+import { Transition, Segment } from 'semantic-ui-react';
 
 import BracketUI from '../containers/BracketUI';
 import Vote from '../containers/Vote';
@@ -17,11 +17,9 @@ class Bracket extends Component {
   }
 
   render() {
-    // Add transition here after D3
     const { bracket, vote } = this.state.view;
     return (
       <div>
-        <Button content={vote ? 'Bracket' : 'Vote'} onClick={this.changeView.bind(this)} />
         <Segment basic style={{ textAlign: '-webkit-center' }}>
           <Transition
             animation='scale'
@@ -29,7 +27,7 @@ class Bracket extends Component {
             onHide={() => this.setState({ view: { ...this.state.view, vote: true } })}
           >
             <Transition.Group>
-              <BracketUI />
+              <BracketUI changeView={this.changeView.bind(this)} />
             </Transition.Group>
           </Transition>
           <Transition
@@ -38,7 +36,7 @@ class Bracket extends Component {
             onHide={() => this.setState({ view: { ...this.state.view, bracket: true } })}
           >
             <Transition.Group>
-              <Vote />
+              <Vote changeView={this.changeView.bind(this)} />
             </Transition.Group>
           </Transition>
         </Segment>
