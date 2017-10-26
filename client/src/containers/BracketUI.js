@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Header, Button, Card } from 'semantic-ui-react';
+import { Header, Button, Card, Loader } from 'semantic-ui-react';
 import $ from 'jquery';
 
 import { popularCutoff } from '../common';
@@ -14,7 +14,7 @@ require('../../node_modules/jquery-bracket/dist/jquery.bracket.min.css');
 require('../../node_modules/jquery-bracket/dist/jquery.bracket.min.js');
 
 class BracketUI extends Component {
-  state = { preview1: null, preview2: null, winner: null }
+  state = { preview1: null, preview2: null, winner: null, loading: true }
 
   onMatchHover(cell) {
     cell && this.setState({ preview1: cell.Option1, preview2: cell.Option2 })
@@ -55,6 +55,8 @@ class BracketUI extends Component {
       //   ]
       // };
       
+      this.setState({ loading: false });
+      
       $('.leftBracket').bracket({
         skipConsolationRound: true,
         teamWidth: 100,
@@ -82,38 +84,41 @@ class BracketUI extends Component {
   }
 
   render() {
-    const { preview1, preview2, winner } = this.state;
+    const { preview1, preview2, winner, loading } = this.state;
 
     return (
-      <div>
-        <div style={{ display: 'flex' }}>
-          <div>
-            <Header as='h1' content='Hidden Gems' icon='diamond' color='red' />
-            <span className="leftBracket" />
+      loading ?
+        <Loader active={true} size='massive' style={{ marginTop: 200 }} />
+      :
+        <div>
+          <div style={{ display: 'flex' }}>
+            <div>
+              <Header as='h1' content='Hidden Gems' icon='diamond' color='red' />
+              <span className="leftBracket" />
+            </div>
+            <span style={{ width: 175, lineHeight: 8 }}>
+              <Header content='VS' style={{ fontSize: 75 }} />
+              {
+                winner ?
+                  <Header
+                    as='h1'
+                    content={'Winner:\n' + winner.name}
+                    color={winner.popularity < popularCutoff ? 'red' : 'green'}
+                  />
+                :
+                  <Button content='Vote' color='green' size='huge' onClick={this.props.changeView} />
+              }
+            </span>
+            <div style={{ marginLeft: 40 }}>
+              <Header as='h1' content='Popular' icon='star' color='green' />
+              <span className="rightBracket" />
+            </div>
           </div>
-          <span style={{ width: 175, lineHeight: 8 }}>
-            <Header content='VS' style={{ fontSize: 75 }} />
-            {
-              winner ?
-                <Header
-                  as='h1'
-                  content={'Winner:\n' + winner.name}
-                  color={winner.popularity < popularCutoff ? 'red' : 'green'}
-                />
-              :
-                <Button content='Vote' color='green' size='huge' onClick={this.props.changeView} />
-            }
-          </span>
-          <div style={{ marginLeft: 40 }}>
-            <Header as='h1' content='Popular' icon='star' color='green' />
-            <span className="rightBracket" />
-          </div>
+          <Card.Group style={{ justifyContent: 'center' }}>
+            {preview1 && <VoteOption song={preview1} />}
+            {preview2 && <VoteOption song={preview2} />}
+          </Card.Group>
         </div>
-        <Card.Group style={{ justifyContent: 'center' }}>
-          {preview1 && <VoteOption song={preview1} />}
-          {preview2 && <VoteOption song={preview2} />}
-        </Card.Group>
-      </div>
     );
   }
 }
