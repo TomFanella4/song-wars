@@ -74,7 +74,7 @@ class BracketUI extends Component {
 
       setBracketId(bracket.BracketId);
 
-      getCurrentVotes()
+      getCurrentVotes(bracket.BracketId)
       .then(list => setVoteList(list))
       .catch(err => console.error(err))
     })

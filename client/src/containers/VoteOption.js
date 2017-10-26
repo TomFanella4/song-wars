@@ -15,7 +15,7 @@ const VoteOption = ({ song, onPlayButtonClick }) => (
         {song.name}
       </Card.Header>
       <Card.Meta textAlign='left'>
-        {song.artist}
+        {song.artists_name}
       </Card.Meta>
     </Card.Content>
     <Card.Content>
@@ -25,7 +25,7 @@ const VoteOption = ({ song, onPlayButtonClick }) => (
         icon='play'
         labelPosition='left'
         color='green'
-        onClick={() => onPlayButtonClick(song.uri)}
+        onClick={() => onPlayButtonClick(song.preview_url)}
       />
       
     </Card.Content>
