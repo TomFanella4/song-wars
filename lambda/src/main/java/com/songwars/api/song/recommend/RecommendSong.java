@@ -54,6 +54,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		album = Validate.field(song, "album");
 		artists = Validate.field(song, "artists");
 		
+		// TODO: preview_url should really be uri, since it is actually a uri not a url.
 		// Perform Validation of Input:
 		user_id = Validate.sqlstring(json, "user_id");
 		access_token = Validate.sqlstring(json, "access_token");

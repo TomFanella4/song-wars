@@ -43,7 +43,7 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 			
 			
 			// Get most recent round from last_week_bracket for each bracket_id
-			String query = "SELECT * FROM last_week_bracket WHERE (bracket_id, round) IN ( SELECT bracket_id, MAX(round) FROM bracket_history )";
+			String query = "SELECT * FROM last_week_bracket WHERE (bracket_id, round) IN ( SELECT bracket_id, MAX(round) FROM last_week_bracket )";
 			PreparedStatement pstatement = con.prepareStatement(query);
 			ResultSet result = pstatement.executeQuery();
 			con.commit();
@@ -79,6 +79,8 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 						m.setBracket_Id(pos, result.getString("bracket_id"));
 						m.setVotes(pos, result.getInt("votes"));
 						
+						matchups.set(i, m);
+						
 						exists = true;
 						break;
 					}
@@ -100,7 +102,8 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 					matchups.add(m);
 				}
 			}
-			result.previous();
+			result.beforeFirst();
+			result.next();
 			round = result.getInt("round");
 			result.close();
 			pstatement.close();
@@ -124,7 +127,7 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 					Map<String, Object> winner1 = bracket.get(i).getWinner();
 					Map<String, Object> winner2 = bracket.get(i+1).getWinner();
 					
-					int new_pos1 = (int) Math.floor(((double) i)/2.0) + 1;
+					int new_pos1 = i + 1;
 					int new_pos2 = Utilities.getOpponentsPosition(new_pos1);
 					
 					Matchup next_match = new Matchup(round + 1, new_pos1);
@@ -156,12 +159,16 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 			}
 			
 			
+			logger.log("Starting INSERT QUERY: \n\n");
 			// Insert all winning songs to last_week_bracket:
 			query = "INSERT INTO last_week_bracket (id, name, popularity, preview_url, album_name, album_image, artists_name, votes, bracket_id, round, position)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)";
 			pstatement = con.prepareStatement(query);
 			for (ArrayList<Matchup> bracket : brackets_next_rounds.values()) {
 				for (Matchup m : bracket) {
+					
+					logger.log(m.toMap().toString() + "\n");
+					
 					pstatement.setString(1, m.getId1());
 					pstatement.setString(2, m.getName1());
 					pstatement.setInt(3, m.getPopularity1());
@@ -187,6 +194,7 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 					pstatement.addBatch();
 				}
 			}
+			logger.log("Attempting Execution: \n\n");
 			int[] statuses = pstatement.executeBatch();
 			
 			// Execute whole transaction:

@@ -50,5 +50,9 @@ public class Rounds {
 		else
 			throw new RuntimeException("[InternalServerError] - Unexpected value from Calendar.DAY_OF_WEEK.");
 	}
+	
+	public static int getFromEnviron() {
+		return Integer.parseInt(System.getenv("ROUND"));
+	}
 
 }

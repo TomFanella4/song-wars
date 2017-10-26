@@ -37,6 +37,7 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 		// JSON:
 		Map<String, Object> response = new HashMap<String, Object>();
 		Map<String, Object> params;
+		Map<String, Object> path;
 		Map<String, Object> querystring;
 		// Local Input Variables:
 		String user_id = null;
@@ -51,15 +52,17 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 		
 		// Find Path:
 		params = Validate.field(input, "params");
+		path = Validate.field(params, "path");
 		querystring = Validate.field(params, "querystring");
 		
 		// Perform Validation of Input:
 		user_id = Validate.sqlstring(querystring, "user_id");
 		access_token = Validate.sqlstring(querystring, "access_token");
-		bracket_id = Validate.sqlstring(querystring, "bracket_id");
+		bracket_id = Validate.sqlstring(path, "bracket-id");
 		
 		// Get which round is supposed to be voted on today:
-		round = Rounds.getFromMillis(System.currentTimeMillis());
+		//round = Rounds.getFromMillis(System.currentTimeMillis());
+		round = Rounds.getFromEnviron();
 		
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
@@ -88,7 +91,7 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 				votesCasted.add(result.getInt("position"));
 			
 			result.close();
-			statement.close();
+			pstatement.close();
 			
 			// Fill possible position values:
 			for (int i = 1; i <= 16/round; i++)
@@ -130,7 +133,8 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			
 			while (result.next()) {
 				int pos = result.getInt("position");
-				for (Matchup m : matchups) {
+				for (i = 0; i < matchups.size(); i++) {
+					Matchup m = matchups.get(i);
 					if (m.contains(pos)) {
 						m.setId(pos, result.getString("id"));
 						m.setName(pos, result.getString("name"));

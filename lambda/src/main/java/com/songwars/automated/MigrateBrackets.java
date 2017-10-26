@@ -77,8 +77,10 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 				// Check to see if any of these songs are one of the gems selected:
 				boolean exists = false;
 				for (HashMap<String, Object> s : gems)
-					if (((String) song.get("id")).equals(result.getString("id"))) {
+					if (((String) s.get("id")).equals(result.getString("id"))) {
+						System.out.println("Song Intersection!");
 						exists = true;
+						break;
 					}
 				// Do not add to pop list if they are already in gems:
 				if (exists)
