@@ -35,12 +35,32 @@ class SearchResult extends Component {
             <Image src={result.album.images[2].url} floated='right' size='mini' />
           }
           {
-            result.popularity <= 50 &&
-            <Popup
-              trigger={<Icon size='large' name='diamond' color='red' style={{float: 'right'}} />}
-              content='Hidden Gem'
-              inverted
-            />
+            result.popularity <= 50 ?
+              <Popup
+                trigger={
+                  <Icon
+                    size='large'
+                    name='diamond'
+                    color='red'
+                    style={{float: 'right'}}
+                  />
+                }
+                content='Hidden Gem'
+                inverted
+              />
+            :
+              <Popup
+                trigger={
+                  <Icon
+                    size='large'
+                    name='star'
+                    color='green'
+                    style={{float: 'right', cursor: 'auto'}}
+                  />
+                }
+                content='Popular'
+                inverted
+              />
           }
           <Card.Header>
             {index + '. ' + result.name + ' '}
@@ -70,7 +90,6 @@ class SearchResult extends Component {
             onClick={this.handleRecommendButtonClick.bind(this, result)}
           />
           
-          {result.popularity}
         </Card.Content>
       </Card>
     )
