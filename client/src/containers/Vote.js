@@ -12,13 +12,13 @@ class Vote extends Component {
         s1: {
           name: 'Mischief Managed!',
           artist: 'John Williams',
-          album: 'https://i.scdn.co/image/719d1759d0045a390c8e518adc2880fdd09807d3',
+          album_image: 'https://i.scdn.co/image/719d1759d0045a390c8e518adc2880fdd09807d3',
           uri: 'spotify:track:3NrAMPb3hlWCmw9kepqBmM'
         },
         s2: {
           name: 'Piano Man',
           artist: 'Billy Joel',
-          album: 'https://i.scdn.co/image/7e28eca3ea5124d24690d8093c76eadc069f5b09',
+          album_image: 'https://i.scdn.co/image/7e28eca3ea5124d24690d8093c76eadc069f5b09',
           uri: 'spotify:track:3FCto7hnn1shUyZL42YgfO'
         }
       },
@@ -26,13 +26,13 @@ class Vote extends Component {
         s1: {
           name: 'Scarborough Fair',
           artist: 'Adagio Music',
-          album: 'https://i.scdn.co/image/aecee9528ed18abed2cc184c1f617645e0364e0a',
+          album_image: 'https://i.scdn.co/image/aecee9528ed18abed2cc184c1f617645e0364e0a',
           uri: 'spotify:track:6ppYBr3v0ee9v1VvZWSne1'
         },
         s2: {
           name: 'Feels',
           artist: 'Calvin Harris',
-          album: 'https://i.scdn.co/image/1166dcd37a4afe47d013fb46065556194fee81c3',
+          album_image: 'https://i.scdn.co/image/1166dcd37a4afe47d013fb46065556194fee81c3',
           uri: 'spotify:track:5bcTCxgc7xVfSaMV3RuVke'
         }
       }

@@ -8,8 +8,8 @@ const VoteOption = ({ song, onPlayButtonClick }) => (
   <Card>
     <Card.Content>
       {
-        song.album && 
-        <Image src={song.album} floated='right' size='mini' />
+        song.album_image && 
+        <Image src={song.album_image} floated='right' size='mini' />
       }
       <Card.Header textAlign='left'>
         {song.name}
