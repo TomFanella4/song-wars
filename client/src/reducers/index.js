@@ -10,7 +10,9 @@ import {
   SET_PLAYER_URI,
   SET_USER_PROFILE,
   ADD_LOADING_SONG,
-  ADD_RECOMMENDED_SONG
+  SET_BRACKET_ID,
+  ADD_RECOMMENDED_SONG,
+  SET_VOTE_LIST
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -18,7 +20,9 @@ const initialState = {
   pageWidth: window.innerWidth,
   playerURI: '',
   userProfile: loadUserProfile(),
-  recommendedSongs: loadRecommendedSongs() || {}
+  bracketId: '',
+  recommendedSongs: loadRecommendedSongs() || {},
+  voteList: []
 };
 
 function rootReducer(state = initialState, action) {
@@ -50,6 +54,9 @@ function rootReducer(state = initialState, action) {
         }
       };
 
+    case SET_BRACKET_ID:
+      return { ...state, bracketId: action.id };
+
     case ADD_RECOMMENDED_SONG:
       return {
         ...state,
@@ -61,6 +68,9 @@ function rootReducer(state = initialState, action) {
           }
         }
       };
+
+    case SET_VOTE_LIST:
+      return { ...state, voteList: action.list };
 
     default:
       return state;
