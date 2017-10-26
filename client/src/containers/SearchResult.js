@@ -7,7 +7,11 @@ import {
   addRecommendedSong,
   addLoadingSong
 } from '../actions';
-import { saveRecommendedSongs, miniWidth } from '../common';
+import {
+  saveRecommendedSongs,
+  miniWidth,
+  popularCutoff
+} from '../common';
 import { recommendSong } from '../api';
 
 class SearchResult extends Component {
@@ -35,7 +39,7 @@ class SearchResult extends Component {
             <Image src={result.album.images[2].url} floated='right' size='mini' />
           }
           {
-            result.popularity <= 50 ?
+            result.popularity <= popularCutoff ?
               <Popup
                 trigger={
                   <Icon

@@ -1,6 +1,8 @@
 export const mobileWidth = 850;
 export const miniWidth = 363;
 export const sidebarWidth = 150;
+export const popularCutoff = 50;
+
 export const clientID = '52c0782611f74c95b5bd557ebfc62fcf';
 export const redirectURI = 'http://localhost:3000/auth';
 export const serverURI = 'https://zhryq6uuab.execute-api.us-west-2.amazonaws.com/Alpha';
