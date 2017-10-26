@@ -27,7 +27,7 @@ export const getCurrentSong = () => {
     let uri = 'https://api.spotify.com/v1/me/player/currently-playing';
 
     fetch(uri, myInit)
-    .then(data => data.status === 200 ? data.json() : {})
+    .then(data => data.json())
     .then(json => {
       
       if (json.error) {
@@ -45,10 +45,9 @@ export const getCurrentSong = () => {
       }
 
       if (json.item) {
-        resolve(json.item.uri);
-      } else {
-        reject({ status: 204, message: 'No song found' });
+        return json.item.uri && resolve(json.item.uri);
       }
+      reject({ status: 204, message: 'No song found' });
     })
     .catch(err => reject(err));
   });
