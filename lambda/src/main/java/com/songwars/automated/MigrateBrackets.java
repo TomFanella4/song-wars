@@ -3,9 +3,11 @@ package com.songwars.automated;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,9 +45,18 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			// Generate new bracket_id:
 			bracket_id = Utilities.generateRandomString();
 			
-			// SELECT top recommendations from < X popularity:
-			String query = "SELECT * FROM recommendations WHERE popularity<=70 ORDER BY count DESC LIMIT 8";
+			// Put new bracket's info into bracket_headers table:
+			String query = "INSERT INTO bracket_headers (bracket_id, type, date) VALUES (?, ?, ?)";
 			PreparedStatement pstatement = con.prepareStatement(query);
+			pstatement.setString(1, bracket_id);
+			pstatement.setString(2, "Primary");
+			pstatement.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+			pstatement.execute();
+			con.commit();
+			
+			// SELECT top recommendations from < X popularity:
+			query = "SELECT * FROM recommendations WHERE popularity<=70 ORDER BY count DESC LIMIT 8";
+			pstatement = con.prepareStatement(query);
 			ResultSet result = pstatement.executeQuery();
 			con.commit();
 			
