@@ -17,6 +17,7 @@ public class Matchup {
 	private String album_image1;
 	private String artists_name1;
 	private String bracket_id1;
+	private int votes1;
 	
 	private String id2;
 	private String name2;
@@ -26,6 +27,7 @@ public class Matchup {
 	private String album_image2;
 	private String artists_name2;
 	private String bracket_id2;
+	private int votes2;
 	
 	public Matchup(int round, int pos1) {
 		this.round = round;
@@ -80,6 +82,25 @@ public class Matchup {
 		matchup.put("song2", song2);
 		
 		return matchup;
+	}
+	
+	/*
+	 * Returns map of data for song that wins in votes, and if a tie, 
+	 * then whichever has lower popularity, otherwise song2 wins by default.
+	 */
+	public Map<String, Object> getWinner() {
+		Map<String, Object> match = this.toMap();
+		
+		if (votes1 > votes2)
+			return (Map<String, Object>) match.get("song1");
+		else if (votes2 > votes1)
+			return (Map<String, Object>) match.get("song2");
+		else {
+			if (popularity1 < popularity2)
+				return (Map<String, Object>) match.get("song1");
+			else	// Yes I know this picks song2 in case of complete tie... This is my random choice.
+				return (Map<String, Object>) match.get("song2");
+		}
 	}
 
 	
@@ -140,6 +161,13 @@ public class Matchup {
 		else
 			bracket_id2 = bracket_id;
 	}
+	public void setVotes(int pos, int votes)
+	{
+		if (pos1 == pos)
+			votes1 = votes;
+		else 
+			votes2 = votes;
+	}
 	
 	
 	
@@ -175,6 +203,10 @@ public class Matchup {
 		return bracket_id1;
 	}
 
+	public int getVotes1() {
+		return votes1;
+	}
+
 	public String getId2() {
 		return id2;
 	}
@@ -205,6 +237,10 @@ public class Matchup {
 
 	public String getBracket_id2() {
 		return bracket_id2;
+	}
+	
+	public int getVotes2() {
+		return votes2;
 	}
 
 	

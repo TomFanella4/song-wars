@@ -24,7 +24,10 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 	@Override
 	public String handleRequest(Object input, Context context) {
 				
-		
+	
+		// Init:
+		this.context = context;
+		this.logger = context.getLogger();
 		// Local Variables:
 		String bracket_id = null;
 		ArrayList<HashMap<String, Object>> gems = new ArrayList<HashMap<String, Object>>();
@@ -161,6 +164,7 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 
 		} catch (SQLException ex) {
 			// handle any errors
+			ex.printStackTrace();
 			logger.log("SQLException: " + ex.getMessage());
 			logger.log("SQLState: " + ex.getSQLState());
 			logger.log("VendorError: " + ex.getErrorCode());
