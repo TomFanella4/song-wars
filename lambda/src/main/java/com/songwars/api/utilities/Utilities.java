@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.util.Base64;
 import com.amazonaws.util.Md5Utils;
 import com.google.gson.Gson;
 
@@ -116,6 +117,7 @@ public class Utilities {
     
     
     /**
+     * @deprecated
 	 * generateCookie - generates a unique number by multiplying the bytes of the argument 
 	 * String with the current time in nanoseconds of the machine.
 	 * 
@@ -127,6 +129,22 @@ public class Utilities {
         BigInteger timeint = new BigInteger(Long.toString(System.nanoTime()));
         return nameint.multiply(timeint).intValue();
     }
+	
+	
+	/**
+	 * generateRandomString - generates a unique string of maximum length, 45 characters.
+	 * Uses system nano time for random input.
+	 * 
+	 * @return - String of maximum length 45 characters.
+	 */
+	public static String generateRandomString() {
+		BigInteger timeint = new BigInteger(Long.toString(System.nanoTime()));
+		String string = Base64.encodeAsString(timeint.toByteArray());
+		
+		if (string.length() > 45)
+			return string.substring(0, 45);
+		else return string;
+	}
 	
 	
 	
