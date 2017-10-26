@@ -9,5 +9,5 @@ export const { authServer, authSpotify, refreshAuthServer } = auth;
 export const { searchSpotify } = search;
 export const { recommendSong } = recommend;
 export const { getCurrentBracket } = bracket;
-export const { getCurrentVotes } = vote;
+export const { getCurrentVotes, recordVote } = vote;
 export const { getCurrentSong } = player;

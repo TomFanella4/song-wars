@@ -17,3 +17,35 @@ export const getCurrentVotes = bracketId => {
     .catch(err => reject(err));
   });
 }
+
+export const recordVote = vote => {
+  return new Promise((resolve, reject) => {
+    let { user_id, access_token } = loadUserProfile();
+    if (!user_id) {
+      reject('No user_id found');
+      return;
+    }
+
+    let uri = serverURI + '/brackets/current/' + vote.bracket_id + '/vote';
+
+    let body = {
+      user_id,
+      access_token,
+      vote
+    };
+
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+
+    let myInit = {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: myHeaders
+    }
+
+    fetch(uri, myInit)
+    .then(data => data.status)
+    .then(status => resolve(status))
+    .catch(err => reject(err));
+  });
+}
