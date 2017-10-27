@@ -29,6 +29,8 @@ public class PostVoteSelection implements RequestHandler<Map<String, Object>, Ma
 		Map<String, Object> json = new HashMap<String, Object>();
 		Map<String, Object> vote = new HashMap<String, Object>();
 
+		this.context = context;
+		this.logger = context.getLogger();
 		
 		//Local Variables
 		String access_token = null;
