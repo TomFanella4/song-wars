@@ -14,7 +14,7 @@ require('../../node_modules/jquery-bracket/dist/jquery.bracket.min.css');
 require('../../node_modules/jquery-bracket/dist/jquery.bracket.min.js');
 
 class BracketUI extends Component {
-  state = { preview1: null, preview2: null, winner: null, loading: true }
+  state = { preview1: null, preview2: null, winner: null, loading: { bracket: true, vote: true } }
 
   onMatchHover(cell) {
     cell && this.setState({ preview1: cell.Option1, preview2: cell.Option2 })
@@ -55,7 +55,12 @@ class BracketUI extends Component {
       //   ]
       // };
       
-      this.setState({ loading: false });
+      this.setState({ 
+        loading: {
+          ...this.state.loading,
+          bracket: false
+        }
+      });
       
       $('.leftBracket').bracket({
         skipConsolationRound: true,
@@ -77,7 +82,16 @@ class BracketUI extends Component {
       setBracketId(bracket.BracketId);
 
       getCurrentVotes(bracket.BracketId)
-      .then(list => setVoteList(list))
+      .then(list => {
+        setVoteList(list);
+
+        this.setState({
+          loading: {
+            ...this.state.loading,
+            vote: false
+          }
+        });
+      })
       .catch(err => console.error(err))
     })
     .catch(err => console.error(err));
@@ -87,7 +101,7 @@ class BracketUI extends Component {
     const { preview1, preview2, winner, loading } = this.state;
 
     return (
-      loading ?
+      loading.bracket ?
         <Loader active={true} size='massive' style={{ marginTop: 200 }} />
       :
         <div>
@@ -112,6 +126,8 @@ class BracketUI extends Component {
                       color='green'
                       size='huge'
                       onClick={this.props.changeView}
+                      disabled={loading.vote}
+                      loading={loading.vote}
                     />
                   :
                     <Button
