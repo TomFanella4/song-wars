@@ -44,11 +44,13 @@ class Vote extends Component {
     voteVisible: true,
     index: 0,
     song1: {
-      data: this.props.voteList.matchups.length > 0 ? this.props.voteList.matchups[0].song1 : null,
+      data: this.props.voteList.matchups &&
+        this.props.voteList.matchups.length > 0 ? this.props.voteList.matchups[0].song1 : null,
       visible: true
     },
     song2: {
-      data: this.props.voteList.matchups.length > 0 ? this.props.voteList.matchups[0].song2 : null,
+      data: this.props.voteList.matchups &&
+        this.props.voteList.matchups.length > 0 ? this.props.voteList.matchups[0].song2 : null,
       visible: true
     }
   };
@@ -116,12 +118,22 @@ class Vote extends Component {
       });
   }
 
+  formatVoteName(name) {
+    let formatedName = name.slice(0, 20);
+
+    return name.length > 20 ?
+      formatedName.concat('...')
+    :
+      formatedName;
+  }
+
   render() {
     const { voteVisible, song1, song2, index } = this.state;
     const { voteList } = this.props;
     // console.log(voteList);
 
     return (
+      voteList.matchups &&
       index < voteList.matchups.length ?
         <Segment compact>
         
@@ -160,13 +172,13 @@ class Vote extends Component {
                   <Button.Group size='massive' >
                     <Button
                       color='red'
-                      content={song1.data.name}
+                      content={this.formatVoteName(song1.data.name)}
                       onClick={this.handleVoteClick.bind(this, song1, 1)}
                     />
                     <Button.Or />
                     <Button
                       color='green'
-                      content={song2.data.name}
+                      content={this.formatVoteName(song2.data.name)}
                       onClick={this.handleVoteClick.bind(this, song2, 2)}
                     />
                   </Button.Group>
