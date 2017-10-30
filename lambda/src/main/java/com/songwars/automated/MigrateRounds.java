@@ -30,7 +30,7 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 		this.logger = context.getLogger();
 		// Local Variables:
 		String bracket_id = null;
-		int round;
+		int round = 1;
 		HashMap<String, ArrayList<Matchup>> brackets_matchups = new HashMap<String, ArrayList<Matchup>>();
 		HashMap<String, ArrayList<Matchup>> brackets_next_rounds = new HashMap<String, ArrayList<Matchup>>();
 		ArrayList<String> bracket_ids = new ArrayList<String>();
@@ -54,6 +54,7 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 				ArrayList<Matchup> matchups = null;
 				// Create new ArrayList for bracket if not created already:
 				bracket_id = result.getString("bracket_id");
+				round = result.getInt("round");
 				if (brackets_matchups.containsKey(bracket_id)) {
 					matchups = brackets_matchups.get(bracket_id);
 				} else {
@@ -102,9 +103,6 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 					matchups.add(m);
 				}
 			}
-			result.beforeFirst();
-			result.next();
-			round = result.getInt("round");
 			result.close();
 			pstatement.close();
 			
