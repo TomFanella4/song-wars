@@ -143,11 +143,20 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			
 			// Copy rows into bracket_history, then delete them from last_week_bracket:
 			String insertquery = "INSERT INTO bracket_history SELECT * FROM last_week_bracket";
-			String deletequery = "DELETE FROM last_week_bracket";
+			String deletequery1 = "DELETE FROM last_week_bracket";
+			String deletequery2 = "DELETE FROM users_last_week_bracket";
+			String deletequery3 = "DELETE FROM users_recommendations";
+			String deletequery4 = "DELETE FROM recommendations";
 			PreparedStatement pstatement1 = con.prepareStatement(insertquery);
-			PreparedStatement pstatement2 = con.prepareStatement(deletequery);
+			PreparedStatement pstatement2 = con.prepareStatement(deletequery1);
+			PreparedStatement pstatement3 = con.prepareStatement(deletequery2);
+			PreparedStatement pstatement4 = con.prepareStatement(deletequery3);
+			PreparedStatement pstatement5 = con.prepareStatement(deletequery4);
 			pstatement1.execute();
 			pstatement2.execute();
+			//pstatement3.execute();
+			//pstatement4.execute();
+			//pstatement5.execute();
 			
 			int[] statuses = pstatement.executeBatch();
 			
@@ -161,6 +170,9 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			
 			pstatement1.close();
 			pstatement2.close();
+			pstatement3.close();
+			pstatement4.close();
+			pstatement5.close();
 			pstatement.close();
 			
 

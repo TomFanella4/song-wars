@@ -16,6 +16,16 @@ public class UpdateStats implements RequestHandler<Object, String> {
 	private LambdaLogger logger;
 	
 	
+	/**
+	 * The current stats to be displayed on the website are: 
+	 * 
+	 * # of recommendations for this week
+	 * # of votes counted
+	 * # Most nominated artists
+	 * # Top winning songs
+	 */
+	
+	
 	@Override
 	public String handleRequest(Object input, Context context) {
 				
