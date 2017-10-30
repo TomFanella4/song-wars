@@ -29,12 +29,24 @@ class BracketUI extends Component {
 
       const leftBracket = {
         teams: bracket.RightSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
-        results: bracket.RightSide.map(col => col.map(cell => [cell.Option1.votes, cell.Option2.votes, cell]))
+        results: bracket.RightSide.map((col, i) => (
+          col.map(cell => [
+            i + 1 < bracket.RightSide.length ? cell.Option1.votes : null,
+            i + 1 < bracket.RightSide.length ? cell.Option2.votes : null,
+            cell
+          ])
+        ))
       };
 
       const rightBracket = {
         teams: bracket.LeftSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
-        results: bracket.LeftSide.map(col => col.map(cell => [cell.Option1.votes, cell.Option2.votes, cell]))
+        results: bracket.LeftSide.map((col, i) => (
+          col.map(cell => [
+            i + 1 < bracket.LeftSide.length ? cell.Option1.votes : null,
+            i + 1 < bracket.LeftSide.length ? cell.Option2.votes : null,
+            cell
+          ])
+        ))
       };
 
       if (bracket.Winner) {
@@ -79,9 +91,9 @@ class BracketUI extends Component {
         init: rightBracket
       });
 
-      setBracketId(bracket.BracketId);
+      setBracketId(bracket.bracket_id);
 
-      getCurrentVotes(bracket.BracketId)
+      getCurrentVotes(bracket.bracket_id)
       .then(list => {
         setVoteList(list);
 
