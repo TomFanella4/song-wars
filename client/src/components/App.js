@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { Sidebar, Segment, Container } from 'semantic-ui-react'
 
 import '../styles/App.css';
@@ -14,6 +14,7 @@ import Bracket from './Bracket';
 import Search from './Search';
 import Statistics from './Statistics';
 import About from './About';
+import Auth from '../containers/Auth';
 import NoMatch from './NoMatch';
 
 class App extends Component {
@@ -42,6 +43,7 @@ class App extends Component {
 
   render() {
     const mainStyle = this.getMainContentStyle();
+    const { access_token } = this.props.userProfile;
 
     return (
       <div>
@@ -56,8 +58,14 @@ class App extends Component {
                 <Switch>
                   <Route exact path='/' component={Bracket} />
                   <Route path='/bracket' component={Bracket} />
-                  <Route path='/search' component={Search} />
-                  <Route path='/statistics' component={Statistics} />
+                  <Route
+                    path='/search'
+                    render={() => access_token ? <Search /> : <Redirect to='/auth' />}
+                  />
+                  <Route
+                    path='/statistics'
+                    component={() => access_token ? <Statistics /> : <Redirect to='/auth' />}
+                  />
                   <Route path='/about' component={About} />
                   <Route component={NoMatch} />
                 </Switch>
@@ -75,7 +83,8 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   pageWidth: state.pageWidth,
-  sidebarIsVisible: state.sidebarIsVisible
+  sidebarIsVisible: state.sidebarIsVisible,
+  userProfile: state.userProfile
 });
 
 const mapDispatchToProps = dispatch => ({

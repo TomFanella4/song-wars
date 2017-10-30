@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Menu, Button, Header, Icon } from 'semantic-ui-react';
 
 import { toggleSidebar, setUserProfile } from '../actions';
@@ -41,14 +42,16 @@ class TopMenu extends Component {
                 <Header as='h4'>Welcome, {this.props.userProfile.name}</Header>
               </Menu.Item>
             }
-            <Menu.Item>
-              <Button
-                onClick={this.logout.bind(this)}
-                icon='log out'
-                content='Log Out'
-                secondary
-              />
-            </Menu.Item>
+            <Link to='/'>
+              <Menu.Item>
+                  <Button
+                    onClick={this.logout.bind(this)}
+                    icon='log out'
+                    content='Log Out'
+                    secondary
+                  />
+              </Menu.Item>
+            </Link>
           </Menu.Menu>
         }
       </Menu>

@@ -5,13 +5,15 @@ import { Redirect } from 'react-router-dom';
 
 import { setUserProfile } from '../actions';
 import { saveUserProfile } from '../common'
-import { authServer } from '../api';
+import { authServer, authSpotify } from '../api';
 
 class Auth extends Component {
   state = { authenticated: false };
   
   componentDidMount() {
     let uriSearch = this.props.location.search;
+    let { access_token } = this.props.userProfile;
+
     if (uriSearch.includes('code')) {
       let start = uriSearch.indexOf('=') + 1;
       let code = uriSearch.substring(start);
@@ -25,8 +27,10 @@ class Auth extends Component {
       .then(() => {
         this.setState({ authenticated: true });
       })
-    } else {
+    } else if (access_token) {
       this.setState({ authenticated: true });
+    } else {
+      authSpotify();
     }
   }
 
@@ -45,11 +49,15 @@ class Auth extends Component {
   }
 };
 
+const mapStateToProps = state => ({
+  userProfile: state.userProfile
+});
+
 const mapDispatchToProps = dispatch => ({
   onUserAuthenticated: userProfile => dispatch(setUserProfile(userProfile))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Auth);
