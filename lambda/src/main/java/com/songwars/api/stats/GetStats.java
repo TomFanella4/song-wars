@@ -1,6 +1,7 @@
 package com.songwars.api.stats;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,7 +18,32 @@ import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
 
 public class GetStats implements RequestHandler<Map<String, Object>, Map<String, Object>> {
-
+	
+	/**
+	 * The current stats to be displayed on the website are: 
+	 * 
+	 * # of recommendations for this week (inserted from migrate brackets!)
+	 * // TODO: Add this to MigrateBrackets!
+	 * id = 1, name = "recommendations", value = INT
+	 * 
+	 * # of votes counted
+	 * id = 2, name = "votes", value = INT
+	 * 
+	 * # Most nominated artists
+	 * id = 3, name = "[artist1]", value = number of songs recommended
+	 * id = 4, name = "[artist2]", value = number of songs rec...
+	 * ...
+	 * id = 12, name = "[artist10]", value = number of songs recommended
+	 * 
+	 * # Top winning songs
+	 * id = 13, name = "[songname1]", value = number of wins
+	 * id = 14, name = "[songname2]", value = number of ...
+	 * ...
+	 * id = 22, name = "[songname10]", value = number of wins
+	 * 
+	 */
+	
+	
 	private Context context;
 	private LambdaLogger logger;
 	
@@ -35,13 +61,8 @@ public class GetStats implements RequestHandler<Map<String, Object>, Map<String,
 		// Local Input Variables:
 		String user_id = null;
 		String access_token = null;
-		String bracket_id = null;
-		ArrayList<Integer> posRange = new ArrayList<Integer>();
-		ArrayList<Integer> votesCasted = new ArrayList<Integer>();
-		ArrayList<Integer> votesToCast = null;
-		ArrayList<Matchup> matchups = new ArrayList<Matchup>();
-		Set<Integer> votesToCastSet = null;
-		int round = 0;
+		ArrayList<HashMap<String, Object>> artists = new ArrayList<HashMap<String, Object>>(10);
+		ArrayList<HashMap<String, Object>> songs = new ArrayList<HashMap<String, Object>>(10);
 		
 		// Find Path:
 		params = Validate.field(input, "params");
@@ -51,12 +72,6 @@ public class GetStats implements RequestHandler<Map<String, Object>, Map<String,
 		// Perform Validation of Input:
 		user_id = Validate.sqlstring(querystring, "user_id");
 		access_token = Validate.sqlstring(querystring, "access_token");
-		bracket_id = Validate.sqlstring(path, "bracket-id");
-
-		// @Obsolete - Round is now identified through its own sql query.
-		// Get which round is supposed to be voted on today:
-		//round = Rounds.getFromMillis(System.currentTimeMillis());
-		//round = Rounds.getFromEnviron();
 		
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
@@ -67,6 +82,40 @@ public class GetStats implements RequestHandler<Map<String, Object>, Map<String,
 			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
 			Statement statement = con.createStatement();
 			ResultSet result = statement.executeQuery(query);
+			
+			if (!result.next())
+				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
+			result.close();
+			statement.close();
+
+			// Get stats information:
+			query = "SELECT * FROM stats";
+			PreparedStatement pstatement = con.prepareStatement(query);
+			result = pstatement.executeQuery();
+			
+			logger.log("artists: " + artists.size() + "\n");
+			logger.log("songs: " + songs.size() + "\n");
+			
+			
+			while (result.next()) {
+				int id = result.getInt("id");
+				if (id == 1)
+					response.put("recommendations", result.getInt("value"));
+				else if (id == 2)
+					response.put("votes", result.getInt("value"));
+				else if (id <= 12) {
+					HashMap<String, Object> artist = new HashMap<String, Object>();
+					artist.put("name", result.getString("name"));
+					artist.put("count", result.getInt("value"));
+					artists.add(id - 3, artist);
+				}
+				else {
+					HashMap<String, Object> song = new HashMap<String, Object>();
+					song.put("name", result.getString("name"));
+					song.put("count", result.getInt("value"));
+					songs.add(id - 13, song);
+				}
+			}
 			
 		} catch (SQLException ex) {
 			// handle any errors
@@ -90,12 +139,8 @@ public class GetStats implements RequestHandler<Map<String, Object>, Map<String,
 		
 		response.put("user_id", user_id);
 		response.put("access_token", access_token);
-		response.put("bracket_id", bracket_id);
-		response.put("round", round);
-		ArrayList<Map<String, Object>> matchups_maps = new ArrayList<Map<String, Object>>();
-		for (Matchup m : matchups)
-			matchups_maps.add(m.toMap());
-		response.put("matchups", matchups_maps);
+		response.put("top_artists", artists);
+		response.put("top_songs", songs);
 			
 		return response;
 		
