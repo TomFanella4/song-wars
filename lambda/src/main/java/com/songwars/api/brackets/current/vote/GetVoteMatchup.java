@@ -119,6 +119,18 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			votesToCast = new ArrayList<Integer>(votesToCastSet);
 			Collections.shuffle(votesToCast);
 			
+			// Check if there are no more votes left:
+			if (votesToCast.size() == 0) {
+				response.put("user_id", user_id);
+				response.put("access_token", access_token);
+				response.put("bracket_id", bracket_id);
+				response.put("round", round);
+				ArrayList<String> empty = new ArrayList<String>();
+				response.put("matchups", empty);
+					
+				return response;
+			}
+			
 			// Make paired list of songs (ie. matchups)
 			boolean exists = false;
 			for (Integer v : votesToCast) {
