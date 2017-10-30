@@ -101,8 +101,10 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			result = pstatement.executeQuery();
 			
 			// Fill position values:
-			for (int i = 0; result.next(); i++)
+			for (int i = 0; result.next(); i++) {
 				votesCasted.add(result.getInt("position"));
+				votesCasted.add(Utilities.getOpponentsPosition(result.getInt("position")));
+			}
 			
 			result.close();
 			pstatement.close();
