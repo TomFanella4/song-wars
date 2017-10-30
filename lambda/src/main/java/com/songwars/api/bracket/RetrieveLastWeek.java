@@ -82,8 +82,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				int round = res.getInt("round");
 				int position = res.getInt("position");
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
-					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("uri", previewUrl); data.put("album", albumName); data.put("album_image", albumImage);
-					data.put("artist", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
+					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
+					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
 					roundOneBracketData.add(data);
 					bracket_id = bracketId;
 					
@@ -110,8 +110,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				int round = res.getInt("round");
 				int position = res.getInt("position");
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
-					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("uri", previewUrl); data.put("album", albumName); data.put("album_image", albumImage);
-					data.put("artist", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
+					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
+					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
 					roundTwoBracketData.add(data);
 			}
 			
@@ -132,8 +132,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				int round = res.getInt("round");
 				int position = res.getInt("position");
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
-					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("uri", previewUrl); data.put("album", albumName); data.put("album_image", albumImage);
-					data.put("artist", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
+					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
+					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
 					roundThreeBracketData.add(data);
 			}
 			
@@ -154,8 +154,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				int round = res.getInt("round");
 				int position = res.getInt("position");
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
-					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("uri", previewUrl); data.put("album", albumName); data.put("album_image", albumImage);
-					data.put("artist", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
+					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
+					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
 					roundFourBracketData.add(data);
 			}
 			
@@ -176,8 +176,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				int round = res.getInt("round");
 				int position = res.getInt("position");
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
-					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("uri", previewUrl); data.put("album", albumName); data.put("album_image", albumImage);
-					data.put("artist", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
+					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
+					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
 					winnerData.add(data);
 			}
 			
@@ -271,7 +271,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			
 			
 			//Add bracket data to response
-			response.put("BracketId", bracket_id);
+			response.put("bracket_id", bracket_id);
 			response.put("LeftSide", leftSide);
 			response.put("RightSide", rightSide);
 			if(!finals.isEmpty()) {
