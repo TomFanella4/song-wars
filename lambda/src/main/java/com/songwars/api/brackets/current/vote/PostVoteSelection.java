@@ -82,13 +82,13 @@ public class PostVoteSelection implements RequestHandler<Map<String, Object>, Ma
 			statement.close();
 			
 			//Check if the user has already voted on a song or it's opponent 
-			query = "SELECT * FROM users_last_week_bracket WHERE user_id='" + user_id + "' AND bracket_id='" + bracket_id + "' AND round=" + round + " AND position=" + position + " OR position=" + opponentPosition;
+			query = "SELECT * FROM users_last_week_bracket WHERE user_id='" + user_id + "' AND bracket_id='" + bracket_id + "' AND round=" + round + " AND (position=" + position + " OR position=" + opponentPosition + ")";
 			logger.log(query + "\n");
 			statement = con.createStatement();
 			result = statement.executeQuery(query);
 			
 			if (result.next())
-				throw new RuntimeException("[BadRequest] Song has already been voted on by this user.");
+				throw new RuntimeException("[BadRequest] Song has already been voted on by this user in this matchup.");
 			result.close();
 			statement.close();
 			
