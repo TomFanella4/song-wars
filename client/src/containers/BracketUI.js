@@ -31,8 +31,8 @@ class BracketUI extends Component {
         teams: bracket.RightSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
         results: bracket.RightSide.map((col, i) => (
           col.map(cell => [
-            i + 1 < bracket.RightSide.length ? cell.Option1.votes : null,
-            i + 1 < bracket.RightSide.length ? cell.Option2.votes : null,
+            i + 1 < bracket.RightSide.length || bracket.Finals ? cell.Option1.votes : null,
+            i + 1 < bracket.RightSide.length || bracket.Finals ? cell.Option2.votes : null,
             cell
           ])
         ))
@@ -42,8 +42,8 @@ class BracketUI extends Component {
         teams: bracket.LeftSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
         results: bracket.LeftSide.map((col, i) => (
           col.map(cell => [
-            i + 1 < bracket.LeftSide.length ? cell.Option1.votes : null,
-            i + 1 < bracket.LeftSide.length ? cell.Option2.votes : null,
+            i + 1 < bracket.LeftSide.length || bracket.Finals ? cell.Option1.votes : null,
+            i + 1 < bracket.LeftSide.length || bracket.Finals ? cell.Option2.votes : null,
             cell
           ])
         ))
@@ -138,7 +138,7 @@ class BracketUI extends Component {
                       color='green'
                       size='huge'
                       onClick={this.props.changeView}
-                      disabled={loading.vote}
+                      disabled={loading.vote || !this.props.length}
                       loading={loading.vote}
                     />
                   :
@@ -165,7 +165,8 @@ class BracketUI extends Component {
 }
 
 const mapStateToProps = state => ({
-  userProfile: state.userProfile
+  userProfile: state.userProfile,
+  voteList: state.voteList
 });
 
 const mapDispatchToProps = dispatch => ({
