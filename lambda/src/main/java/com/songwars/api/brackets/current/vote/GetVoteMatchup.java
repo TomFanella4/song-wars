@@ -110,14 +110,19 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			pstatement.close();
 			
 			// Fill possible position values:
-			for (int i = 1; i <= 16/round; i++)
+			for (int i = 1; i <= (int) (16/Math.pow(2, round-1)); i++)
 				posRange.add(i);
+			
+			//logger.log("votesCasted: " + Arrays.toString(votesCasted.toArray()) + "\n");
+			//logger.log("posRange: " + Arrays.toString(posRange.toArray()) + "\n");
 			
 			// Get random positions of songs yet to be cast
 			votesToCastSet = new HashSet<Integer>(posRange);
 			votesToCastSet.removeAll(new HashSet<Integer>(votesCasted));
 			votesToCast = new ArrayList<Integer>(votesToCastSet);
 			Collections.shuffle(votesToCast);
+			
+			//logger.log("votesToCast: " + Arrays.toString(votesToCast.toArray()) + "\n");
 			
 			// Check if there are no more votes left:
 			if (votesToCast.size() == 0) {
@@ -142,7 +147,7 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 				}
 				if (exists == false)
 					matchups.add(new Matchup(round, v));
-				exists = false;
+				exists = false;	
 			}
 			
 			
