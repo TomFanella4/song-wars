@@ -33,27 +33,10 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 	public Map<String, Object> handleRequest(Map<String, Object> input, Context context) {
 				
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
-		
-		//Retrieve access token...need to grab the Validate class
-		
-//		Map<String, Object> json;
-//		String access_token = null;
-//		
-//		json  = Validate.field(input, "body_json");
-//		access_token = Validate.sqlstring(json, "access_token");
-		
+				
 		Connection con = Utilities.getRemoteConnection(context);
 		try {
 			
-//			//validate user
-//			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
-//			Statement statement = con.createStatement();
-//			ResultSet res = statement.executeQuery(query);
-//
-//			if (!res.next())
-//				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
-//			res.close();
-//			statement.close();
 			
 			//Storage for match up data
 			LinkedHashMap<String, Object> matchup = new LinkedHashMap<String, Object>();
@@ -61,7 +44,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			ArrayList<Object> leftSide = new ArrayList<>();
 			ArrayList<Object> rightSide = new ArrayList<>();
 			ArrayList<Object> finals = new ArrayList<>();
-			ArrayList<Object> winner = new ArrayList<>(); 
+			LinkedHashMap<String, Object> winner = new LinkedHashMap<String, Object>(); 
 			String bracket_id = null;
 			
 			//Query for round 1 rows
@@ -159,12 +142,11 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 					roundFourBracketData.add(data);
 			}
 			
-			//Calculate the winner
-			query = "SELECT * FROM last_week_bracket WHERE round = 4 ORDER BY votes DESC LIMIT 1";
+			//Query for the winner
+			query = "SELECT * FROM last_week_bracket WHERE round = 5";
 			statement = con.createStatement();
 			res = statement.executeQuery(query);
-			ArrayList<LinkedHashMap<String, Object>> winnerData = new ArrayList<>();
-			while(res.next()) {
+			if(res.next()) {
 				String id = res.getString("id");
 				String name = res.getString("name");
 				int popularity = res.getInt("popularity");
@@ -175,10 +157,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				int votes = res.getInt("votes");
 				int round = res.getInt("round");
 				int position = res.getInt("position");
-				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
-					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
-					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
-					winnerData.add(data);
+				winner.put("id", id); winner.put("name", name); winner.put("popularity", popularity); winner.put("preview_url", previewUrl); winner.put("album_name", albumName); winner.put("album_image", albumImage);
+				winner.put("artists_name", artistName); winner.put("votes", votes); winner.put("round", round); winner.put("position", position);
 			}
 			
 
@@ -253,22 +233,6 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				finals.add(matchupData);
 				matchupData = new ArrayList<LinkedHashMap<String, Object>>();
 			}
-			
-			//calculate the winner based off of the two finals
-			if(!winnerData.isEmpty()) {
-				matchup.put("Option1", winnerData.get(0));
-				matchupData.add(matchup);
-				matchup = new LinkedHashMap<String, Object>();
-				winner.add(matchupData);
-				matchupData = new ArrayList<LinkedHashMap<String, Object>>();
-			}
-			
-			
-			
-			
-			
-			
-			
 			
 			//Add bracket data to response
 			response.put("bracket_id", bracket_id);
