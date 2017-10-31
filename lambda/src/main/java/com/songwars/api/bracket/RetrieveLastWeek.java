@@ -142,7 +142,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 					roundFourBracketData.add(data);
 			}
 			
-			//Query for the winner
+			//Query for winner
 			query = "SELECT * FROM last_week_bracket WHERE round = 5";
 			statement = con.createStatement();
 			res = statement.executeQuery(query);
@@ -228,9 +228,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				//Round 4 (finals)
 				matchup.put("Option1", roundFourBracketData.get(0));
 				matchup.put("Option2", roundFourBracketData.get(1));
-				matchupData.add(matchup);
+				finals.add(matchup);
 				matchup = new LinkedHashMap<String, Object>();
-				finals.add(matchupData);
 				matchupData = new ArrayList<LinkedHashMap<String, Object>>();
 			}
 			
