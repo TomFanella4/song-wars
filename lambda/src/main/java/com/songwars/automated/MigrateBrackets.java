@@ -54,10 +54,39 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			pstatement.execute();
 			con.commit();
 			
+			
+
+			// Get recommendations count for stats table:
+			query = "SELECT count FROM recommendations";
+			pstatement = con.prepareStatement(query);
+			ResultSet result = pstatement.executeQuery();
+			con.commit();
+			
+			int recommendation_total = 0;
+			while (result.next()) {
+				recommendation_total += result.getInt("count");
+			}
+			result.close();
+			pstatement.close();
+			
+			// Insert recommendations total into stats table:
+			query = "INSERT INTO stats (id, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value=?";
+			pstatement = con.prepareStatement(query);
+			pstatement.setInt(1, 1);
+			pstatement.setString(2, "recommendations");
+			pstatement.setInt(3, recommendation_total);
+			pstatement.setInt(4, recommendation_total);
+			pstatement.execute();
+			con.commit();
+			
+			pstatement.close();
+			
+			
+			
 			// SELECT top recommendations from < X popularity:
 			query = "SELECT * FROM recommendations WHERE popularity<=70 ORDER BY count DESC LIMIT 8";
 			pstatement = con.prepareStatement(query);
-			ResultSet result = pstatement.executeQuery();
+			result = pstatement.executeQuery();
 			con.commit();
 			
 			while (result.next()) {
@@ -176,7 +205,7 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			pstatement1.close();
 			pstatement2.close();
 			pstatement3.close();
-			pstatement.close();
+			
 			
 
 		} catch (SQLException ex) {
