@@ -138,7 +138,7 @@ class BracketUI extends Component {
                       color='green'
                       size='huge'
                       onClick={this.props.changeView}
-                      disabled={loading.vote || !this.props.length}
+                      disabled={loading.vote || !this.props.voteList.matchups.length}
                       loading={loading.vote}
                     />
                   :

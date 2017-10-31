@@ -14,7 +14,6 @@ import Bracket from './Bracket';
 import Search from './Search';
 import Statistics from './Statistics';
 import About from './About';
-import Auth from '../containers/Auth';
 import NoMatch from './NoMatch';
 
 class App extends Component {
@@ -64,7 +63,7 @@ class App extends Component {
                   />
                   <Route
                     path='/statistics'
-                    component={() => access_token ? <Statistics /> : <Redirect to='/auth' />}
+                    render={() => access_token ? <Statistics /> : <Redirect to='/auth' />}
                   />
                   <Route path='/about' component={About} />
                   <Route component={NoMatch} />

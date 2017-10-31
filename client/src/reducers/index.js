@@ -22,7 +22,7 @@ const initialState = {
   userProfile: loadUserProfile(),
   bracketId: '',
   recommendedSongs: loadRecommendedSongs() || {},
-  voteList: []
+  voteList: {}
 };
 
 function rootReducer(state = initialState, action) {
