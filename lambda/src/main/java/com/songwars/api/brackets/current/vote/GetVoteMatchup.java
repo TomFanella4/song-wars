@@ -1,26 +1,21 @@
 package com.songwars.api.brackets.current.vote;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.http.annotation.Obsolete;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.songwars.api.utilities.Matchup;
-import com.songwars.api.utilities.Rounds;
 import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
 
@@ -91,6 +86,18 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 				round = result.getInt("round");
 			else
 				throw new RuntimeException("[InternalServerError] - No maximum round could be identified for bracket_id: " + bracket_id);
+			
+			// SPECIAL CONDITION if round = 5, report nothing (winner has already been selected):
+			if (round == 5) {
+				response.put("user_id", user_id);
+				response.put("access_token", access_token);
+				response.put("bracket_id", bracket_id);
+				response.put("round", round);
+				ArrayList<Map<String, Object>> matchups_maps = new ArrayList<Map<String, Object>>();
+				response.put("matchups", matchups_maps);
+					
+				return response;
+			}
 			
 			// Get the positions of votes that have already been cast:
 			query = "SELECT * FROM users_last_week_bracket WHERE user_id=? AND bracket_id=? AND round=?";
