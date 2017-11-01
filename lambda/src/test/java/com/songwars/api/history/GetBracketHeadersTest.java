@@ -11,7 +11,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class BracketHistoryTest {
+public class GetBracketHeadersTest {
 
     private static Object input;
 
@@ -31,8 +31,8 @@ public class BracketHistoryTest {
     }
 
     @Test
-    public void testBracketHistory() {
-        GetBracketHistory handler = new GetBracketHistory();
+    public void testGetBracketHeaders() {
+        GetBracketHeaders handler = new GetBracketHeaders();
         Context ctx = createContext();
 
         String output = handler.handleRequest(input, ctx);
