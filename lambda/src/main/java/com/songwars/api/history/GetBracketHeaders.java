@@ -62,8 +62,10 @@ public class GetBracketHeaders implements RequestHandler<Map<String, Object>, Ma
 					header.put(bracket_id, date);
 					bracketHeaderList.add(header);
 				}
+				
+
 //			}
-			
+			//if response empty return an exception
 			response.put("headers", bracketHeaderList);
 			
 			
