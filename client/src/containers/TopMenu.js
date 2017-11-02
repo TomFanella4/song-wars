@@ -39,7 +39,7 @@ class TopMenu extends Component {
           <Menu.Menu position='right'>
             {this.props.pageWidth >= mobileWidth &&
               <Menu.Item>
-                <Header as='h4'>Welcome, {this.props.userProfile.name}</Header>
+                <Header as='h4'>Welcome, {this.props.userProfile.user_id}</Header>
               </Menu.Item>
             }
             <Link to='/'>
