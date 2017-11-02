@@ -14,4 +14,4 @@ export const { getCurrentBracket } = bracket;
 export const { getCurrentVotes, recordVote } = vote;
 export const { getCurrentSong } = player;
 export const { getStats } = stats;
-export const { getbracketHistoryHeaders } = bracketHistory;
+export const { getBracketHistoryHeaders, getBracketHistoryFromID } = bracketHistory;

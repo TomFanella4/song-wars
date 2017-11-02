@@ -3,7 +3,7 @@ import {
   loadUserProfile
 } from '../common';
 
-export const getbracketHistoryHeaders = () => {
+export const getBracketHistoryHeaders = () => {
   return new Promise((resolve, reject) => {
     const { access_token, user_id } = loadUserProfile();
 
@@ -12,12 +12,23 @@ export const getbracketHistoryHeaders = () => {
     uri += '&access_token=' + encodeURIComponent(access_token);
 
     fetch(uri)
-    .then(data => data.status)
+    .then(data => data.json())
     .then(json => resolve(json))
     .catch(err => reject(err));
   });
 }
 
-// getbracketHistoryHeaders()
-// .then(res => console.log(res))
-// .catch(err => console.error(err))
+export const getBracketHistoryFromID = id => {
+  return new Promise((resolve, reject) => {
+    const { access_token, user_id } = loadUserProfile();
+
+    let uri = serverURI + '/brackets/history/' + id;
+    uri += '?user_id=' + encodeURIComponent(user_id);
+    uri += '&access_token=' + encodeURIComponent(access_token);
+
+    fetch(uri)
+    .then(data => data.json())
+    .then(json => resolve(json))
+    .catch(err => reject(err));
+  });
+}
