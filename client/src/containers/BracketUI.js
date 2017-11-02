@@ -164,7 +164,7 @@ class BracketUI extends Component {
                           onClick={authSpotify}
                         />
                     }
-                    <Header as='h2' content={'Day ' + round - 1} />
+                    <Header as='h2' content={'Day ' + (round - 1)} />
                   </div>
               }
             </span>
