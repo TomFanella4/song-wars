@@ -65,8 +65,9 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				int round = res.getInt("round");
 				int position = res.getInt("position");
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
+				//defect 17
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
-					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
+					data.put("artists_name", artistName); data.put("votes", 10); data.put("round", round); data.put("position", position);
 					roundOneBracketData.add(data);
 					bracket_id = bracketId;
 					
@@ -143,7 +144,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			}
 			
 			//Query for winner
-			query = "SELECT * FROM last_week_bracket WHERE round = 5";
+			//defect 20
+			query = "SELECT * FROM last_week_bracket WHERE round = 6";
 			statement = con.createStatement();
 			res = statement.executeQuery(query);
 			if(res.next()) {
