@@ -39,7 +39,7 @@ class BracketUI extends Component {
               cell.Option2.votes
             :
               null,
-            cell
+            i < bracket.RightSide.length - 1 ? cell : null
           ])
         ))
       };
@@ -56,7 +56,7 @@ class BracketUI extends Component {
               cell.Option2.votes
             :
               null,
-            cell
+              i < bracket.LeftSide.length - 1 ? cell : null
           ])
         ))
       };
