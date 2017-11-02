@@ -38,18 +38,18 @@ public class GetBracketHeaders implements RequestHandler<Map<String, Object>, Ma
 		
 		try {
 			// Check for an authorized user:
-//			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
-//			Statement statement = con.createStatement();
-//			ResultSet res = statement.executeQuery(query);
-//			if (!res.next())
-//				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
-//			res.close();
-//			statement.close();
-
-			//Retrieve all the bracket headers
-			String query = "SELECT * FROM bracket_headers";
+			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
 			Statement statement = con.createStatement();
 			ResultSet res = statement.executeQuery(query);
+			if (!res.next())
+				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
+			res.close();
+			statement.close();
+
+			//Retrieve all the bracket headers
+			query = "SELECT * FROM bracket_headers";
+			statement = con.createStatement();
+			res = statement.executeQuery(query);
 			
 //			if (!res.next()) {
 //				throw new RuntimeException("[BadRequest] No bracket headers to retrieve.");
@@ -58,8 +58,8 @@ public class GetBracketHeaders implements RequestHandler<Map<String, Object>, Ma
 					LinkedHashMap<String, Object> header = new LinkedHashMap<String, Object>();
 					String bracket_id = res.getString("bracket_id");
 					String date = res.getString("date");
-					header.put(bracket_id, date);
-					header.put(bracket_id, date);
+					header.put("bracket_id", bracket_id);
+					header.put("date", date);
 					bracketHeaderList.add(header);
 				}
 				
