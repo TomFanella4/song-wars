@@ -14,7 +14,7 @@ class Statistics extends Component {
 
   render() {
     const { stats } = this.state;
-    console.log(stats);
+    // console.log(stats);
 
     return (
         stats ?
