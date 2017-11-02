@@ -8,7 +8,7 @@ const devServerURI = 'https://zhryq6uuab.execute-api.us-west-2.amazonaws.com/Alp
 
 export const clientID = '52c0782611f74c95b5bd557ebfc62fcf';
 export const redirectURI = 'http://localhost:3000/auth';
-export const serverURI = prodServerURI;
+export const serverURI = devServerURI;
 export const scopes = 'user-read-currently-playing';
 export const expiredMessage = 'The access token expired';
 export const defaultSong = 'spotify:track:78WVLOP9pN0G3gRLFy1rAa';

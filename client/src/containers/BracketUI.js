@@ -67,7 +67,8 @@ class BracketUI extends Component {
       loading: {
         ...this.state.loading,
         bracket: false
-      }
+      },
+      round: bracket.round
     });
     
     $('.leftBracket').bracket({
