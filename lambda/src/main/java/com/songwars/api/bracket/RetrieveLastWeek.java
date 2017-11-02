@@ -46,7 +46,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			ArrayList<Object> finals = new ArrayList<>();
 			LinkedHashMap<String, Object> winner = new LinkedHashMap<String, Object>(); 
 			String bracket_id = null;
-			int currentRound = null;
+			int currentRound = 0;
 			
 			//Query for round 1 rows
 			String query = "SELECT * FROM last_week_bracket WHERE round = 1";
