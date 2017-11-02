@@ -87,7 +87,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			result = statement.executeQuery(query);
 			
 			if (result.next())
-				throw new RuntimeException("[BadRequest] Song has already been recommended by this user.");
+				//throw new RuntimeException("[BadRequest] Song has already been recommended by this user.");
 			result.close();
 			statement.close();
 			
@@ -100,18 +100,18 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			
 			// Recommend song:
 			if (album_image != null)
-				query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, album_image, count) VALUES (?, ?, ?, ?, ?, ?, ?, 1) ON DUPLICATE KEY UPDATE count=count+1";
+				query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, album_image, count) VALUES (?, '" + song_name + "', ?, ?, ?, ?, ?, 1) ON DUPLICATE KEY UPDATE count=count+1";
 			else
-				query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES (?, ?, ?, ?, ?, ?, 1) ON DUPLICATE KEY UPDATE count=count+1";
+				query = "INSERT INTO recommendations (id, name, preview_url, popularity, artists_name, album_name, count) VALUES (?, '" + song_name + "', ?, ?, ?, ?, 1) ON DUPLICATE KEY UPDATE count=count+1";
 			PreparedStatement pstatement = con.prepareStatement(query);
 			pstatement.setString(1, song_id);
-			pstatement.setString(2, song_name);
-			pstatement.setString(3, song_preview_url);
-			pstatement.setInt(4, song_popularity);
-			pstatement.setString(5, artists_name);
-			pstatement.setString(6, album_name);
+			//pstatement.setString(2, song_name);
+			pstatement.setString(2, song_preview_url);
+			pstatement.setInt(3, song_popularity);
+			pstatement.setString(4, artists_name);
+			pstatement.setString(5, album_name);
 			if (album_image != null)
-				pstatement.setString(7, album_image);
+				pstatement.setString(6, album_image);
 			pstatement.execute();
 			pstatement.close();
 			

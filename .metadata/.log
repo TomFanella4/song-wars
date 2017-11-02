@@ -2254,3 +2254,328 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 02:31:28.796
 !MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:11:14.141
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:11:14.344
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:11:16.745
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:11:16.765
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:13:16.641
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:13:16.693
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:13:39.204
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:13:39.234
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:14:13.387
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda2366392759376650039.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:14:13.892
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda2366392759376650039.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:14:19.000
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_MigrateBrackets updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:14:19.143
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:14:19.153
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_MigrateBrackets
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:14:19.261
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:14:19.359
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:14:28.685
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:14:28.751
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:15:11.342
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda9035981703391229881.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:15:12.075
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda9035981703391229881.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:15:16.457
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_MigrateBrackets created.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:15:16.588
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:15:16.596
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_MigrateBrackets
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:15:16.720
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:15:16.754
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:16:28.732
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:16:28.782
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:16:53.850
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:16:53.875
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.jface.text 2 0 2017-11-02 10:17:33.663
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2017-11-02 10:17:33.672
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:17:39.976
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:17:40.023
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.recommenders.models.rcp 1 11 2017-11-02 10:18:29.252
+!MESSAGE The model index service was accessed either before it started or after it finished running.
+!STACK 0
+org.eclipse.recommenders.utils.Logs$LogTraceException
+	at org.eclipse.recommenders.utils.Logs$LogTraceException.newTrace(Logs.java:381)
+	at org.eclipse.recommenders.utils.Logs.log(Logs.java:134)
+	at org.eclipse.recommenders.utils.Logs.log(Logs.java:126)
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelIndex.suggest(EclipseModelIndex.java:211)
+	at org.eclipse.recommenders.models.SimpleModelProvider.acquireModel(SimpleModelProvider.java:70)
+	at org.eclipse.recommenders.models.PoolingModelProvider.access$0(PoolingModelProvider.java:1)
+	at org.eclipse.recommenders.models.PoolingModelProvider$ModelPoolFactoryMediator.makeObject(PoolingModelProvider.java:96)
+	at org.eclipse.recommenders.models.PoolingModelProvider$ModelPoolFactoryMediator.makeObject(PoolingModelProvider.java:1)
+	at org.apache.commons.pool.impl.GenericKeyedObjectPool.borrowObject(GenericKeyedObjectPool.java:1220)
+	at org.eclipse.recommenders.models.PoolingModelProvider.acquireModel(PoolingModelProvider.java:67)
+	at org.eclipse.recommenders.internal.calls.rcp.RcpCallModelProvider.acquireModel(RcpCallModelProvider.java:65)
+	at org.eclipse.recommenders.internal.calls.rcp.RcpCallModelProvider.acquireModel(RcpCallModelProvider.java:1)
+	at org.eclipse.recommenders.internal.models.rcp.PrefetchModelArchiveJob.run(PrefetchModelArchiveJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:18:34.598
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:18:34.621
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:18:58.983
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:18:59.009
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:19:33.571
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda3926039363330965912.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:19:34.170
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda3926039363330965912.zip
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:19:41.994
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:19:42.024
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:19:42.433
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetVoteMatchup updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:19:42.565
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:19:42.576
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetVoteMatchup
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:19:43.124
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:19:43.145
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:20:05.551
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda4842439306104854454.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:20:06.186
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda4842439306104854454.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:20:11.683
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_GetVoteMatchup created.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:20:11.862
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:20:11.872
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_GetVoteMatchup
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:20:12.101
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:20:12.238
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:21:49.292
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:21:49.335
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:23:20.176
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:23:20.215
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:23:26.074
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:23:26.108
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:24:08.815
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:24:08.839
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:24:23.656
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:24:23.680
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:24:57.848
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:24:57.878
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:25:29.020
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:25:29.048
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:25:32.422
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:25:32.462
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:25:33.567
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:25:33.594
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:26:17.429
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda9037907326724884639.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:26:18.046
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda9037907326724884639.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:26:22.650
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_RecommendSong created.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:26:23.172
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:26:23.201
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_RecommendSong
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:26:23.459
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:26:23.717
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:27:13.809
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:27:13.825
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:27:37.130
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda6367957820438087903.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:27:37.838
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda6367957820438087903.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:28:08.285
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_GetVoteMatchup updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:28:08.388
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 10:28:08.395
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_GetVoteMatchup
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:28:08.495
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:28:08.531
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 11:32:28.890
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda5238669135606953387.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 11:32:29.655
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda5238669135606953387.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 11:32:32.657
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_ValidateUser created.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 11:32:32.752
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 11:32:32.770
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_ValidateUser
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 11:32:32.905
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 11:32:32.967
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 12:00:06.648
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 12:00:06.704
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 12:00:46.178
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda2678644225133001175.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 12:00:46.997
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda2678644225133001175.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 12:00:51.281
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_RecommendSong updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 12:00:51.338
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 12:00:51.344
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_RecommendSong
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 12:00:51.443
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 12:00:51.465
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!

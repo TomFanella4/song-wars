@@ -73,7 +73,7 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			pstatement.setString(2, "recommendations");
 			pstatement.setInt(3, recommendation_total);
 			pstatement.setInt(4, recommendation_total);
-			pstatement.execute();
+			//pstatement.execute();
 			con.commit();
 			
 			pstatement.close();
@@ -191,9 +191,9 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			PreparedStatement pstatement5 = con.prepareStatement(deletequery4);
 			pstatement1.execute();
 			pstatement2.execute();
-			//pstatement3.execute();
-			//pstatement4.execute();
-			//pstatement5.execute();
+			pstatement3.execute();
+			pstatement4.execute();
+			pstatement5.execute();
             
             int[] statuses = pstatement.executeBatch();
 			

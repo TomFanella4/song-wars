@@ -16,6 +16,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.songwars.api.utilities.Matchup;
+import com.songwars.api.utilities.Rounds;
 import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
 
@@ -87,6 +88,9 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			else
 				throw new RuntimeException("[InternalServerError] - No maximum round could be identified for bracket_id: " + bracket_id);
 			
+			// Checks for out of bounds day, and throws exception if so.
+			Rounds.getFromMillis(System.currentTimeMillis());
+			
 			// SPECIAL CONDITION if round = 5, report nothing (winner has already been selected):
 			if (round == 5) {
 				response.put("user_id", user_id);
@@ -127,7 +131,7 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			votesToCastSet = new HashSet<Integer>(posRange);
 			votesToCastSet.removeAll(new HashSet<Integer>(votesCasted));
 			votesToCast = new ArrayList<Integer>(votesToCastSet);
-			Collections.shuffle(votesToCast);
+			//Collections.shuffle(votesToCast);
 			
 			//logger.log("votesToCast: " + Arrays.toString(votesToCast.toArray()) + "\n");
 			

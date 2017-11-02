@@ -38,7 +38,7 @@ public class Rounds {
 		
 		round = c.get(Calendar.DAY_OF_WEEK);
 		if (round == Calendar.SUNDAY || round == Calendar.MONDAY || round == Calendar.SATURDAY)
-			throw new RuntimeException("[VotingClosed] - Bracket not open today.");
+			throw new RuntimeException("[PVotingClosed] - Bracket not open today.");
 		else if (round == Calendar.TUESDAY)
 			return 1;
 		else if (round == Calendar.WEDNESDAY)
