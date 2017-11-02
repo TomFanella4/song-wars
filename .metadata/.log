@@ -2401,3 +2401,135 @@ org.eclipse.core.runtime.CoreException: The archive: /lambda/C:/Users/bmaxf/Docu
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:59:11.997
 !MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:51:12.641
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:51:12.648
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:51:24.235
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:51:24.244
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:52:13.795
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:52:13.827
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 16:52:27.713
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda5704744010352571998.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 16:52:29.290
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda5704744010352571998.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 16:52:34.105
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 16:52:34.915
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 16:52:34.921
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:52:45.021
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:52:45.431
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:58:03.417
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 16:58:03.432
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:00:20.804
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:00:20.810
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:01:36.708
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda5277953374057446479.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:01:38.622
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda5277953374057446479.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:01:44.607
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:01:44.691
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:01:44.692
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:01:44.846
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:01:44.862
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:04:48.158
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:04:48.175
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:09:33.561
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:09:33.601
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:09:47.112
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda5059147449381001323.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:09:49.556
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda5059147449381001323.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:09:52.948
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:09:53.148
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:09:53.151
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:09:53.271
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:09:53.277
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:15:56.760
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:15:56.767
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:16:28.415
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda3638107852163194636.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:16:29.245
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda3638107852163194636.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:16:32.525
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHistory updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:16:32.552
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:16:32.553
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHistory
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:16:32.667
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:16:32.669
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
