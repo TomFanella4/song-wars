@@ -1,5 +1,6 @@
 package com.songwars.api.utilities;
 
+import java.awt.Point;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,6 +18,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.util.Base64;
 import com.amazonaws.util.Md5Utils;
 import com.google.gson.Gson;
 
@@ -115,6 +117,7 @@ public class Utilities {
     
     
     /**
+     * @deprecated
 	 * generateCookie - generates a unique number by multiplying the bytes of the argument 
 	 * String with the current time in nanoseconds of the machine.
 	 * 
@@ -128,8 +131,25 @@ public class Utilities {
     }
 	
 	
+	/**
+	 * generateRandomString - generates a unique string of maximum length, 45 characters.
+	 * Uses system nano time for random input.
+	 * 
+	 * @return - String of maximum length 45 characters.
+	 */
+	public static String generateRandomString() {
+		BigInteger timeint = new BigInteger(Long.toString(System.nanoTime()));
+		String string = Base64.encodeAsString(timeint.toByteArray());
+		
+		if (string.length() > 45)
+			return string.substring(0, 45);
+		else return string;
+	}
+	
+	
 	
 	/**
+	 * @deprecated
 	 * Checks users table in database to see if the cookie already exists.
 	 * 
 	 * @param cookie
@@ -149,6 +169,41 @@ public class Utilities {
 		else
 			return true;
 		
+	}
+	
+	
+	/**
+	 * @deprecated
+	 * 
+	 * Returns the position in the bracket given the round of the position.
+	 * @param round - number from 1 to 4
+	 * @return - position from 1 to 8/round.
+	 */
+	public static int generateRandomPosition(int round) {
+		
+		return (int) Math.ceil(Math.random() * (8/round));
+				
+	}
+	/**
+	 * Returns a random value from the list.
+	 * @param list of values
+	 * @return 1 value from list
+	 */
+	public static int getRandomIn(Integer[] list) {
+		
+		return list[(int) Math.ceil(Math.random() * list.length)].intValue();
+		
+	}
+	/**
+	 * Returns the opponent's position to the given position.
+	 * @param position - number from 1 to 8/round
+	 * @return - number from 1 to 8/round
+	 */
+	public static int getOpponentsPosition(int position) {
+		if (position % 2 == 0)
+			return position - 1;
+		else
+			return position + 1;
 	}
 	
 }
