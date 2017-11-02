@@ -111,7 +111,7 @@ public class UpdateStats implements RequestHandler<Object, String> {
 			pstatement.close();
 			
 			// 		Get song wins:
-			query = "SELECT * FROM bracket_history WHERE (bracket_id, round, votes) IN ( SELECT bracket_id, round, MAX(votes) FROM bracket_history WHERE round=4)";
+			query = "SELECT * FROM bracket_history WHERE round=5";
 			pstatement = con.prepareStatement(query);
 			result = pstatement.executeQuery();
 			con.commit();
