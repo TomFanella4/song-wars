@@ -30,9 +30,9 @@ public class GetBracketHeaders implements RequestHandler<Map<String, Object>, Ma
 		ArrayList<Map<String, Object>> bracketHeaderList = new ArrayList<Map<String, Object>>();
 		
 		//Variables
-		//json = Validate.field(input, "body_json");
+		json = Validate.field(input, "body_json");
 
-		//String access_token = Validate.sqlstring(json, "access_token");
+		String access_token = Validate.sqlstring(json, "access_token");
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
 		
