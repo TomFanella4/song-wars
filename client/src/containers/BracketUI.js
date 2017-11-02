@@ -14,7 +14,7 @@ require('../../node_modules/jquery-bracket/dist/jquery.bracket.min.css');
 require('../../node_modules/jquery-bracket/dist/jquery.bracket.min.js');
 
 class BracketUI extends Component {
-  state = { preview1: null, preview2: null, winner: null, loading: { bracket: true, vote: true } }
+  state = { preview1: null, preview2: null, winner: null, loading: { bracket: true, vote: true }, round: null }
 
   onMatchHover(cell) {
     cell && this.setState({ preview1: cell.Option1, preview2: cell.Option2 })
@@ -62,7 +62,10 @@ class BracketUI extends Component {
       };
 
       if (bracket.Winner) {
-        this.setState({ winner: bracket.Winner });
+        this.setState({
+          winner: bracket.Winner,
+          round: bracket.round
+        });
       }
 
       // var data = {
@@ -122,7 +125,7 @@ class BracketUI extends Component {
   }
 
   render() {
-    const { preview1, preview2, winner, loading } = this.state;
+    const { preview1, preview2, winner, loading, round } = this.state;
 
     return (
       loading.bracket ?
@@ -163,7 +166,7 @@ class BracketUI extends Component {
                           onClick={authSpotify}
                         />
                     }
-                    <Header as='h2' content={'Day ' + this.props.voteList.round} />
+                    <Header as='h2' content={'Day ' + round} />
                   </div>
               }
             </span>
