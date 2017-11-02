@@ -17,7 +17,7 @@ class TopMenu extends Component {
   render() {
     return (
       <Menu inverted borderless fixed='top' color='green'>
-        <Menu.Item icon={true} onClick={this.props.onToggleSidebarClick} >
+        <Menu.Item icon={true} onClick={() => console.log('Toggle Sidebar')} >
           <Icon name='content' color='black'/>
         </Menu.Item>
         <Menu.Item>
