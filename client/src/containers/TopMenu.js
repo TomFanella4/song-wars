@@ -42,16 +42,14 @@ class TopMenu extends Component {
                 <Header as='h4'>Welcome, {this.props.userProfile.user_id}</Header>
               </Menu.Item>
             }
-            <Link to='/'>
-              <Menu.Item>
-                  <Button
-                    onClick={this.logout.bind(this)}
-                    icon='log out'
-                    content='Log Out'
-                    secondary
-                  />
-              </Menu.Item>
-            </Link>
+            <Menu.Item>
+                <Button
+                  onClick={this.logout.bind(this)}
+                  icon='log out'
+                  content='Log Out'
+                  secondary
+                />
+            </Menu.Item>
           </Menu.Menu>
         }
       </Menu>
