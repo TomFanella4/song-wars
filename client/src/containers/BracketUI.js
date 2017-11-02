@@ -21,7 +21,7 @@ class BracketUI extends Component {
   }
 
   componentDidMount() {
-    const { setBracketId, setVoteList } = this.props;
+    const { setBracketId, setVoteList, voteList } = this.props;
 
     getCurrentBracket()
     .then(bracket => {
@@ -31,8 +31,14 @@ class BracketUI extends Component {
         teams: bracket.RightSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
         results: bracket.RightSide.map((col, i) => (
           col.map(cell => [
-            i + 1 < bracket.RightSide.length || bracket.Finals ? cell.Option1.votes : null,
-            i + 1 < bracket.RightSide.length || bracket.Finals ? cell.Option2.votes : null,
+            i + 1 < bracket.RightSide.length || bracket.Finals || !voteList.length ?
+              cell.Option1.votes
+            :
+              null,
+            i + 1 < bracket.RightSide.length || bracket.Finals || !voteList.length ?
+              cell.Option2.votes
+            :
+              null,
             cell
           ])
         ))
@@ -42,8 +48,14 @@ class BracketUI extends Component {
         teams: bracket.LeftSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
         results: bracket.LeftSide.map((col, i) => (
           col.map(cell => [
-            i + 1 < bracket.LeftSide.length || bracket.Finals ? cell.Option1.votes : null,
-            i + 1 < bracket.LeftSide.length || bracket.Finals ? cell.Option2.votes : null,
+            i + 1 < bracket.LeftSide.length || bracket.Finals || !voteList.length ?
+              cell.Option1.votes
+            :
+              null,
+            i + 1 < bracket.LeftSide.length || bracket.Finals || !voteList.length ?
+              cell.Option2.votes
+            :
+              null,
             cell
           ])
         ))
@@ -122,7 +134,7 @@ class BracketUI extends Component {
               <Header as='h1' content='Hidden Gems' icon='diamond' color='red' />
               <span className="leftBracket" />
             </div>
-            <span style={{ width: 175, lineHeight: 8 }}>
+            <span style={{ width: 175, lineHeight: 6 }}>
               <Header content='VS' style={{ fontSize: 75 }} />
               {
                 winner ?
@@ -132,22 +144,27 @@ class BracketUI extends Component {
                     color={winner.popularity < popularCutoff ? 'red' : 'green'}
                   />
                 :
-                  this.props.userProfile.access_token ?
-                    <Button
-                      content='Vote'
-                      color='green'
-                      size='huge'
-                      onClick={this.props.changeView}
-                      disabled={loading.vote || !this.props.voteList.matchups.length}
-                      loading={loading.vote}
-                    />
-                  :
-                    <Button
-                      content='Login to Vote!'
-                      color='green'
-                      size='large'
-                      onClick={authSpotify}
-                    />
+                  <div>
+                    {
+                      this.props.userProfile.access_token ?
+                        <Button
+                          content='Vote'
+                          color='green'
+                          size='huge'
+                          onClick={this.props.changeView}
+                          disabled={loading.vote || !this.props.voteList.matchups.length}
+                          loading={loading.vote}
+                        />
+                      :
+                        <Button
+                          content='Login to Vote!'
+                          color='green'
+                          size='large'
+                          onClick={authSpotify}
+                        />
+                    }
+                    <Header as='h2' content={'Day ' + this.props.voteList.round} />
+                  </div>
               }
             </span>
             <div style={{ marginLeft: 40 }}>
