@@ -2437,3 +2437,84 @@ org.eclipse.core.runtime.CoreException: The archive: /lambda/C:/Users/bmaxf/Docu
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 10:50:27.682
 !MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:38:23.966
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:38:23.991
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:39:34.578
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:39:34.601
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:45:40.346
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda4000470428052239085.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:45:41.280
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda4000470428052239085.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:45:46.184
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_PostVoteSelection updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:45:46.222
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:45:46.223
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_PostVoteSelection
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:45:46.347
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:45:46.351
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:52:01.795
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:52:01.801
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:53:18.579
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda6646741404441107666.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:53:19.368
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda6646741404441107666.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:53:32.857
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_RetrieveLastWeek updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:53:32.909
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:53:32.910
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_RetrieveLastWeek
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:53:33.041
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:53:33.044
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:54:23.568
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda1489880063958344057.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:54:24.337
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda1489880063958344057.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:54:28.841
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_RefreshAccessToken updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:54:28.880
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:54:28.880
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWarsBuggy_RefreshAccessToken
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:54:29.040
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:54:29.044
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!

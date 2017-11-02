@@ -67,7 +67,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
 				//defect 17
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
-					data.put("artists_name", artistName); data.put("votes", 10); data.put("round", round); data.put("position", position);
+					data.put("artists_name", artistName); data.put("votes", votes + 100); data.put("round", round); data.put("position", position);
 					roundOneBracketData.add(data);
 					bracket_id = bracketId;
 					
