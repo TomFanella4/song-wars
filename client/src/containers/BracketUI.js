@@ -39,7 +39,7 @@ class BracketUI extends Component {
               cell.Option2.votes
             :
               null,
-            cell
+            i < bracket.RightSide.length - 1 ? cell : null
           ])
         ))
       };
@@ -56,7 +56,7 @@ class BracketUI extends Component {
               cell.Option2.votes
             :
               null,
-            cell
+              i < bracket.LeftSide.length - 1 ? cell : null
           ])
         ))
       };
@@ -166,12 +166,12 @@ class BracketUI extends Component {
                           onClick={authSpotify}
                         />
                     }
-                    <Header as='h2' content={'Day ' + round} />
+                    <Header as='h2' content={'Day ' + round - 1} />
                   </div>
               }
             </span>
             <div style={{ marginLeft: 40 }}>
-              <Header as='h1' content='Popular' icon='star' color='green' />
+              <Header as='h1' content='Popular' color='green' />
               <span className="rightBracket" />
             </div>
           </div>

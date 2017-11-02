@@ -66,7 +66,6 @@ class App extends Component {
                     render={() => access_token ? <Statistics /> : <Redirect to='/auth' />}
                   />
                   <Route path='/about' component={About} />
-                  <Route component={NoMatch} />
                 </Switch>
               </Segment>
             </Sidebar.Pusher>

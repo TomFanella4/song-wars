@@ -32,6 +32,14 @@ class Search extends Component {
     .then(() => this.setState({ loading: false }))
   }
 
+  shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
   render() {
     const { searchResults, loading } = this.state;
     // console.log(this.state.searchResults);
@@ -50,9 +58,9 @@ class Search extends Component {
         <Segment basic>
           {searchResults.length ?
             <Card.Group itemsPerRow={2} stackable>
-              {searchResults.map(
+              {this.shuffle(searchResults.map(
                 (result, i) => <SearchResult key={result.id} result={result} index={i + 1} />
-              )}
+              ))}
             </Card.Group>
           :
             <Header as='h2' color='grey'>No Search Results</Header>

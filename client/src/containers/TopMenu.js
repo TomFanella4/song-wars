@@ -17,7 +17,7 @@ class TopMenu extends Component {
   render() {
     return (
       <Menu inverted borderless fixed='top' color='green'>
-        <Menu.Item icon={true} onClick={this.props.onToggleSidebarClick} >
+        <Menu.Item icon={true} onClick={() => console.log('Toggle Sidebar')} >
           <Icon name='content' color='black'/>
         </Menu.Item>
         <Menu.Item>
@@ -39,19 +39,17 @@ class TopMenu extends Component {
           <Menu.Menu position='right'>
             {this.props.pageWidth >= mobileWidth &&
               <Menu.Item>
-                <Header as='h4'>Welcome, {this.props.userProfile.name}</Header>
+                <Header as='h4'>Welcome, {this.props.userProfile.user_id}</Header>
               </Menu.Item>
             }
-            <Link to='/'>
-              <Menu.Item>
-                  <Button
-                    onClick={this.logout.bind(this)}
-                    icon='log out'
-                    content='Log Out'
-                    secondary
-                  />
-              </Menu.Item>
-            </Link>
+            <Menu.Item>
+                <Button
+                  onClick={this.logout.bind(this)}
+                  icon='log out'
+                  content='Log Out'
+                  secondary
+                />
+            </Menu.Item>
           </Menu.Menu>
         }
       </Menu>
