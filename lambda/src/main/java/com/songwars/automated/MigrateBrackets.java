@@ -81,7 +81,7 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			
 			
 			// SELECT top recommendations from < X popularity:
-			query = "SELECT * FROM recommendations WHERE popularity<=70 ORDER BY count DESC LIMIT 8";
+			query = "SELECT * FROM recommendations WHERE popularity<=50 ORDER BY count DESC LIMIT 8";
 			pstatement = con.prepareStatement(query);
 			result = pstatement.executeQuery();
 			con.commit();

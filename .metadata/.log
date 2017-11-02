@@ -2323,3 +2323,36 @@ org.eclipse.core.runtime.CoreException: The archive: /lambda/C:/Users/bmaxf/Docu
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:02:33.286
 !MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:19:46.474
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:19:46.489
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:20:26.786
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:20:26.807
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:21:04.278
+!MESSAGE Exporting project [lambda] to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda5320019080517774710.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:21:04.873
+!MESSAGE Project exported to C:\Users\bmaxf\AppData\Local\Temp\lambda-lambda5320019080517774710.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:21:10.017
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_MigrateBrackets updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:21:10.135
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 17:21:10.136
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_MigrateBrackets
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:21:10.298
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:21:10.361
+!MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
