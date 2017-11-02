@@ -11,8 +11,10 @@ import TopMenu from '../containers/TopMenu';
 import Player from '../containers/Player';
 import SidebarMenu from '../containers/SidebarMenu';
 import Bracket from './Bracket';
+import BracketUI from '../containers/BracketUI';
 import Search from './Search';
 import Statistics from './Statistics';
+import BracketHistory from './BracketHistory';
 import About from './About';
 import NoMatch from './NoMatch';
 
@@ -64,6 +66,15 @@ class App extends Component {
                   <Route
                     path='/statistics'
                     render={() => access_token ? <Statistics /> : <Redirect to='/auth' />}
+                  />
+                  <Route
+                    exact
+                    path='/history'
+                    render={() => access_token ? <BracketHistory /> : <Redirect to='/auth' />}
+                  />
+                  <Route
+                    path='/history/:bracket_id'
+                    component={BracketUI}
                   />
                   <Route path='/about' component={About} />
                 </Switch>
