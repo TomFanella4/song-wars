@@ -98,10 +98,13 @@ public class Matchup {
 		else if (votes2 > votes1)
 			return (Map<String, Object>) match.get("song2");
 		else {
-			if (popularity1 < popularity2)
+			if (popularity1 < popularity2) {
 				return (Map<String, Object>) match.get("song1");
-			else	// Yes I know this picks song2 in case of complete tie... This is my random choice.
+			}
+			else {	// Yes I know this picks song2 in case of complete tie... This is my random choice.
+				
 				return (Map<String, Object>) match.get("song2");
+			}
 		}
 	}
 
