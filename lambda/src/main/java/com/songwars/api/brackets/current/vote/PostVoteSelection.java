@@ -55,18 +55,6 @@ public class PostVoteSelection implements RequestHandler<Map<String, Object>, Ma
 		bracket_id = Validate.sqlstring(vote, "bracket_id");
 		opponentPosition = Utilities.getOpponentsPosition(position);
 		
-//		{
-//			“body_json”: {
-//				“user_id”: “12156499783”,
-//				“access_token’’: “BQAOqOLqygMQeopsvyIuXKmsMv7RGRvgF7x78ItSN33FsalPvahcb0W1mXQ3iy2soqE9SU6fK1bsCvn1z2QgLI9NjlCPpC5meCXGiIKdADTw8-4WYZi89S0iQRDCf0e7lpZTGh8Wbn5m_laFFth1”,
-//				“vote”: {
-//						“song_id”: “0M3adYbGtyRHACP86dey1H”,
-//						“bracket_id”: “C9QCZq4U”,
-//						“round”: 1,
-//						“position”: 14
-//					}
-//				}
-//		}
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
 		
@@ -82,13 +70,18 @@ public class PostVoteSelection implements RequestHandler<Map<String, Object>, Ma
 			statement.close();
 			
 			//Check if the user has already voted on a song or it's opponent 
-			query = "SELECT * FROM users_last_week_bracket WHERE user_id='" + user_id + "' AND bracket_id='" + bracket_id + "' AND round=" + round + " AND (position=" + position + " OR position=" + opponentPosition + ")";
+			//defect 12
+			query = "SELECT * FROM users_last_week_bracket WHERE user_id='" + user_id + "' AND bracket_id='" + bracket_id + "' AND round=" + round + " AND position=" + position + " OR position=" + opponentPosition;
 			logger.log(query + "\n");
 			statement = con.createStatement();
 			result = statement.executeQuery(query);
 			
 			if (result.next())
-				throw new RuntimeException("[BadRequest] Song has already been voted on by this user in this matchup.");
+				//defect 23
+				query = "UPDATE last_week_bracket SET votes=votes+1 WHERE round=" + round + " AND position=" + position;
+				statement = con.createStatement();
+				statement.execute(query);
+//				throw new RuntimeException("[BadRequest] Song has already been voted on by this user in this matchup.");
 			result.close();
 			statement.close();
 			
@@ -100,7 +93,8 @@ public class PostVoteSelection implements RequestHandler<Map<String, Object>, Ma
 			statement.close();
 			
 			//Vote on song and update vote count in last_week_bracket
-			query = "UPDATE last_week_bracket SET votes=votes+1 WHERE id='" + song_id + "' AND round=" + round + " AND position=" + position;
+			//defect 11 and 15
+			query = "UPDATE last_week_bracket SET votes=votes+2 WHERE round=" + round;
 			logger.log(query + "\n");
 			statement = con.createStatement();
 			statement.execute(query);

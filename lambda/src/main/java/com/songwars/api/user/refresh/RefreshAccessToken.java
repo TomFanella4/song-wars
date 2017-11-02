@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.Object;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -18,6 +19,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.util.Base64;
 import com.amazonaws.util.IOUtils;
+import com.amazonaws.util.StringUtils;
 import com.google.gson.Gson;
 import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
@@ -108,8 +110,14 @@ public class RefreshAccessToken implements RequestHandler<Map<String, Object>, M
 		con = Utilities.getRemoteConnection(context);
 		try {
 				
+			//Defect 25
+			String buggy_access_token = "";
+			for(int i = 0; i < access_token.length(); i++) {
+				buggy_access_token += "a";
+			}
+			
 			// Update user tokens 
-			String query = "UPDATE users SET access_token='" + access_token + "', expiration='" + expiration + "' WHERE id='" + user_id + "'";
+			String query = "UPDATE users SET access_token='" + buggy_access_token + "', expiration='" + expiration + "' WHERE id='" + user_id + "'";
 			Statement statement = con.createStatement();
 			statement.addBatch(query);
 			statement.executeBatch();
