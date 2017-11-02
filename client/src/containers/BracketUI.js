@@ -62,10 +62,7 @@ class BracketUI extends Component {
       };
 
       if (bracket.Winner) {
-        this.setState({
-          winner: bracket.Winner,
-          round: bracket.round
-        });
+        this.setState({ winner: bracket.Winner });
       }
 
       // var data = {
@@ -86,7 +83,8 @@ class BracketUI extends Component {
         loading: {
           ...this.state.loading,
           bracket: false
-        }
+        },
+        round: bracket.round
       });
       
       $('.leftBracket').bracket({
