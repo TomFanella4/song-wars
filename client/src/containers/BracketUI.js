@@ -168,7 +168,7 @@ class BracketUI extends Component {
               }
             </span>
             <div style={{ marginLeft: 40 }}>
-              <Header as='h1' content='Popular' icon='star' color='green' />
+              <Header as='h1' content='Popular' color='green' />
               <span className="rightBracket" />
             </div>
           </div>
