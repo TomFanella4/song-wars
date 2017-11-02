@@ -4,7 +4,7 @@ import { createStore } from 'redux';
 
 import 'semantic-ui-css/semantic.min.css';
 import './styles/index.css';
-import Root from './containers/Root';
+import Root from './components/Root';
 import rootReducer from './reducers';
 import registerServiceWorker from './registerServiceWorker';
 
