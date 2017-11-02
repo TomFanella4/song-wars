@@ -43,6 +43,15 @@ public class Validate {
 		}
 	}
 	
+	static public String optsqlstring(Map<String, Object> json, String fieldname) 
+	{	
+		Object obj = json.get(fieldname);
+		if (obj instanceof String && ((String) obj).length() > 0)
+			return (String) obj;
+		else
+			return null;
+	}
+	
 	public static void error(Map<String, Object> json) {
 		String error;
 		
