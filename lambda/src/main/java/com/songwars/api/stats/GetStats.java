@@ -23,7 +23,7 @@ public class GetStats implements RequestHandler<Map<String, Object>, Map<String,
 	 * The current stats to be displayed on the website are: 
 	 * 
 	 * # of recommendations for this week (inserted from migrate brackets!)
-	 * // TODO: Add this to MigrateBrackets!
+	 *
 	 * id = 1, name = "recommendations", value = INT
 	 * 
 	 * # of votes counted
