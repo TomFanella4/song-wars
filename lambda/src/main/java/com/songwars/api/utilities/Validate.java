@@ -99,6 +99,36 @@ public class Validate {
 		return popularity.intValue();
 	}
 	
+	public static int round(Map<String, Object> json) {
+		Integer round;
+		
+		if (!json.containsKey("round")
+				|| !(json.get("round") instanceof Integer)
+				|| !((round = (Integer) json.get("round")) != null)) {
+		
+			throw new RuntimeException("[BadRequest] Round key does not exist.");
+		}
+		if (round.intValue() > 4 || round.intValue() < 1)
+			throw new RuntimeException("[BadRequest] Song round must be between 1 and 4");
+		
+		return round.intValue();
+	}
+	
+	public static int position(Map<String, Object> json) {
+		Integer position;
+		
+		if (!json.containsKey("position")
+				|| !(json.get("position") instanceof Integer)
+				|| !((position = (Integer) json.get("position")) != null)) {
+		
+			throw new RuntimeException("[BadRequest] Position key does not exist.");
+		}
+		if (position.intValue() > 16 || position.intValue() < 1)
+			throw new RuntimeException("[BadRequest] Song position must be valid between 1 and 16");
+		
+		return position.intValue();
+	}
+	
 	
 	
 }

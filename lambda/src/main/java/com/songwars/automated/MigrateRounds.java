@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.amazonaws.Response;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -55,6 +56,8 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 				// Create new ArrayList for bracket if not created already:
 				bracket_id = result.getString("bracket_id");
 				round = result.getInt("round");
+				
+				
 				if (brackets_matchups.containsKey(bracket_id)) {
 					matchups = brackets_matchups.get(bracket_id);
 				} else {
@@ -103,9 +106,45 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 					matchups.add(m);
 				}
 			}
+			
 			result.close();
 			pstatement.close();
 			
+			
+			// SPECIAL CONDITION for round 4, report winner:
+			if (round == 4) {
+				Matchup m = brackets_matchups.get(bracket_id).get(0);
+				HashMap<String, Object> winner = new HashMap<String, Object>();
+				query = "INSERT INTO last_week_bracket (id, name, popularity, preview_url, album_name, album_image, artists_name, votes, bracket_id, round, position)" 
+						+ " VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, 5, 1)";
+				pstatement = con.prepareStatement(query);
+				if (m.getVotes1() > m.getVotes2()) {
+					pstatement.setString(1, m.getId1());
+					pstatement.setString(2, m.getName1());
+					pstatement.setInt(3, m.getPopularity1());
+					pstatement.setString(4, m.getPreview_url1());
+					pstatement.setString(5, m.getAlbum_name1());
+					pstatement.setString(6, m.getAlbum_image1());
+					pstatement.setString(7, m.getArtists_name1());
+					pstatement.setString(8, m.getBracket_id1());
+				} else {
+					pstatement.setString(1, m.getId2());
+					pstatement.setString(2, m.getName2());
+					pstatement.setInt(3, m.getPopularity2());
+					pstatement.setString(4, m.getPreview_url2());
+					pstatement.setString(5, m.getAlbum_name2());
+					pstatement.setString(6, m.getAlbum_image2());
+					pstatement.setString(7, m.getArtists_name2());
+					pstatement.setString(8, m.getBracket_id2());
+				}
+				pstatement.execute();
+				con.commit();
+				
+				pstatement.close();
+				
+				// Nothing else to do:
+				return "Success:" + bracket_id;
+			}
 			
 			// Once Matchups have been loaded, determine winners and load those into new Matchups.
 			for (String id : bracket_ids) {
