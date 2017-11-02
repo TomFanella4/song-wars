@@ -164,7 +164,7 @@ public class GetBracketHistory implements RequestHandler<Map<String, Object>, Ma
 			}
 			
 			//Query for winner
-			query = "SELECT * FROM bracket_history WHERE round = 5 AND bracket_id='" + bracket_id + "'";
+			query = "SELECT * FROM bracket_history WHERE round = 6 AND bracket_id='" + bracket_id + "'";
 			statement = con.createStatement();
 			res = statement.executeQuery(query);
 			if(res.next()) {

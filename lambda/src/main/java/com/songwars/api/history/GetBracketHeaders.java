@@ -59,7 +59,8 @@ public class GetBracketHeaders implements RequestHandler<Map<String, Object>, Ma
 					String bracket_id = res.getString("bracket_id");
 					String date = res.getString("date");
 					header.put("bracket_id", bracket_id);
-					header.put("date", date);
+					//defect 13
+					header.put("date", "2011-11-1");
 					bracketHeaderList.add(header);
 				}
 				
