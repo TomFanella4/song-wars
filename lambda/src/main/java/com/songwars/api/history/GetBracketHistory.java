@@ -26,7 +26,7 @@ public class GetBracketHistory implements RequestHandler<Map<String, Object>, Ma
 		
 		// Response JSON:
 		Map<String, Object> response = new HashMap<String, Object>();
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> path = new HashMap<String, Object>();
 		Map<String, Object> querystring = new HashMap<String, Object>();
 		Map<String, Object> params = new HashMap<String, Object>();
 		
@@ -35,14 +35,14 @@ public class GetBracketHistory implements RequestHandler<Map<String, Object>, Ma
 		String bracket_id = null;
 		
 		//Find path
-		json = Validate.field(input, "body_json");
 		params = Validate.field(input, "params");
+		path = Validate.field(params, "path");
 		querystring = Validate.field(params, "querystring");
 		
 		
 		//Validate input
-		access_token = Validate.sqlstring(json, "access_token");
-		bracket_id = Validate.sqlstring(querystring, "bracket-id");
+		access_token = Validate.sqlstring(querystring, "access_token");
+		bracket_id = Validate.sqlstring(path, "bracket-id");
 		
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);

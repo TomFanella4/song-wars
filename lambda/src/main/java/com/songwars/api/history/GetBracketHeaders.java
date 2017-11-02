@@ -26,13 +26,17 @@ public class GetBracketHeaders implements RequestHandler<Map<String, Object>, Ma
 		
 		// Response JSON:
 		Map<String, Object> response = new HashMap<String, Object>();
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> querystring = new HashMap<String, Object>();
+
+
 		ArrayList<Map<String, Object>> bracketHeaderList = new ArrayList<Map<String, Object>>();
 		
 		//Variables
-		json = Validate.field(input, "body_json");
+		params = Validate.field(input, "params");
+		querystring = Validate.field(params, "querystring");
 
-		String access_token = Validate.sqlstring(json, "access_token");
+		String access_token = Validate.sqlstring(querystring, "access_token");
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
 		
