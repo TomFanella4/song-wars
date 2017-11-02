@@ -149,6 +149,7 @@ public class Utilities {
 	
 	
 	/**
+	 * @deprecated
 	 * Checks users table in database to see if the cookie already exists.
 	 * 
 	 * @param cookie

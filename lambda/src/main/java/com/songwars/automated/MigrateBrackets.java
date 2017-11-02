@@ -2,13 +2,12 @@ package com.songwars.automated;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.time.LocalDate;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -43,10 +42,48 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			// Generate new bracket_id:
 			bracket_id = Utilities.generateRandomString();
 			
-			// SELECT top recommendations from < X popularity:
-			String query = "SELECT * FROM recommendations WHERE popularity<=70 ORDER BY count DESC LIMIT 8";
+			// Put new bracket's info into bracket_headers table:
+			String query = "INSERT INTO bracket_headers (bracket_id, type, date) VALUES (?, ?, ?)";
 			PreparedStatement pstatement = con.prepareStatement(query);
+			pstatement.setString(1, bracket_id);
+			pstatement.setString(2, "Primary");
+			pstatement.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+			pstatement.execute();
+			con.commit();
+			
+			
+
+			// Get recommendations count for stats table:
+			query = "SELECT count FROM recommendations";
+			pstatement = con.prepareStatement(query);
 			ResultSet result = pstatement.executeQuery();
+			con.commit();
+			
+			int recommendation_total = 0;
+			while (result.next()) {
+				recommendation_total += result.getInt("count");
+			}
+			result.close();
+			pstatement.close();
+			
+			// Insert recommendations total into stats table:
+			query = "INSERT INTO stats (id, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value=?";
+			pstatement = con.prepareStatement(query);
+			pstatement.setInt(1, 1);
+			pstatement.setString(2, "recommendations");
+			pstatement.setInt(3, recommendation_total);
+			pstatement.setInt(4, recommendation_total);
+			pstatement.execute();
+			con.commit();
+			
+			pstatement.close();
+			
+			
+			
+			// SELECT top recommendations from < X popularity:
+			query = "SELECT * FROM recommendations WHERE popularity<=70 ORDER BY count DESC LIMIT 8";
+			pstatement = con.prepareStatement(query);
+			result = pstatement.executeQuery();
 			con.commit();
 			
 			while (result.next()) {
@@ -77,8 +114,10 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 				// Check to see if any of these songs are one of the gems selected:
 				boolean exists = false;
 				for (HashMap<String, Object> s : gems)
-					if (((String) song.get("id")).equals(result.getString("id"))) {
+					if (((String) s.get("id")).equals(result.getString("id"))) {
+						System.out.println("Song Intersection!");
 						exists = true;
+						break;
 					}
 				// Do not add to pop list if they are already in gems:
 				if (exists)
@@ -141,13 +180,22 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			
 			// Copy rows into bracket_history, then delete them from last_week_bracket:
 			String insertquery = "INSERT INTO bracket_history SELECT * FROM last_week_bracket";
-			String deletequery = "DELETE FROM last_week_bracket";
+			String deletequery1 = "DELETE FROM last_week_bracket";
+			String deletequery2 = "DELETE FROM users_last_week_bracket";
+			String deletequery3 = "DELETE FROM users_recommendations";
+			String deletequery4 = "DELETE FROM recommendations";
 			PreparedStatement pstatement1 = con.prepareStatement(insertquery);
-			PreparedStatement pstatement2 = con.prepareStatement(deletequery);
+			PreparedStatement pstatement2 = con.prepareStatement(deletequery1);
+			PreparedStatement pstatement3 = con.prepareStatement(deletequery2);
+			PreparedStatement pstatement4 = con.prepareStatement(deletequery3);
+			PreparedStatement pstatement5 = con.prepareStatement(deletequery4);
 			pstatement1.execute();
 			pstatement2.execute();
-			
-			int[] statuses = pstatement.executeBatch();
+			//pstatement3.execute();
+			//pstatement4.execute();
+			//pstatement5.execute();
+            
+            int[] statuses = pstatement.executeBatch();
 			
 			// Execute whole transaction:
 			con.commit();
@@ -159,6 +207,9 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			
 			pstatement1.close();
 			pstatement2.close();
+			pstatement3.close();
+			pstatement4.close();
+			pstatement5.close();
 			pstatement.close();
 			
 

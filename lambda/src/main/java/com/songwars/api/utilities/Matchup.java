@@ -68,6 +68,7 @@ public class Matchup {
 		song1.put("album_name", album_name1);
 		song1.put("album_image", album_image1);
 		song1.put("artists_name", artists_name1);
+		song1.put("bracket_id", bracket_id1);
 		
 		song2.put("position", new Integer(pos2));
 		song2.put("id", id2);
@@ -77,6 +78,7 @@ public class Matchup {
 		song2.put("album_name", album_name2);
 		song2.put("album_image", album_image2);
 		song2.put("artists_name", artists_name2);
+		song2.put("bracket_id", bracket_id2);
 		
 		matchup.put("song1", song1);
 		matchup.put("song2", song2);

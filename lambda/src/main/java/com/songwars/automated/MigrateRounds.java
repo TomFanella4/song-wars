@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.amazonaws.Response;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -30,7 +31,7 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 		this.logger = context.getLogger();
 		// Local Variables:
 		String bracket_id = null;
-		int round;
+		int round = 1;
 		HashMap<String, ArrayList<Matchup>> brackets_matchups = new HashMap<String, ArrayList<Matchup>>();
 		HashMap<String, ArrayList<Matchup>> brackets_next_rounds = new HashMap<String, ArrayList<Matchup>>();
 		ArrayList<String> bracket_ids = new ArrayList<String>();
@@ -43,7 +44,7 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 			
 			
 			// Get most recent round from last_week_bracket for each bracket_id
-			String query = "SELECT * FROM last_week_bracket WHERE (bracket_id, round) IN ( SELECT bracket_id, MAX(round) FROM bracket_history )";
+			String query = "SELECT * FROM last_week_bracket WHERE (bracket_id, round) IN ( SELECT bracket_id, MAX(round) FROM last_week_bracket )";
 			PreparedStatement pstatement = con.prepareStatement(query);
 			ResultSet result = pstatement.executeQuery();
 			con.commit();
@@ -54,6 +55,9 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 				ArrayList<Matchup> matchups = null;
 				// Create new ArrayList for bracket if not created already:
 				bracket_id = result.getString("bracket_id");
+				round = result.getInt("round");
+				
+				
 				if (brackets_matchups.containsKey(bracket_id)) {
 					matchups = brackets_matchups.get(bracket_id);
 				} else {
@@ -79,6 +83,8 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 						m.setBracket_Id(pos, result.getString("bracket_id"));
 						m.setVotes(pos, result.getInt("votes"));
 						
+						matchups.set(i, m);
+						
 						exists = true;
 						break;
 					}
@@ -100,11 +106,45 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 					matchups.add(m);
 				}
 			}
-			result.previous();
-			round = result.getInt("round");
+			
 			result.close();
 			pstatement.close();
 			
+			
+			// SPECIAL CONDITION for round 4, report winner:
+			if (round == 4) {
+				Matchup m = brackets_matchups.get(bracket_id).get(0);
+				HashMap<String, Object> winner = new HashMap<String, Object>();
+				query = "INSERT INTO last_week_bracket (id, name, popularity, preview_url, album_name, album_image, artists_name, votes, bracket_id, round, position)" 
+						+ " VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, 5, 1)";
+				pstatement = con.prepareStatement(query);
+				if (m.getVotes1() > m.getVotes2()) {
+					pstatement.setString(1, m.getId1());
+					pstatement.setString(2, m.getName1());
+					pstatement.setInt(3, m.getPopularity1());
+					pstatement.setString(4, m.getPreview_url1());
+					pstatement.setString(5, m.getAlbum_name1());
+					pstatement.setString(6, m.getAlbum_image1());
+					pstatement.setString(7, m.getArtists_name1());
+					pstatement.setString(8, m.getBracket_id1());
+				} else {
+					pstatement.setString(1, m.getId2());
+					pstatement.setString(2, m.getName2());
+					pstatement.setInt(3, m.getPopularity2());
+					pstatement.setString(4, m.getPreview_url2());
+					pstatement.setString(5, m.getAlbum_name2());
+					pstatement.setString(6, m.getAlbum_image2());
+					pstatement.setString(7, m.getArtists_name2());
+					pstatement.setString(8, m.getBracket_id2());
+				}
+				pstatement.execute();
+				con.commit();
+				
+				pstatement.close();
+				
+				// Nothing else to do:
+				return "Success:" + bracket_id;
+			}
 			
 			// Once Matchups have been loaded, determine winners and load those into new Matchups.
 			for (String id : bracket_ids) {
@@ -124,7 +164,7 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 					Map<String, Object> winner1 = bracket.get(i).getWinner();
 					Map<String, Object> winner2 = bracket.get(i+1).getWinner();
 					
-					int new_pos1 = (int) Math.floor(((double) i)/2.0) + 1;
+					int new_pos1 = i + 1;
 					int new_pos2 = Utilities.getOpponentsPosition(new_pos1);
 					
 					Matchup next_match = new Matchup(round + 1, new_pos1);
@@ -156,12 +196,16 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 			}
 			
 			
+			logger.log("Starting INSERT QUERY: \n\n");
 			// Insert all winning songs to last_week_bracket:
 			query = "INSERT INTO last_week_bracket (id, name, popularity, preview_url, album_name, album_image, artists_name, votes, bracket_id, round, position)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)";
 			pstatement = con.prepareStatement(query);
 			for (ArrayList<Matchup> bracket : brackets_next_rounds.values()) {
 				for (Matchup m : bracket) {
+					
+					logger.log(m.toMap().toString() + "\n");
+					
 					pstatement.setString(1, m.getId1());
 					pstatement.setString(2, m.getName1());
 					pstatement.setInt(3, m.getPopularity1());
@@ -187,6 +231,7 @@ public class MigrateRounds implements RequestHandler<Object, String> {
 					pstatement.addBatch();
 				}
 			}
+			logger.log("Attempting Execution: \n\n");
 			int[] statuses = pstatement.executeBatch();
 			
 			// Execute whole transaction:

@@ -1,13 +1,11 @@
 package com.songwars.api.brackets.current.vote;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,7 +16,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.songwars.api.utilities.Matchup;
-import com.songwars.api.utilities.Rounds;
 import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
 
@@ -37,6 +34,7 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 		// JSON:
 		Map<String, Object> response = new HashMap<String, Object>();
 		Map<String, Object> params;
+		Map<String, Object> path;
 		Map<String, Object> querystring;
 		// Local Input Variables:
 		String user_id = null;
@@ -51,15 +49,18 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 		
 		// Find Path:
 		params = Validate.field(input, "params");
+		path = Validate.field(params, "path");
 		querystring = Validate.field(params, "querystring");
 		
 		// Perform Validation of Input:
 		user_id = Validate.sqlstring(querystring, "user_id");
 		access_token = Validate.sqlstring(querystring, "access_token");
-		bracket_id = Validate.sqlstring(querystring, "bracket_id");
-		
+		bracket_id = Validate.sqlstring(path, "bracket-id");
+
+		// @Obsolete - Round is now identified through its own sql query.
 		// Get which round is supposed to be voted on today:
-		round = Rounds.getFromMillis(System.currentTimeMillis());
+		//round = Rounds.getFromMillis(System.currentTimeMillis());
+		//round = Rounds.getFromEnviron();
 		
 		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
@@ -75,30 +76,72 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			result.close();
 			statement.close();
 			
+			// Get which round is supposed to be voted on today:
+			query = "SELECT round FROM last_week_bracket WHERE (bracket_id, round) IN ( SELECT bracket_id, MAX(round) FROM last_week_bracket WHERE bracket_id=? ) LIMIT 1";
+			PreparedStatement pstatement = con.prepareStatement(query);
+			pstatement.setString(1, bracket_id);
+			result = pstatement.executeQuery();
+			
+			if (result.next())
+				round = result.getInt("round");
+			else
+				throw new RuntimeException("[InternalServerError] - No maximum round could be identified for bracket_id: " + bracket_id);
+			
+			// SPECIAL CONDITION if round = 5, report nothing (winner has already been selected):
+			if (round == 5) {
+				response.put("user_id", user_id);
+				response.put("access_token", access_token);
+				response.put("bracket_id", bracket_id);
+				response.put("round", round);
+				ArrayList<Map<String, Object>> matchups_maps = new ArrayList<Map<String, Object>>();
+				response.put("matchups", matchups_maps);
+					
+				return response;
+			}
+			
 			// Get the positions of votes that have already been cast:
 			query = "SELECT * FROM users_last_week_bracket WHERE user_id=? AND bracket_id=? AND round=?";
-			PreparedStatement pstatement = con.prepareStatement(query);
+			pstatement = con.prepareStatement(query);
 			pstatement.setString(1, user_id);
 			pstatement.setString(2, bracket_id);
 			pstatement.setInt(3, round);
 			result = pstatement.executeQuery();
 			
 			// Fill position values:
-			for (int i = 0; result.next(); i++)
+			for (int i = 0; result.next(); i++) {
 				votesCasted.add(result.getInt("position"));
+				votesCasted.add(Utilities.getOpponentsPosition(result.getInt("position")));
+			}
 			
 			result.close();
-			statement.close();
+			pstatement.close();
 			
 			// Fill possible position values:
-			for (int i = 1; i <= 16/round; i++)
+			for (int i = 1; i <= (int) (16/Math.pow(2, round-1)); i++)
 				posRange.add(i);
+			
+			//logger.log("votesCasted: " + Arrays.toString(votesCasted.toArray()) + "\n");
+			//logger.log("posRange: " + Arrays.toString(posRange.toArray()) + "\n");
 			
 			// Get random positions of songs yet to be cast
 			votesToCastSet = new HashSet<Integer>(posRange);
 			votesToCastSet.removeAll(new HashSet<Integer>(votesCasted));
 			votesToCast = new ArrayList<Integer>(votesToCastSet);
 			Collections.shuffle(votesToCast);
+			
+			//logger.log("votesToCast: " + Arrays.toString(votesToCast.toArray()) + "\n");
+			
+			// Check if there are no more votes left:
+			if (votesToCast.size() == 0) {
+				response.put("user_id", user_id);
+				response.put("access_token", access_token);
+				response.put("bracket_id", bracket_id);
+				response.put("round", round);
+				ArrayList<String> empty = new ArrayList<String>();
+				response.put("matchups", empty);
+					
+				return response;
+			}
 			
 			// Make paired list of songs (ie. matchups)
 			boolean exists = false;
@@ -111,7 +154,7 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 				}
 				if (exists == false)
 					matchups.add(new Matchup(round, v));
-				exists = false;
+				exists = false;	
 			}
 			
 			
@@ -130,7 +173,8 @@ public class GetVoteMatchup implements RequestHandler<Map<String, Object>, Map<S
 			
 			while (result.next()) {
 				int pos = result.getInt("position");
-				for (Matchup m : matchups) {
+				for (i = 0; i < matchups.size(); i++) {
+					Matchup m = matchups.get(i);
 					if (m.contains(pos)) {
 						m.setId(pos, result.getString("id"));
 						m.setName(pos, result.getString("name"));
