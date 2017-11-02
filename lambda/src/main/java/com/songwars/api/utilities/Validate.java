@@ -93,7 +93,7 @@ public class Validate {
 		
 			throw new RuntimeException("[BadRequest] Popularity key does not exist for song in request.");
 		}
-		if (popularity.intValue() > 100 || popularity.intValue() < 0)
+		if (popularity.intValue() < 0)
 			throw new RuntimeException("[BadRequest] Song Popularity must be between 0 and 100 inclusive.");
 		
 		return popularity.intValue();
