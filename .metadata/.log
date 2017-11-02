@@ -2254,3 +2254,72 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 02:31:28.796
 !MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:00:16.264
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:00:16.285
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:00:26.422
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:00:26.425
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:01:58.584
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:01:58.599
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 2 0 2017-11-02 13:02:31.519
+!MESSAGE Unable to resolve dependencies of project lambda
+!STACK 1
+org.eclipse.core.runtime.CoreException: The archive: /lambda/C:/Users/bmaxf/Documents/HOMEWORK/CS 408/song-wars/lambda/src/main/resources/gson-2.6.2.jar which is referenced by the classpath, does not exist.
+	at org.eclipse.jdt.launching.JavaRuntime.abort(JavaRuntime.java:1691)
+	at org.eclipse.jdt.launching.JavaRuntime.abort(JavaRuntime.java:1676)
+	at org.eclipse.jdt.launching.JavaRuntime.resolveRuntimeClasspathEntry(JavaRuntime.java:1213)
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.addStandardClasspathEntries(MavenRuntimeClasspathProvider.java:143)
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.addProjectEntries(MavenRuntimeClasspathProvider.java:283)
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.resolveClasspath0(MavenRuntimeClasspathProvider.java:130)
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider$1.call(MavenRuntimeClasspathProvider.java:114)
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider$1.call(MavenRuntimeClasspathProvider.java:1)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:177)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:151)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:99)
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1355)
+	at org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider.resolveClasspath(MavenRuntimeClasspathProvider.java:111)
+	at org.eclipse.jdt.internal.launching.RuntimeClasspathProvider.resolveClasspath(RuntimeClasspathProvider.java:65)
+	at org.eclipse.jdt.launching.JavaRuntime.resolveRuntimeClasspath(JavaRuntime.java:1543)
+	at com.amazonaws.eclipse.lambda.upload.wizard.util.FunctionJarExportHelper.getClasspath(FunctionJarExportHelper.java:148)
+	at com.amazonaws.eclipse.lambda.upload.wizard.util.FunctionJarExportHelper.getSelectedElementsWithoutContainedChildren(FunctionJarExportHelper.java:140)
+	at com.amazonaws.eclipse.lambda.upload.wizard.util.FunctionJarExportHelper.getElementsToExport(FunctionJarExportHelper.java:101)
+	at com.amazonaws.eclipse.lambda.upload.wizard.util.FunctionJarExportHelper.exportProjectToJarFile(FunctionJarExportHelper.java:61)
+	at com.amazonaws.eclipse.lambda.upload.wizard.util.UploadFunctionUtil.performFunctionUpload(UploadFunctionUtil.java:68)
+	at com.amazonaws.eclipse.lambda.upload.wizard.UploadFunctionWizard.doFinish(UploadFunctionWizard.java:109)
+	at com.amazonaws.eclipse.core.plugin.AbstractAwsJobWizard$1.run(AbstractAwsJobWizard.java:35)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)
+!SUBENTRY 1 org.eclipse.jdt.launching 4 150 2017-11-02 13:02:31.520
+!MESSAGE The archive: /lambda/C:/Users/bmaxf/Documents/HOMEWORK/CS 408/song-wars/lambda/src/main/resources/gson-2.6.2.jar which is referenced by the classpath, does not exist.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:02:31.522
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda4627510421861223068.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:02:31.903
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda4627510421861223068.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:02:33.139
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_RetrieveLastWeek updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:02:33.165
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-02 13:02:33.166
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_RetrieveLastWeek
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:02:33.284
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 13:02:33.286
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!

@@ -46,6 +46,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			ArrayList<Object> finals = new ArrayList<>();
 			LinkedHashMap<String, Object> winner = new LinkedHashMap<String, Object>(); 
 			String bracket_id = null;
+			int currentRound = null;
 			
 			//Query for round 1 rows
 			String query = "SELECT * FROM last_week_bracket WHERE round = 1";
@@ -68,6 +69,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
 					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
 					roundOneBracketData.add(data);
+					currentRound = round;
 					bracket_id = bracketId;
 					
 			}
@@ -95,6 +97,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
 					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
+					currentRound = round;
 					roundTwoBracketData.add(data);
 			}
 			
@@ -117,6 +120,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
 					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
+					currentRound = round;
 					roundThreeBracketData.add(data);
 			}
 			
@@ -139,6 +143,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
 					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
+					currentRound = round;
 					roundFourBracketData.add(data);
 			}
 			
@@ -159,6 +164,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				int position = res.getInt("position");
 				winner.put("id", id); winner.put("name", name); winner.put("popularity", popularity); winner.put("preview_url", previewUrl); winner.put("album_name", albumName); winner.put("album_image", albumImage);
 				winner.put("artists_name", artistName); winner.put("votes", votes); winner.put("round", round); winner.put("position", position);
+				currentRound = round;
+
 			}
 			
 
@@ -234,6 +241,7 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			}
 			
 			//Add bracket data to response
+			response.put("round", currentRound);
 			response.put("bracket_id", bracket_id);
 			response.put("LeftSide", leftSide);
 			response.put("RightSide", rightSide);
@@ -245,24 +253,6 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			}
 		
 			
-			//matchups.put("Option1", );
-			
-			//retrieve each row
-//			while(res.next()) {
-//				String name = res.getString("name");
-//				int popularity = res.getInt("popularity");
-//				String previewUrl = res.getString("preview_url");
-//				String albumName = res.getString("album_name");
-//				String artistName = res.getString("artists_name");
-//				int votes = res.getInt("votes");
-//				String bracketId = res.getString("bracket_id");
-//				int round = res.getInt("round");
-//				int position = res.getInt("position");
-//				ArrayList<Object> data = new ArrayList<>();
-//					data.add(name); data.add(popularity); data.add(previewUrl); data.add(albumName); data.add(artistName);
-//					data.add(votes); data.add(bracketId); data.add(round); data.add(position);
-//				response.put(res.getString("id"), data);
-//			}
 		} catch (SQLException ex) {
 			// handle any errors
 			logger.log("SQLException: " + ex.getMessage());
