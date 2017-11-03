@@ -55,7 +55,7 @@ public class GetBracketHeaders implements RequestHandler<Map<String, Object>, Ma
 			statement.close();
 
 			//Retrieve all the bracket headers
-			query = "SELECT * FROM bracket_headers";
+			query = "SELECT * FROM bracket_headers WHERE type='History'";
 			statement = con.createStatement();
 			res = statement.executeQuery(query);
 			

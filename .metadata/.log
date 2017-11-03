@@ -2533,3 +2533,132 @@ org.eclipse.core.runtime.CoreException: The archive: /lambda/C:/Users/bmaxf/Docu
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-02 17:16:32.669
 !MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+!SESSION 2017-11-03 18:15:54.546 -----------------------------------------------
+eclipse.buildId=4.7.1.M20171009-0410
+java.version=1.8.0_60
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/terrylam/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -keyring /Users/terrylam/.eclipse_keyring
+
+!ENTRY org.eclipse.core.net 1 0 2017-11-03 18:15:57.604
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-11-03 18:17:05.913
+!MESSAGE Starting the AWS toolkit core plugin...
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-11-03 18:17:12.889
+!MESSAGE Monitoring content of /Users/terrylam/.aws/credentials
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-11-03 18:17:13.112
+!MESSAGE AWS toolkit core plugin initialized after 7200 milliseconds.
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-11-03 18:17:13.131
+!MESSAGE Found valid identity id cache us-east-1:54534a27-caf7-4789-9766-8e16a679ab36
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:17:20.558
+!MESSAGE Exception caught during execution of command '[git, --version]' in '/usr/bin', return code '1', error message 'xcode-select: note: no developer tools were found at '/Applications/Xcode.app', requesting install. Choose an option in the dialog to download the command line developer tools.
+'
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:17:30.861
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:17:30.886
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:18:42.933
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:18:42.950
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:20:43.751
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:20:43.763
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:21:05.163
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda6578678528851160257.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:21:06.014
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda6578678528851160257.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:21:22.387
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:21:22.434
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:21:22.435
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:21:22.562
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:21:22.566
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.recommenders.models.rcp 1 11 2017-11-03 18:22:45.078
+!MESSAGE The model index service was accessed either before it started or after it finished running.
+!STACK 0
+org.eclipse.recommenders.utils.Logs$LogTraceException
+	at org.eclipse.recommenders.utils.Logs$LogTraceException.newTrace(Logs.java:381)
+	at org.eclipse.recommenders.utils.Logs.log(Logs.java:134)
+	at org.eclipse.recommenders.utils.Logs.log(Logs.java:126)
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelIndex.suggest(EclipseModelIndex.java:211)
+	at org.eclipse.recommenders.models.SimpleModelProvider.acquireModel(SimpleModelProvider.java:70)
+	at org.eclipse.recommenders.models.PoolingModelProvider.access$0(PoolingModelProvider.java:1)
+	at org.eclipse.recommenders.models.PoolingModelProvider$ModelPoolFactoryMediator.makeObject(PoolingModelProvider.java:96)
+	at org.eclipse.recommenders.models.PoolingModelProvider$ModelPoolFactoryMediator.makeObject(PoolingModelProvider.java:1)
+	at org.apache.commons.pool.impl.GenericKeyedObjectPool.borrowObject(GenericKeyedObjectPool.java:1220)
+	at org.eclipse.recommenders.models.PoolingModelProvider.acquireModel(PoolingModelProvider.java:67)
+	at org.eclipse.recommenders.internal.calls.rcp.RcpCallModelProvider.acquireModel(RcpCallModelProvider.java:65)
+	at org.eclipse.recommenders.internal.calls.rcp.RcpCallModelProvider.acquireModel(RcpCallModelProvider.java:1)
+	at org.eclipse.recommenders.internal.models.rcp.PrefetchModelArchiveJob.run(PrefetchModelArchiveJob.java:43)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:56)
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:22:55.900
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:22:55.909
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:23:35.306
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:23:35.323
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:24:19.108
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:24:19.113
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:25:42.766
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:25:42.775
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:25:59.930
+!MESSAGE Exporting project [lambda] to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda3418042448051540388.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:26:00.631
+!MESSAGE Project exported to /var/folders/7k/z2246bwx3rjd7g7ytr_t9xdr0000gq/T/lambda-lambda3418042448051540388.zip
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:26:17.534
+!MESSAGE Function arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders updated.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:26:17.579
+!MESSAGE Project metadata saved.
+
+!ENTRY com.amazonaws.eclipse.lambda 1 0 2017-11-03 18:26:17.580
+!MESSAGE Upload complete! Funtion arn arn:aws:lambda:us-west-2:373252228604:function:SongWars_GetBracketHeaders
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:26:17.795
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2017-11-03 18:26:17.803
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
