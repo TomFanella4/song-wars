@@ -149,6 +149,20 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			Collections.shuffle(gems);
 			Collections.shuffle(pop);
 			
+
+			// Get bracket_id of old bracket so we can set it to "History" from "Primary"
+			query = "SELECT bracket_id FROM last_week_bracket LIMIT 1";
+			pstatement = con.prepareStatement(query);
+			result = pstatement.executeQuery();
+			con.commit();
+			
+			if (result.next())
+				bracket_id = result.getString("bracket_id");
+			
+			result.close();
+			pstatement.close();
+			
+			
 			// Insert songs into last_week_bracket:
 			query = "INSERT INTO last_week_bracket (id, name, popularity, preview_url, album_name, album_image, artists_name, votes, bracket_id, round, position)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, 1, ?)";

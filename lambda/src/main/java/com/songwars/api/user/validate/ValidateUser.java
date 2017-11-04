@@ -65,6 +65,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 			body.put("grant_type", "authorization_code");
 			body.put("code", authorization_code);
 			body.put("redirect_uri", System.getenv("REDIRECT_URL"));
+		logger.log("Redirect Url: " + System.getenv("REDIRECT_URL") + "\n");
 		HttpsURLConnection request = null;
 		String access_token = null, expiration = null, refresh_token = null;
 		try {
