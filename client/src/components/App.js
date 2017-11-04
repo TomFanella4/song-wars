@@ -16,7 +16,6 @@ import Search from './Search';
 import Statistics from './Statistics';
 import BracketHistory from './BracketHistory';
 import About from './About';
-import NoMatch from './NoMatch';
 
 class App extends Component {
 
