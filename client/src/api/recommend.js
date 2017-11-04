@@ -6,8 +6,9 @@ import {
 export const recommendSong = song => {
   return new Promise((resolve, reject) => {
     let { user_id, access_token } = loadUserProfile();
-    if (!user_id) {
-      reject('No user_id found');
+    
+    if (!access_token || !user_id) {
+      reject('No user profile found');
       return;
     }
 

@@ -6,6 +6,11 @@ import {
 export const getCurrentVotes = bracketId => {
   return new Promise((resolve, reject) => {
     const { access_token, user_id } = loadUserProfile();
+    
+    if (!access_token || !user_id) {
+      reject('No user profile found');
+      return;
+    }
 
     let uri = serverURI + '/brackets/current/' + bracketId + '/vote';
     uri += '?user_id=' + encodeURIComponent(user_id);
@@ -21,8 +26,9 @@ export const getCurrentVotes = bracketId => {
 export const recordVote = vote => {
   return new Promise((resolve, reject) => {
     let { user_id, access_token } = loadUserProfile();
-    if (!user_id) {
-      reject('No user_id found');
+    
+    if (!access_token || !user_id) {
+      reject('No user profile found');
       return;
     }
 
