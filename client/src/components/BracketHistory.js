@@ -14,7 +14,7 @@ class BracketHistory extends Component {
   }
 
   render() {
-    const { brackets } = this.state;
+    const { brackets, loading } = this.state;
     // console.log(brackets);
 
     return (

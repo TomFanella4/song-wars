@@ -22,7 +22,7 @@ class Statistics extends Component {
     // console.log(stats);
 
     return (
-      loading ?
+      this.state.loading ?
         <Loader active={true} size='massive' />
       :
         top_artists && votes && recommendations && top_songs ?
