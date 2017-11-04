@@ -58,11 +58,24 @@ class Statistics extends Component {
 
             <Grid.Column>
               <Header as='h2' content='Top Songs' />
-              {
-                // stats.top_songs.map((song, i) => (
-                //   <Header as='h3' key={i} content={song.name + ' ' + song.count} />
-                // ))
-              }
+              <Grid columns={2} textAlign='center' >
+                <Grid.Column>
+                  <Header as='h3' content='Songs' />
+                  {
+                    stats.top_songs.map((song, i) => (
+                      <Header as='h4' key={i} content={song.name} />
+                    ))
+                  }
+                </Grid.Column>
+                <Grid.Column>
+                  <Header as='h3' content='Votes' />
+                  {
+                    stats.top_songs.map((song, i) => (
+                      <Header as='h4' key={i} content={song.count} />
+                    ))
+                  }
+                </Grid.Column>
+              </Grid>
             </Grid.Column>
 
           </Grid>

@@ -26,6 +26,12 @@ class SidebarMenu extends Component {
           </Link>
         </Menu.Item>
         <Menu.Item>
+          <Link to='/history'>
+            <Icon name='history' size='large' />
+            History
+          </Link>
+        </Menu.Item>
+        <Menu.Item>
           <Link to='/about'>
             <Icon name='info' size='large' />
             About
