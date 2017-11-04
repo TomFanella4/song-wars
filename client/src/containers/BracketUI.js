@@ -107,17 +107,16 @@ class BracketUI extends Component {
         setBracketId(bracket.bracket_id);
         
         getCurrentVotes(bracket.bracket_id)
-        .then(list => {
-          setVoteList(list);
-    
+        .then(list => list.matchups ? setVoteList(list) : setVoteList({ matchups: [] }))
+        .catch(err => setVoteList({ matchups: [] }))
+        .then(() => (
           this.setState({
             loading: {
               ...this.state.loading,
               vote: false
             }
-          });
-        })
-        .catch(err => console.error(err))
+          })
+        ))
       })
       .catch(err => console.error(err));
     }

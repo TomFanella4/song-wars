@@ -4,7 +4,8 @@ import {
   scopes,
   serverURI,
   loadUserProfile,
-  saveUserProfile
+  saveUserProfile,
+  deleteUserProfile
 } from '../common';
 
 export const authSpotify = () => {
@@ -19,10 +20,12 @@ export const authSpotify = () => {
 export const authServer = code => {
   return new Promise((resolve, reject) => {
     const { access_token } = loadUserProfile();
+
     if (access_token) {
       reject('Already Signed in');
       return;
     }
+
     let uri = serverURI + '/user/validate';
     uri += '?code=' + encodeURIComponent(code);
   
@@ -36,6 +39,7 @@ export const authServer = code => {
 export const refreshAuthServer = () => {
   return new Promise((resolve, reject) => {
     const { user_id, access_token } = loadUserProfile();
+    
     if (!access_token) {
       reject('User not signed in');
       return;
@@ -59,8 +63,14 @@ export const refreshAuthServer = () => {
     fetch(uri, myInit)
     .then(data => data.json())
     .then(json => {
-      saveUserProfile(json);
-      resolve();
+      if (json.access_token) {
+        saveUserProfile(json);
+        resolve();
+      } else {
+        deleteUserProfile();
+        authSpotify();
+        reject();
+      }
     })
     .catch(err => reject(err));
   })
