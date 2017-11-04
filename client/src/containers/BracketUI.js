@@ -108,7 +108,7 @@ class BracketUI extends Component {
         
         getCurrentVotes(bracket.bracket_id)
         .then(list => list.matchups ? setVoteList(list) : setVoteList({ matchups: [] }))
-        .catch(err => console.error(err))
+        .catch(err => setVoteList({ matchups: [] }))
         .then(() => (
           this.setState({
             loading: {

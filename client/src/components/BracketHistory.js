@@ -9,7 +9,7 @@ class BracketHistory extends Component {
 
   componentDidMount() {
     getBracketHistoryHeaders()
-    .then(brackets => this.setState({ brackets: brackets.headers, loading: true }))
+    .then(brackets => this.setState({ brackets: brackets.headers, loading: false }))
     .catch(err => this.setState({ loading: false }))
   }
 
@@ -19,7 +19,7 @@ class BracketHistory extends Component {
 
     return (
       loading ?
-        <Loader active='true' size='massive' />
+        <Loader active={true} size='massive' />
       :
         brackets.length ?
           <div>
@@ -33,7 +33,7 @@ class BracketHistory extends Component {
             }
           </div>
         :
-          <Header as='h2' color='grey'>No Brackets Availible</Header>
+          <Header as='h2' color='grey'>No Brackets Available</Header>
     );
   }
 }

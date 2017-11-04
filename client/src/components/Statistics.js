@@ -19,13 +19,12 @@ class Statistics extends Component {
       recommendations,
       top_songs
     } = this.state.stats;
-    // console.log(stats);
 
     return (
       this.state.loading ?
         <Loader active={true} size='massive' />
       :
-        top_artists && votes && recommendations && top_songs ?
+        top_artists && top_songs ?
           <Grid columns={3} textAlign='center' divided stackable >
 
             <Grid.Column>
