@@ -267,16 +267,90 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 		// 7. Here It Goes Again - OK Go
 		// 8. Pants on the Ground - General Larry Platt
 		
-		/*HashMap<String, Object> song = new HashMap<String, Object>();
-		song.put("id", );
-		song.put("name", );
-		song.put("popularity", new Integer());
-		song.put("preview_url", );
-		song.put("album_name", );
-		song.put("album_image", );
-		song.put("artists_name", );
-		gems.put(song)*/
+		switch (gems.size()) {
+		case 0:
+			HashMap<String, Object> song = new HashMap<String, Object>();
+			song.put("id", "2aYguRih2pKaKXiW7UFrbA");
+			song.put("name", "Pants On The Ground");
+			song.put("popularity", new Integer(21));
+			song.put("preview_url", "spotify:track:2aYguRih2pKaKXiW7UFrbA");
+			song.put("album_name", "Pants On The Ground");
+			song.put("album_image", "https://i.scdn.co/image/5ea91e5178e40bdb162b41d2830bb9074a0ff6ff");
+			song.put("artists_name", "General Larry Platt");
+			gems.add(song);
+		case 1:
+			song = new HashMap<String, Object>();
+			song.put("id", "1pHP4JeQV9wDx87D6qH9hD");
+			song.put("name", "Here It Goes Again");
+			song.put("popularity", new Integer(62));
+			song.put("preview_url", "spotify:track:1pHP4JeQV9wDx87D6qH9hD");
+			song.put("album_name", "Oh No");
+			song.put("album_image", "https://i.scdn.co/image/e5d8ae33539f5d928ffa49c3b34b81b757c64493");
+			song.put("artists_name", "OK Go");
+			gems.add(song);
+		case 2:
+			song = new HashMap<String, Object>();
+			song.put("id", "3sJ1HwrSpTVosPhJHFbRLK");
+			song.put("name", "Chocolate Rain");
+			song.put("popularity", new Integer(36));
+			song.put("preview_url", "spotify:track:3sJ1HwrSpTVosPhJHFbRLK");
+			song.put("album_name", "Chocolate Rain");
+			song.put("album_image", "https://i.scdn.co/image/68f21baf058b93e801f62df9587d13c4ea4c9a38");
+			song.put("artists_name", "Tay Zonday");
+			gems.add(song);
+		case 3:
+			song = new HashMap<String, Object>();
+			song.put("id", "0t8vGVdJaU93uQYMNqViyf");
+			song.put("name", "The Hamster Dance Song");
+			song.put("popularity", new Integer(43));
+			song.put("preview_url", "spotify:track:0t8vGVdJaU93uQYMNqViyf");
+			song.put("album_name", "The Hampster Dance........and Friends");
+			song.put("album_image", "https://i.scdn.co/image/bcadf40e1ac9c02f000505fb078a68f0fbc0acfb");
+			song.put("artists_name", "Hampster Dance Masters");
+			gems.add(song);
+		case 4:
+			song = new HashMap<String, Object>();
+			song.put("id", "0COqiPhxzoWICwFCS4eZcp");
+			song.put("name", "Bring Me To Life");
+			song.put("popularity", new Integer(71));
+			song.put("preview_url", "spotify:track:0COqiPhxzoWICwFCS4eZcp");
+			song.put("album_name", "Fallen");
+			song.put("album_image", "https://i.scdn.co/image/b7874d9ac6948de4945c2c3d44739dc549a481f7");
+			song.put("artists_name", "Evanescence");
+			gems.add(song);
+		case 5:
+			song = new HashMap<String, Object>();
+			song.put("id", "19fm0eNKTeg1JbHCHwPhLe");
+			song.put("name", "All Star");
+			song.put("popularity", new Integer(51));
+			song.put("preview_url", "spotify:track:19fm0eNKTeg1JbHCHwPhLe");
+			song.put("album_name", "All Star Smash Hits");
+			song.put("album_image", "https://i.scdn.co/image/b3fc81a516d5eceb2ee8cfafca1f2f00ec30672e");
+			song.put("artists_name", "Smash Mouth");
+			gems.add(song);
+		case 6:
+			song = new HashMap<String, Object>();
+			song.put("id", "7tOcPDj3vyopZ404pY6UuP");
+			song.put("name", "Shooting Stars");
+			song.put("popularity", new Integer(47));
+			song.put("preview_url", "spotify:track:7tOcPDj3vyopZ404pY6UuP");
+			song.put("album_name", "Shooting Stars");
+			song.put("album_image", "https://i.scdn.co/image/48ce996cb37b2e011b3374e931483c77d9fb594e");
+			song.put("artists_name", "Bag Raiders");
+			gems.add(song);
+		case 7:
+			song = new HashMap<String, Object>();
+			song.put("id", "7GhIk7Il098yCjg4BQjzvb");
+			song.put("name", "Never Gonna Give You Up");
+			song.put("popularity", new Integer(64));
+			song.put("preview_url", "spotify:track:7GhIk7Il098yCjg4BQjzvb");
+			song.put("album_name", "Whenever You Need Somebody");
+			song.put("album_image", "https://i.scdn.co/image/568017ab80000e71ca299909806898f75a948456");
+			song.put("artists_name", "Rick Astley");
+			gems.add(song);
+		}
 		
+			
 	}
 	
 	public void fillBackupPop(ArrayList<HashMap<String, Object>> pop) {
@@ -288,16 +362,90 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 		// 6. Havana - Camila Cabello, Young Thug
 		// 7. I'm the One - DJ Khaled, Justin Beiber, Quevo, Chance the Rapper, Lil Wayne
 		// 8. Don't Wanna Know - Maroon 5, Kendrick Lamar
+	
+		switch (pop.size()) {
+		case 0:
+			HashMap<String, Object> song = new HashMap<String, Object>();
+			song.put("id", "3PGdPUMdUg7a3Tgr5gkfKK");
+			song.put("name", "Don't Wanna Know (feat. Kendrick Lamar)");
+			song.put("popularity", new Integer(74));
+			song.put("preview_url", "spotify:track:3PGdPUMdUg7a3Tgr5gkfKK");
+			song.put("album_name", "Red Pill Blues (Deluxe)");
+			song.put("album_image", "https://i.scdn.co/image/ef81c0753690ea5ff192ff964b66848866f363fa");
+			song.put("artists_name", "Maroon 5");
+			pop.add(song);
+		case 1:
+			song = new HashMap<String, Object>();
+			song.put("id", "1jYiIOC5d6soxkJP81fxq2");
+			song.put("name", "I'm the One");
+			song.put("popularity", new Integer(80));
+			song.put("preview_url", "spotify:track:1jYiIOC5d6soxkJP81fxq2");
+			song.put("album_name", "Grateful");
+			song.put("album_image", "https://i.scdn.co/image/600e240d5d48d86cf564854ba0e2b393ba4b9fdd");
+			song.put("artists_name", "DJ Khaled");
+			pop.add(song);
+		case 2:
+			song = new HashMap<String, Object>();
+			song.put("id", "0ofbQMrRDsUaVKq2mGLEAb");
+			song.put("name", "Havana");
+			song.put("popularity", new Integer(100));
+			song.put("preview_url", "spotify:track:0ofbQMrRDsUaVKq2mGLEAb");
+			song.put("album_name", "Havana");
+			song.put("album_image", "https://i.scdn.co/image/a3a0d4f89c07e1886452cb301bfc67f6a28366bb");
+			song.put("artists_name", "Camila Cabello");
+			pop.add(song);
+		case 3:
+			song = new HashMap<String, Object>();
+			song.put("id", "1OmcAT5Y8eg5bUPv9qJT4R");
+			song.put("name", "rockstar");
+			song.put("popularity", new Integer(95));
+			song.put("preview_url", "spotify:track:1OmcAT5Y8eg5bUPv9qJT4R");
+			song.put("album_name", "rockstar");
+			song.put("album_image", "https://i.scdn.co/image/bcc3516c4bcf5efb6e23abb50883bbcbe45677e5");
+			song.put("artists_name", "Post Malone");
+			pop.add(song);
+		case 4:
+			song = new HashMap<String, Object>();
+			song.put("id", "34oB5r0lcN3fYWCs2uA1k5");
+			song.put("name", "The Cure");
+			song.put("popularity", new Integer(74));
+			song.put("preview_url", "spotify:track:34oB5r0lcN3fYWCs2uA1k5");
+			song.put("album_name", "The Cure");
+			song.put("album_image", "https://i.scdn.co/image/795a07a4a2d6c0134527a8fea47ab37e09972db1");
+			song.put("artists_name", "Lady Gaga");
+			pop.add(song);
+		case 5:
+			song = new HashMap<String, Object>();
+			song.put("id", "0wwPcA6wtMf6HUMpIRdeP7");
+			song.put("name", "Hotline Bling");
+			song.put("popularity", new Integer(72));
+			song.put("preview_url", "spotify:track:0wwPcA6wtMf6HUMpIRdeP7");
+			song.put("album_name", "Views");
+			song.put("album_image", "https://i.scdn.co/image/260c2e74e67a15cf61ac72f8264cc6caec5f7a66");
+			song.put("artists_name", "Drake");
+			pop.add(song);
+		case 6:
+			song = new HashMap<String, Object>();
+			song.put("id", "2y6vf5vYJFow4oABKSW1m3");
+			song.put("name", "Swish Swish");
+			song.put("popularity", new Integer(74));
+			song.put("preview_url", "spotify:track:2y6vf5vYJFow4oABKSW1m3");
+			song.put("album_name", "Witness");
+			song.put("album_image", "https://i.scdn.co/image/9188e3e1842827432798582ade69685c7388b1ae");
+			song.put("artists_name", "Katy Perry");
+			pop.add(song);
+		case 7:
+			song = new HashMap<String, Object>();
+			song.put("id", "5Z01UMMf7V1o0MzF86s6WJ");
+			song.put("name", "Lose Yourself - Soundtrack Version");
+			song.put("popularity", new Integer(77));
+			song.put("preview_url", "spotify:track:5Z01UMMf7V1o0MzF86s6WJ");
+			song.put("album_name", "Curtain Call (Deluxe)");
+			song.put("album_image", "https://i.scdn.co/image/d8e64797fed77c9fd5dd53a41dd887b1bace8cb1");
+			song.put("artists_name", "Eminem");
+			pop.add(song);
+		}
 		
-		/*HashMap<String, Object> song = new HashMap<String, Object>();
-		song.put("id", );
-		song.put("name", );
-		song.put("popularity", new Integer());
-		song.put("preview_url", );
-		song.put("album_name", );
-		song.put("album_image", );
-		song.put("artists_name", );
-		gems.put(song)*/
 		
 	}
 }
