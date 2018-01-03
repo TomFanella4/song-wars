@@ -1,6 +1,5 @@
-package com.songwars.api.bracket;
+package com.songwars.api.history;
 
-import java.lang.annotation.Annotation;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,34 +9,57 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
-import org.junit.validator.ValidateWith;
-
-import com.amazonaws.protocol.json.JsonClientMetadata;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
-import com.mysql.fabric.xmlrpc.base.Data;
 import com.songwars.api.utilities.Utilities;
 import com.songwars.api.utilities.Validate;
 
+public class GetBracketHistory implements RequestHandler<Map<String, Object>, Map<String, Object>> {
 
-public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map<String, Object>> {
-
-    private Context context;
+	private Context context;
 	private LambdaLogger logger;
 	
 	@Override
 	public Map<String, Object> handleRequest(Map<String, Object> input, Context context) {
 				
-		Map<String, Object> response = new LinkedHashMap<String, Object>();
-				
+		
+		// Response JSON:
+		Map<String, Object> response = new HashMap<String, Object>();
+		Map<String, Object> querystring = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> path = new HashMap<String, Object>();
+		
+		//Local variables
+		String access_token = null;
+		String bracket_id = null;
+		
+		//Find path
+		params = Validate.field(input, "params");
+		path = Validate.field(params, "path");
+		querystring = Validate.field(params, "querystring");
+
+		
+		//Validate input
+		access_token = Validate.sqlstring(querystring, "access_token");
+		bracket_id = Validate.sqlstring(path, "bracket-id");
+		
+		// Database Connection:
 		Connection con = Utilities.getRemoteConnection(context);
+		
 		try {
+			// Check for an authorized user:
+			String query = "SELECT * FROM users WHERE access_token='" + access_token + "'";
+			Statement statement = con.createStatement();
+			ResultSet res = statement.executeQuery(query);
+
+			if (!res.next())
+				throw new RuntimeException("[Forbidden] Access token is not registered. Send user to login again.");
+			res.close();
+			statement.close();
 			
 			
+			//copy and paste from get bracket but assume 30 rows 
 			//Storage for match up data
 			LinkedHashMap<String, Object> matchup = new LinkedHashMap<String, Object>();
 			ArrayList<LinkedHashMap<String, Object>> matchupData = new ArrayList<>(); 
@@ -45,13 +67,11 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			ArrayList<Object> rightSide = new ArrayList<>();
 			ArrayList<Object> finals = new ArrayList<>();
 			LinkedHashMap<String, Object> winner = new LinkedHashMap<String, Object>(); 
-			String bracket_id = null;
-			int currentRound = 0;
 			
 			//Query for round 1 rows
-			String query = "SELECT * FROM last_week_bracket WHERE round = 1";
-			Statement statement = con.createStatement();
-			ResultSet res = statement.executeQuery(query);
+			query = "SELECT * FROM bracket_history WHERE round = 1 AND bracket_id='" + bracket_id + "'";
+			statement = con.createStatement();
+			res = statement.executeQuery(query);
 			ArrayList<LinkedHashMap<String, Object>> roundOneBracketData = new ArrayList<>();
 			while(res.next()) {
 				String id = res.getString("id");
@@ -69,17 +89,16 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
 					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
 					roundOneBracketData.add(data);
-					currentRound = round;
 					bracket_id = bracketId;
 					
 			}
 			
 			if(roundOneBracketData.size() != 16) {
-				throw new RuntimeException("[InternalServerError] Bracket is not fully populated!");
+				throw new RuntimeException("[InternalServerError] Bracket could not be found!");
 			}
 			
 			//Query for round 2 rows
-			query = "SELECT * FROM last_week_bracket WHERE round = 2";
+			query = "SELECT * FROM bracket_history WHERE round = 2 AND bracket_id='" + bracket_id + "'";
 			statement = con.createStatement();
 			res = statement.executeQuery(query);
 			ArrayList<LinkedHashMap<String, Object>> roundTwoBracketData = new ArrayList<>();
@@ -97,12 +116,11 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
 					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
-					currentRound = round;
 					roundTwoBracketData.add(data);
 			}
 			
 			//Query for round 3 rows
-			query = "SELECT * FROM last_week_bracket WHERE round = 3";
+			query = "SELECT * FROM bracket_history WHERE round = 3 AND bracket_id='" + bracket_id + "'";
 			statement = con.createStatement();
 			res = statement.executeQuery(query);
 			ArrayList<LinkedHashMap<String, Object>> roundThreeBracketData = new ArrayList<>();
@@ -120,12 +138,11 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
 					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
-					currentRound = round;
 					roundThreeBracketData.add(data);
 			}
 			
 			//Query for round 4
-			query = "SELECT * FROM last_week_bracket WHERE round = 4";
+			query = "SELECT * FROM bracket_history WHERE round = 4 AND bracket_id='" + bracket_id + "'";
 			statement = con.createStatement();
 			res = statement.executeQuery(query);
 			ArrayList<LinkedHashMap<String, Object>> roundFourBracketData = new ArrayList<>();
@@ -143,12 +160,11 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				LinkedHashMap<String,Object> data = new LinkedHashMap<>();
 					data.put("id", id); data.put("name", name); data.put("popularity", popularity); data.put("preview_url", previewUrl); data.put("album_name", albumName); data.put("album_image", albumImage);
 					data.put("artists_name", artistName); data.put("votes", votes); data.put("round", round); data.put("position", position);
-					currentRound = round;
 					roundFourBracketData.add(data);
 			}
 			
 			//Query for winner
-			query = "SELECT * FROM last_week_bracket WHERE round = 5";
+			query = "SELECT * FROM bracket_history WHERE round = 5 AND bracket_id='" + bracket_id + "'";
 			statement = con.createStatement();
 			res = statement.executeQuery(query);
 			if(res.next()) {
@@ -164,8 +180,6 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 				int position = res.getInt("position");
 				winner.put("id", id); winner.put("name", name); winner.put("popularity", popularity); winner.put("preview_url", previewUrl); winner.put("album_name", albumName); winner.put("album_image", albumImage);
 				winner.put("artists_name", artistName); winner.put("votes", votes); winner.put("round", round); winner.put("position", position);
-				currentRound = round;
-
 			}
 			
 
@@ -241,7 +255,6 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			}
 			
 			//Add bracket data to response
-			response.put("round", currentRound);
 			response.put("bracket_id", bracket_id);
 			response.put("LeftSide", leftSide);
 			response.put("RightSide", rightSide);
@@ -251,8 +264,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 			if(!winner.isEmpty()) {
 				response.put("Winner", winner);
 			}
-		
 			
+
 		} catch (SQLException ex) {
 			// handle any errors
 			logger.log("SQLException: " + ex.getMessage());
@@ -270,9 +283,8 @@ public class RetrieveLastWeek implements RequestHandler<Map<String, Object>, Map
 					throw new RuntimeException("[InternalServerError] - SQL error occured and is having trouble closing connection.");
 				}
 		}
-				
+		
 		return response;
+		
 	}
-
 }
-
