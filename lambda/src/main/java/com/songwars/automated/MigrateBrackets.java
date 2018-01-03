@@ -182,15 +182,15 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 
 			// Get bracket_id of old bracket so we can set it to "History" from "Primary"
 			query = "SELECT bracket_id FROM last_week_bracket LIMIT 1";
-			pstatement = con.prepareStatement(query);
-			result = pstatement.executeQuery();
+			PreparedStatement pstatement7 = con.prepareStatement(query);
+			result = pstatement7.executeQuery();
 			con.commit();
 			
 			if (result.next())
 				bracket_id = result.getString("bracket_id");
 			
 			result.close();
-			pstatement.close();
+			pstatement7.close();
 			
 			
 			// Copy rows into bracket_history, then delete them from last_week_bracket:
