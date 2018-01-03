@@ -4,20 +4,27 @@ import { Grid, Header, Loader } from 'semantic-ui-react';
 import { getStats } from '../api';
 
 class Statistics extends Component {
-  state = { stats: null };
+  state = { stats: {}, loading: true };
 
   componentDidMount() {
     getStats()
-    .then(data => this.setState({ stats: data }))
-    .catch(err => console.error(err));
+    .then(data => this.setState({ stats: data, loading: false }))
+    .catch(err => this.setState({ loading: false }));
   }
 
   render() {
-    const { stats } = this.state;
-    // console.log(stats);
+    const {
+      top_artists,
+      votes,
+      recommendations,
+      top_songs
+    } = this.state.stats;
 
     return (
-        stats ?
+      this.state.loading ?
+        <Loader active={true} size='massive' />
+      :
+        top_artists && top_songs ?
           <Grid columns={3} textAlign='center' divided stackable >
 
             <Grid.Column>
@@ -26,7 +33,7 @@ class Statistics extends Component {
                 <Grid.Column>
                   <Header as='h3' content='Artists' />
                   {
-                    stats.top_artists.map((artist, i) => (
+                    top_artists.map((artist, i) => (
                       <Header as='h4' key={i} content={artist.name} />
                     ))
                   }
@@ -34,7 +41,7 @@ class Statistics extends Component {
                 <Grid.Column>
                   <Header as='h3' content='Votes' />
                   {
-                    stats.top_artists.map((artist, i) => (
+                    top_artists.map((artist, i) => (
                       <Header as='h4' key={i} content={artist.count} />
                     ))
                   }
@@ -50,24 +57,37 @@ class Statistics extends Component {
                   <Header as='h2' content='Recommendations' />
                 </Grid.Column>
                 <Grid.Column>
-                  <Header as='h2' content={stats.votes} />
-                  <Header as='h2' content={stats.recommendations} />
+                  <Header as='h2' content={votes} />
+                  <Header as='h2' content={recommendations} />
                 </Grid.Column>
               </Grid>
             </Grid.Column>
 
             <Grid.Column>
               <Header as='h2' content='Top Songs' />
-              {
-                // stats.top_songs.map((song, i) => (
-                //   <Header as='h3' key={i} content={song.name + ' ' + song.count} />
-                // ))
-              }
+              <Grid columns={2} textAlign='center' >
+                <Grid.Column>
+                  <Header as='h3' content='Songs' />
+                  {
+                    top_songs.map((song, i) => (
+                      <Header as='h4' key={i} content={song.name} />
+                    ))
+                  }
+                </Grid.Column>
+                <Grid.Column>
+                  <Header as='h3' content='Votes' />
+                  {
+                    top_songs.map((song, i) => (
+                      <Header as='h4' key={i} content={song.count} />
+                    ))
+                  }
+                </Grid.Column>
+              </Grid>
             </Grid.Column>
 
           </Grid>
         :
-          <Loader active={true} size='massive' />
+          <Header as='h2' color='grey'>No Statistics Availible</Header>
     );
   }
 }

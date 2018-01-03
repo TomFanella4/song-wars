@@ -9,12 +9,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.songwars.api.utilities.Matchup;
 import com.songwars.api.utilities.Utilities;
 
 public class UpdateStats implements RequestHandler<Object, String> {
@@ -111,7 +109,7 @@ public class UpdateStats implements RequestHandler<Object, String> {
 			pstatement.close();
 			
 			// 		Get song wins:
-			query = "SELECT * FROM bracket_history WHERE (bracket_id, round, votes) IN ( SELECT bracket_id, round, MAX(votes) FROM bracket_history WHERE round=4)";
+			query = "SELECT * FROM bracket_history WHERE round=5";
 			pstatement = con.prepareStatement(query);
 			result = pstatement.executeQuery();
 			con.commit();
@@ -127,6 +125,9 @@ public class UpdateStats implements RequestHandler<Object, String> {
 			
 			result.close();
 			pstatement.close();
+			
+			logger.log("song_names: " + song_names + "\n");
+			logger.log("song_count: " + song_count + "\n");
 			
 			
 			// Compute top 10 for both lists:
@@ -145,6 +146,7 @@ public class UpdateStats implements RequestHandler<Object, String> {
 				}
 			});
 			
+			logger.log("sorted: " + song_list + "\n");
 			
 			// Update/Insert values into stats table:
 			query = "INSERT INTO stats (id, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name=?, value=?";
@@ -168,6 +170,7 @@ public class UpdateStats implements RequestHandler<Object, String> {
 			}
 			// Stat #13-22
 			for (int i = 0; i < 10 && song_list.size() > i; i++) {
+				logger.log("inserting " + i + "\n");
 				pstatement.setInt(1, i+13);
 				pstatement.setString(2, song_names.get(song_list.get(i).getKey()));
 				pstatement.setInt(3, song_list.get(i).getValue());

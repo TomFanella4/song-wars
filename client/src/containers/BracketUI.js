@@ -4,7 +4,7 @@ import { Header, Button, Card, Loader } from 'semantic-ui-react';
 import $ from 'jquery';
 
 import { popularCutoff } from '../common';
-import { getCurrentBracket, getCurrentVotes, authSpotify } from '../api';
+import { getCurrentBracket, getCurrentVotes, authSpotify, getBracketHistoryFromID } from '../api';
 import { setBracketId, setVoteList } from '../actions';
 import VoteOption from './VoteOption';
 
@@ -14,115 +14,116 @@ require('../../node_modules/jquery-bracket/dist/jquery.bracket.min.css');
 require('../../node_modules/jquery-bracket/dist/jquery.bracket.min.js');
 
 class BracketUI extends Component {
-  state = { preview1: null, preview2: null, winner: null, loading: { bracket: true, vote: true } }
+  state = { preview1: null, preview2: null, winner: null, loading: { bracket: true, vote: true }, round: null }
 
   onMatchHover(cell) {
     cell && this.setState({ preview1: cell.Option1, preview2: cell.Option2 })
   }
 
+  setupBracket(bracket) {
+    const { voteList } = this.props;
+    
+    // console.log(bracket)
+    
+    const leftBracket = {
+      teams: bracket.RightSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
+      results: bracket.RightSide.map((col, i) => (
+        col.map(cell => [
+          i + 1 < bracket.RightSide.length || bracket.Finals || !voteList.length ?
+            cell.Option1.votes
+          :
+            null,
+          i + 1 < bracket.RightSide.length || bracket.Finals || !voteList.length ?
+            cell.Option2.votes
+          :
+            null,
+          cell
+        ])
+      ))
+    };
+
+    const rightBracket = {
+      teams: bracket.LeftSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
+      results: bracket.LeftSide.map((col, i) => (
+        col.map(cell => [
+          i + 1 < bracket.LeftSide.length || bracket.Finals || !voteList.length ?
+            cell.Option1.votes
+          :
+            null,
+          i + 1 < bracket.LeftSide.length || bracket.Finals || !voteList.length ?
+            cell.Option2.votes
+          :
+            null,
+          cell
+        ])
+      ))
+    };
+
+    if (bracket.Winner) {
+      this.setState({ winner: bracket.Winner });
+    }
+    
+    this.setState({ 
+      loading: {
+        ...this.state.loading,
+        bracket: false
+      },
+      round: bracket.round
+    });
+    
+    $('.leftBracket').bracket({
+      skipConsolationRound: true,
+      teamWidth: 100,
+      matchMargin: 40,
+      onMatchHover: this.onMatchHover.bind(this),
+      init: leftBracket
+    });
+
+    $('.rightBracket').bracket({
+      skipConsolationRound: true,
+      teamWidth: 100,
+      matchMargin: 40,
+      onMatchHover: this.onMatchHover.bind(this),
+      dir: 'rl',
+      init: rightBracket
+    });
+  }
+
   componentDidMount() {
-    const { setBracketId, setVoteList, voteList } = this.props;
+    const { setBracketId, setVoteList, match } = this.props;
 
-    getCurrentBracket()
-    .then(bracket => {
-      console.log(bracket)
+    if (match) {
 
-      const leftBracket = {
-        teams: bracket.RightSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
-        results: bracket.RightSide.map((col, i) => (
-          col.map(cell => [
-            i + 1 < bracket.RightSide.length || bracket.Finals || !voteList.length ?
-              cell.Option1.votes
-            :
-              null,
-            i + 1 < bracket.RightSide.length || bracket.Finals || !voteList.length ?
-              cell.Option2.votes
-            :
-              null,
-            cell
-          ])
+      getBracketHistoryFromID(match.params.bracket_id)
+      .then(bracket => this.setupBracket(bracket))
+      .catch(err => console.error(err));
+
+    } else {
+
+      getCurrentBracket()
+      .then(bracket => {
+        this.setupBracket(bracket);
+
+        setBracketId(bracket.bracket_id);
+        
+        getCurrentVotes(bracket.bracket_id)
+        .then(list => list.matchups ? setVoteList(list) : setVoteList({ matchups: [] }))
+        .catch(err => setVoteList({ matchups: [] }))
+        .then(() => (
+          this.setState({
+            loading: {
+              ...this.state.loading,
+              vote: false
+            }
+          })
         ))
-      };
-
-      const rightBracket = {
-        teams: bracket.LeftSide[0].map(cell => [cell.Option1.name, cell.Option2.name]),
-        results: bracket.LeftSide.map((col, i) => (
-          col.map(cell => [
-            i + 1 < bracket.LeftSide.length || bracket.Finals || !voteList.length ?
-              cell.Option1.votes
-            :
-              null,
-            i + 1 < bracket.LeftSide.length || bracket.Finals || !voteList.length ?
-              cell.Option2.votes
-            :
-              null,
-            cell
-          ])
-        ))
-      };
-
-      if (bracket.Winner) {
-        this.setState({ winner: bracket.Winner });
-      }
-
-      // var data = {
-      //   teams : [
-      //     ["Piano Man",  "Feels" ],
-      //     ["Batman Theme",  "Scarborough Fair" ],
-      //     ["Believer",  "Look What You Made Me Do" ],
-      //     ["I Don’t Wanna Live Forever",  "Radioactive" ]
-      //   ],
-      //   results : [
-      //     [[1,2], [3,4], [5,6], [7,8]],
-      //     [[9,20], [7,2]],
-      //     [[40,3]]
-      //   ]
-      // };
-      
-      this.setState({ 
-        loading: {
-          ...this.state.loading,
-          bracket: false
-        }
-      });
-      
-      $('.leftBracket').bracket({
-        skipConsolationRound: true,
-        teamWidth: 100,
-        matchMargin: 40,
-        onMatchHover: this.onMatchHover.bind(this),
-        init: leftBracket
-      });
-  
-      $('.rightBracket').bracket({
-        skipConsolationRound: true,
-        teamWidth: 100,
-        matchMargin: 40,
-        onMatchHover: this.onMatchHover.bind(this),
-        dir: 'rl',
-        init: rightBracket
-      });
-
-      setBracketId(bracket.bracket_id);
-
-      getCurrentVotes(bracket.bracket_id)
-      .then(list => {
-        setVoteList(list);
-
-        this.setState({
-          loading: {
-            ...this.state.loading,
-            vote: false
-          }
-        });
       })
-      .catch(err => console.error(err))
-    })
-    .catch(err => console.error(err));
+      .catch(err => console.error(err));
+    }
   }
 
   render() {
-    const { preview1, preview2, winner, loading } = this.state;
+    const { preview1, preview2, winner, loading, round } = this.state;
 
     return (
       loading.bracket ?
@@ -146,7 +147,7 @@ class BracketUI extends Component {
                 :
                   <div>
                     {
-                      this.props.userProfile.access_token ?
+                      this.props.userProfile.access_token && !this.props.match ?
                         <Button
                           content='Vote'
                           color='green'
@@ -163,7 +164,7 @@ class BracketUI extends Component {
                           onClick={authSpotify}
                         />
                     }
-                    <Header as='h2' content={'Day ' + this.props.voteList.round} />
+                    <Header as='h2' content={'Day ' + round} />
                   </div>
               }
             </span>

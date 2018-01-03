@@ -81,7 +81,7 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			
 			
 			// SELECT top recommendations from < X popularity:
-			query = "SELECT * FROM recommendations WHERE popularity<=70 ORDER BY count DESC LIMIT 8";
+			query = "SELECT * FROM recommendations WHERE popularity<=50 ORDER BY count DESC LIMIT 8";
 			pstatement = con.prepareStatement(query);
 			result = pstatement.executeQuery();
 			con.commit();
@@ -149,6 +149,7 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			Collections.shuffle(gems);
 			Collections.shuffle(pop);
 			
+			
 			// Insert songs into last_week_bracket:
 			query = "INSERT INTO last_week_bracket (id, name, popularity, preview_url, album_name, album_image, artists_name, votes, bracket_id, round, position)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, 1, ?)";
@@ -178,22 +179,40 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 				pstatement.addBatch();
 			}
 			
+
+			// Get bracket_id of old bracket so we can set it to "History" from "Primary"
+			query = "SELECT bracket_id FROM last_week_bracket LIMIT 1";
+			PreparedStatement pstatement7 = con.prepareStatement(query);
+			result = pstatement7.executeQuery();
+			con.commit();
+			
+			if (result.next())
+				bracket_id = result.getString("bracket_id");
+			
+			result.close();
+			pstatement7.close();
+			
+			
 			// Copy rows into bracket_history, then delete them from last_week_bracket:
 			String insertquery = "INSERT INTO bracket_history SELECT * FROM last_week_bracket";
+			String updatequery = "UPDATE bracket_headers SET type='History' WHERE bracket_id=?";
 			String deletequery1 = "DELETE FROM last_week_bracket";
 			String deletequery2 = "DELETE FROM users_last_week_bracket";
 			String deletequery3 = "DELETE FROM users_recommendations";
 			String deletequery4 = "DELETE FROM recommendations";
 			PreparedStatement pstatement1 = con.prepareStatement(insertquery);
-			PreparedStatement pstatement2 = con.prepareStatement(deletequery1);
-			PreparedStatement pstatement3 = con.prepareStatement(deletequery2);
-			PreparedStatement pstatement4 = con.prepareStatement(deletequery3);
-			PreparedStatement pstatement5 = con.prepareStatement(deletequery4);
+			PreparedStatement pstatement2 = con.prepareStatement(updatequery);
+			PreparedStatement pstatement3 = con.prepareStatement(deletequery1);
+			PreparedStatement pstatement4 = con.prepareStatement(deletequery2);
+			PreparedStatement pstatement5 = con.prepareStatement(deletequery3);
+			PreparedStatement pstatement6 = con.prepareStatement(deletequery4);
+			pstatement2.setString(1, bracket_id);
 			pstatement1.execute();
 			pstatement2.execute();
-			//pstatement3.execute();
-			//pstatement4.execute();
-			//pstatement5.execute();
+			pstatement3.execute();
+			pstatement4.execute();
+			pstatement5.execute();
+			pstatement6.execute();
             
             int[] statuses = pstatement.executeBatch();
 			
@@ -210,6 +229,7 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			pstatement3.close();
 			pstatement4.close();
 			pstatement5.close();
+			pstatement6.close();
 			pstatement.close();
 			
 
