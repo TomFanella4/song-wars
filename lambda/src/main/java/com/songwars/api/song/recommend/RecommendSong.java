@@ -46,6 +46,7 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 		String artists_name = null;
 		String album_name = null;
 		String album_image = null;
+		String bracket_id = null;
 		
 		// Find Path:
 		
@@ -91,8 +92,20 @@ public class RecommendSong implements RequestHandler<Map<String, Object>, Map<St
 			result.close();
 			statement.close();
 			
+			// Get current bracket_id:
+			query = "SELECT * FROM bracket_headers WHERE type='Primary'";
+			statement = con.createStatement();
+			result = statement.executeQuery(query);
+			
+			if (!result.next())
+				throw new RuntimeException("[BadRequest] No Primary bracket in bracket_headers.");
+			else
+				bracket_id = result.getString("bracket_id");
+			result.close();
+			statement.close();
+			
 			// Recommend song:
-			query = "INSERT INTO users_recommendations (user_id, song_id) VALUES ('" + user_id + "', '" + song_id + "')";
+			query = "INSERT INTO users_recommendations (user_id, song_id, bracket_id, song_name, artists_name, song_popularity) VALUES ('" + user_id + "', '" + song_id + "', '" + bracket_id + "', '" + song_name + "', '" + artists_name + "', '" + song_popularity + "')";
 			statement = con.createStatement();
 			statement.addBatch(query);
 			statement.executeBatch();

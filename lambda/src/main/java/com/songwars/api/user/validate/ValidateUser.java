@@ -42,6 +42,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		String name = null;
 		String email = null;
 		String authorization_code = null;
+		String joined = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Timestamp(System.currentTimeMillis()));
 
 		/*
 		 * 1. Check request body (validate) for proper format of fields:
@@ -70,6 +71,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		try {
 			request = Utilities.makeHttpsRequest(url, "POST", headers, body);
 			
+			// On 200 - OK:
 			if (request.getResponseCode() == 200) {
 				
 				Map<String, Object> response_body = (Map<String, Object>) new Gson().fromJson(new InputStreamReader(request.getInputStream()), HashMap.class);
@@ -77,7 +79,8 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 				access_token = (String) response_body.get("access_token");
 				expiration = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Timestamp(System.currentTimeMillis() + ((Double) response_body.get("expires_in")).intValue() * 1000));
 				refresh_token = (String) response_body.get("refresh_token");
-				
+			
+			// On Non-200 - Not OK:
 			} else {
 				throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode() + ". Error body: " + ", " + IOUtils.toString(request.getErrorStream()));
 			}
@@ -100,6 +103,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		try {
 			request = Utilities.makeHttpsRequest(url, "GET", headers, body);
 			
+			// On 200 - OK:
 			if (request.getResponseCode() == 200) {
 				
 				Map<String, Object> response_body = (Map<String, Object>) new Gson().fromJson(new InputStreamReader(request.getInputStream()), HashMap.class);
@@ -108,6 +112,7 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 				email = (String) response_body.get("email");
 				name = (String) response_body.get("display_name");
 				
+			// On Non-200 - Not OK:
 			} else {
 				throw new RuntimeException("[InternalServerError] request to " + url + " was unsuccessful with: " + request.getResponseCode() + ". Error body: " + ", " + IOUtils.toString(request.getErrorStream()));
 			}
@@ -120,11 +125,12 @@ public class ValidateUser implements RequestHandler<Map<String, Object>, Map<Str
 		}
 		
 			
+		// Start RDS Database Connection:
 		con = Utilities.getRemoteConnection(context);
 		try {
 				
 			// Insert new user or update credentials if user_id already exists
-			String query = "INSERT INTO users (id, email, name, authorization_code, access_token, refresh_token, expiration) VALUES ('" + id + "', '" + email + "', '" + name + "', '" + authorization_code + "', '" + access_token + "', '" + refresh_token + "', '" + expiration + "') ON DUPLICATE KEY UPDATE authorization_code='" + authorization_code + "', access_token='" + access_token + "', refresh_token='" + refresh_token + "', expiration='" + expiration + "'";
+			String query = "INSERT INTO users (id, email, name, authorization_code, access_token, refresh_token, expiration, date_joined) VALUES ('" + id + "', '" + email + "', '" + name + "', '" + authorization_code + "', '" + access_token + "', '" + refresh_token + "', '" + expiration + "', '" + joined + "') ON DUPLICATE KEY UPDATE authorization_code='" + authorization_code + "', access_token='" + access_token + "', refresh_token='" + refresh_token + "', expiration='" + expiration + "'";
 			Statement statement = con.createStatement();
 			statement.addBatch(query);
 			statement.executeBatch();

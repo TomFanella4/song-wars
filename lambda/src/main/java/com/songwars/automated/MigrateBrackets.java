@@ -194,25 +194,31 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			
 			
 			// Copy rows into bracket_history, then delete them from last_week_bracket:
-			String insertquery = "INSERT INTO bracket_history SELECT * FROM last_week_bracket";
+			String insertquery1 = "INSERT INTO bracket_history SELECT * FROM last_week_bracket";
+			String insertquery2 = "INSERT INTO users_votes_history SELECT * FROM users_last_week_bracket";
+			String insertquery3 = "INSERT INTO users_recommendations_history SELECT * FROM users_recommendations";
 			String updatequery = "UPDATE bracket_headers SET type='History' WHERE bracket_id=?";
 			String deletequery1 = "DELETE FROM last_week_bracket";
 			String deletequery2 = "DELETE FROM users_last_week_bracket";
 			String deletequery3 = "DELETE FROM users_recommendations";
 			String deletequery4 = "DELETE FROM recommendations";
-			PreparedStatement pstatement1 = con.prepareStatement(insertquery);
-			PreparedStatement pstatement2 = con.prepareStatement(updatequery);
-			PreparedStatement pstatement3 = con.prepareStatement(deletequery1);
-			PreparedStatement pstatement4 = con.prepareStatement(deletequery2);
-			PreparedStatement pstatement5 = con.prepareStatement(deletequery3);
-			PreparedStatement pstatement6 = con.prepareStatement(deletequery4);
-			pstatement2.setString(1, bracket_id);
+			PreparedStatement pstatement1 = con.prepareStatement(insertquery1);
+			PreparedStatement pstatement2 = con.prepareStatement(insertquery2);
+			PreparedStatement pstatement3 = con.prepareStatement(insertquery3);
+			PreparedStatement pstatement4 = con.prepareStatement(updatequery);
+			PreparedStatement pstatement5 = con.prepareStatement(deletequery1);
+			PreparedStatement pstatement6 = con.prepareStatement(deletequery2);
+			pstatement7 = con.prepareStatement(deletequery3);
+			PreparedStatement pstatement8 = con.prepareStatement(deletequery4);
+			pstatement4.setString(1, bracket_id);
 			pstatement1.execute();
 			pstatement2.execute();
 			pstatement3.execute();
 			pstatement4.execute();
 			pstatement5.execute();
 			pstatement6.execute();
+			pstatement7.execute();
+			pstatement8.execute();
             
             int[] statuses = pstatement.executeBatch();
 			
@@ -230,6 +236,8 @@ public class MigrateBrackets implements RequestHandler<Object, String> {
 			pstatement4.close();
 			pstatement5.close();
 			pstatement6.close();
+			pstatement7.close();
+			pstatement8.close();
 			pstatement.close();
 			
 
