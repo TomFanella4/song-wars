@@ -1,16 +1,16 @@
 # Song Wars
 
-UI Usability:
+## UI Usability:
 - Required Resources:
 - Modern Updated Browser
 - Spotify Desktop App
-- Website URL: http://songwars-frontend-bugged.s3-website-us-west-2.amazonaws.com
+- Website URL: http://songwars-frontend.s3-website-us-west-2.amazonaws.com
 
-Visual Guide:
+## Visual Guide:
 
-/ and /bracket
+### / and /bracket
 
-(IMAGE)
+![song1](https://github.com/TomFanella4/song-wars/blob/master/images/song1.png)
 
 - Each of the elements should be styled like the above screenshot
 - The bracket should show the results of the votes the day after all of the vote have been counted
@@ -21,9 +21,9 @@ Visual Guide:
 - The Day counter should start at 1
 - As the Day counter progresses, the song elements corresponding to each day should progress through the bracket as well
 
-/search
+### /search
 
-(IMAGE)
+![song2](https://github.com/TomFanella4/song-wars/blob/master/images/song2.png)
 
 - Typing in the search box should instantly search
 - Search results should be in sorted order
@@ -34,27 +34,27 @@ Visual Guide:
 - When no results are found a message should be displayed
 - We assume users will recommend enough songs to complete the requirements of filling a full bracket.
 
-/statistics
+### /statistics
 
-(IMAGE)
+![song3](https://github.com/TomFanella4/song-wars/blob/master/images/song3.png)
 
 - The statistics page should display statistics about the application to the user
 - The statistics page will update on a timed schedule
 - If a user wants to manually update the statistics page (see: /admin/stats/update - POST)
 
-/about
+### /about
 
-(IMAGE)
+![song4](https://github.com/TomFanella4/song-wars/blob/master/images/song4.png)
 
 - The about page should display some information about the application
 
-/{unmatched}
+### /{unmatched}
 
-(IMAGE)
+![song5](https://github.com/TomFanella4/song-wars/blob/master/images/song5.png)
 
 - A 404 Page should be shown for any route that is not defined in the application
 
-Cross-site abilities
+## Cross-site abilities
 
 - The Login button should redirect to the spotify login page and store the user’s data in the browser
 - The Logout button should redirect to the homepage and remove the user’s data from the browser
@@ -63,8 +63,9 @@ Cross-site abilities
 - Clicking the menu bar in the top left corner should toggle the sidebar
 - The default song should be either the song the user is currently listening to or the most recent winner
 
-API:
-/user/validate - GET
+## API:
+
+### /user/validate - GET
 
 Intent:
 
@@ -93,7 +94,7 @@ Expected Outputs:
             “user_id” : “spotifyuseridhere”
         }
      ```
-/brackets/current - GET
+### /brackets/current - GET
 
 Intent:
 
@@ -143,7 +144,7 @@ Expected Response Body:
         Winner: {...} *data for the winner
 ```
     
-/brackets/current/{bracket-id}/vote - GET
+### /brackets/current/{bracket-id}/vote - GET
 
 Intent: 
 
@@ -232,7 +233,7 @@ Expected Outputs:
             “user_id” : “spotifyuseridhere”
         }
 ```
-/brackets/current/{bracket-id}/vote - POST
+### /brackets/current/{bracket-id}/vote - POST
 
 Intent: Records votes that are cast for a song in the database. Updates the table as well as records which song has already been voted for by the user, as to prevent multiple voting/voting for both songs in a matchup. 
 
@@ -258,7 +259,7 @@ Expected Response Codes:
         {status: success}
 ```
 
-/brackets/history - GET
+### /brackets/history - GET
 
 Intent: Retrieves bracket headers so that the user will be able to look up previous brackets based on the date and bracket id. 
 
@@ -279,7 +280,7 @@ Expected Response Body:
             } … *an array of objects that contain individual header data
         }
 
-/brackets/history/{bracket-id} - GET
+### /brackets/history/{bracket-id} - GET
 
 
 Intent: Retrieve bracket data similarly to how bracket data is retrieved for brackets/current. Returns an object containing participating songs and their individual data for a bracket that was completed during past weeks. Each bracket is assigned to a unique bracket-id, which is used to query the database for all the data associated to that bracket_id
@@ -332,7 +333,7 @@ Expected Output:
         Winner: {...} *data for the winner
 ```
 
-/song/recommend - POST
+### /song/recommend - POST
 
 Intent:
 
@@ -361,7 +362,7 @@ Expected Output:
         }
 ```
 
-/stats - GET
+### /stats - GET
 
 Intent:
 
@@ -415,7 +416,7 @@ Expected Output:
 }    
 ```
 
-/admin/migrate/brackets - POST
+### /admin/migrate/brackets - POST
 
 Intent:
 
@@ -429,7 +430,7 @@ Expected Output:
 
     Empty
 
-/admin/migrate/round - POST
+### /admin/migrate/round - POST
 
 Intent:
 
@@ -443,7 +444,7 @@ Expected Output:
 
     Empty
 
-/admin/stats/update - POST
+### /admin/stats/update - POST
 
 Intent:
 
