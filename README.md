@@ -4,7 +4,6 @@
 - Required Resources:
 - Modern Updated Browser
 - Spotify Desktop App
-- Website URL: http://songwars-frontend.s3-website-us-west-2.amazonaws.com
 
 ## Visual Guide:
 
